@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "status": "waiting_key",
+  "generated_at": null,
+  "attempted_at": null,
+  "privacy": "public_market_and_publisher_headlines_only",
+  "providers": {
+    "gemini": {
+      "schema": 1,
+      "status": "waiting_key",
+      "model": "gemini-3.1-flash-lite",
+      "generated_at": null,
+      "attempted_at": null,
+      "last_request_at": null,
+      "input_hash": null,
+      "market_session_date": null,
+      "news_fetched_at": null,
+      "sources": [],
+      "market_facts": [],
+      "analysis": null,
+      "error_code": "missing_key",
+      "reuse_reason": null,
+      "privacy": "public_market_and_publisher_headlines_only",
+      "minimum_interval_hours": 6
+    },
+    "openai": {
+      "schema": 1,
+      "status": "waiting_key",
+      "model": "gpt-6-luna",
+      "generated_at": null,
+      "attempted_at": null,
+      "last_request_at": null,
+      "input_hash": null,
+      "market_session_date": null,
+      "news_fetched_at": null,
+      "sources": [],
+      "market_facts": [],
+      "analysis": null,
+      "error_code": "missing_key",
+      "reuse_reason": null,
+      "privacy": "public_market_and_publisher_headlines_only",
+      "minimum_interval_hours": 6
+    }
+  }
+}

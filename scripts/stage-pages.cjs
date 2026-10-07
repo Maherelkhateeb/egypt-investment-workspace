@@ -1,1 +1,1 @@
-const fs=require('node:fs');fs.mkdirSync('_site',{recursive:true});for(const f of ['index.html','styles.css','core.js','app.js','providers.js','market.json','news.json'])fs.copyFileSync(f,'_site/'+f);fs.writeFileSync('_site/.nojekyll','');
+const fs=require('node:fs');fs.mkdirSync('_site',{recursive:true});for(const f of ['index.html','styles.css','core.js','app.js','providers.js','market.json','news.json','ai.json'])fs.copyFileSync(f,'_site/'+f);for(const f of ['design.js','ai-view.js'])if(fs.existsSync(f))fs.copyFileSync(f,'_site/'+f);fs.writeFileSync('_site/.nojekyll','');

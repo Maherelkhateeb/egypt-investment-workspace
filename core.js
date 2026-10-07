@@ -20,6 +20,7 @@ function validateState(s){
  const r=empty();r.revision=s.revision;r.transactions=s.transactions.map(transaction);const ids=new Set();for(const t of r.transactions){if(ids.has(t.id))throw Error('عملية مكررة');ids.add(t.id);}
  for(const [key,v]of Object.entries(s.valuations||{})){ticker(key);if(!v||!['manual','market'].includes(v.mode))throw Error('وضع التقييم غير صالح');r.valuations[key]={mode:v.mode,price:v.mode==='manual'?num(v.price,'التقييم اليدوي',Number.MIN_VALUE):null,date:date(v.date)};}
  r.openingCash=num(s.openingCash??0,'النقد الافتتاحي');
+ if(s.importMeta){const m=s.importMeta;if(typeof m!=='object'||Array.isArray(m))throw Error('مصدر الاستيراد غير صالح');r.importMeta={source_label:String(m.source_label||'نسخة مستوردة').slice(0,400),captured_at:m.captured_at?date(m.captured_at):null,holdings_as_of:m.holdings_as_of?date(m.holdings_as_of):null,imported_at:m.imported_at?date(m.imported_at):null,fees_known:m.fees_known===true,cash_known:m.cash_known===true};}
  for(const key of ['research','histories']){if(s[key]&&typeof s[key]!=='object')throw Error('بيانات إضافية غير صالحة');r[key]=clone(s[key]||{});}
  for(const key of ['news','snapshots']){if(s[key]&&!Array.isArray(s[key]))throw Error('سجل إضافي غير صالح');r[key]=clone(s[key]||[]);}
  if(JSON.stringify(r).length>8000000)throw Error('النسخة تتجاوز حد التخزين المحلي');
@@ -57,7 +58,7 @@ function portfolio(s,market,asOf='9999-12-31'){
  const complete=missing.length===0;
  const net=complete?l.realized+unrealized+l.income-l.otherFees:null;
  const gross=complete?l.grossRealized+grossUnrealized+l.income:null;
- return {...l,positions,value,totalWealth:value+l.cash,unrealized:complete?unrealized:null,gross,net,missing,feesComplete:l.unknownFees===0,complete};
+ return {...l,positions,value,cashKnown:s.importMeta?.cash_known!==false,totalWealth:s.importMeta?.cash_known===false?null:value+l.cash,unrealized:complete?unrealized:null,gross,net,missing,feesComplete:l.unknownFees===0,complete};
 }
 function change(current,previous){if(!finite(current)||!finite(previous)||previous<=0)return {delta:null,pct:null};return {delta:current-previous,pct:(current-previous)/previous*100};}
 function daily(s,quotes,previous){let delta=0,base=0;const missing=[];const rows=[];
@@ -91,7 +92,7 @@ function valuation(price,earnings,peLow,peBase,peHigh){price=num(price,'السع
 function goal(target,current,monthly,annual,months){target=num(target,'الهدف',Number.MIN_VALUE);current=num(current,'الرصيد');monthly=num(monthly,'المساهمة');annual=num(annual,'العائد',-99.99);months=num(months,'الأشهر',1);if(months>1200||annual>100)throw Error('مدخلات خارج نطاق الحساب');let value=current;const rate=(1+annual/100)**(1/12)-1;for(let i=0;i<months;i++)value=value*(1+rate)+monthly;return {value,reached:value>=target,gap:Math.max(0,target-value),assumedReturn:annual};}
 function migrateLegacy(input,dateValue){date(dateValue);if(!Array.isArray(input))throw Error('المحفظة السابقة غير صالحة');const s=empty();
  input.forEach((h,i)=>{const qty=num(h.qty_owned??h.qty,'الكمية');if(!qty)return;const symbol=ticker(h.ticker);const cost=num(h.avg_unit_cost??h.buy,'التكلفة',Number.MIN_VALUE);
- s.transactions.push(transaction({id:'legacy-'+symbol+'-'+i,date:dateValue,type:'opening',ticker:symbol,name:h.name,assetType:h.isFund?'fund':'stock',qty,price:cost,fee:null,source:'رصيد افتتاحي مستورد؛ أساس الرسوم يحتاج مراجعة'}));
+ s.transactions.push(transaction({id:'legacy-'+symbol+'-'+i,date:dateValue,type:'opening',ticker:symbol,name:h.name,assetType:['stock','fund','gold'].includes(h.assetType)?h.assetType:(symbol==='THNDR_GOLD'||h.isGold?'gold':h.isFund||['CMS','AZG','BWA','NMF'].includes(symbol)?'fund':'stock'),qty,price:cost,fee:null,source:'رصيد افتتاحي مستورد؛ أساس الرسوم يحتاج مراجعة'}));
  if(h.valuation_mode==='manual')s.valuations[symbol]={mode:'manual',price:num(h.manual_valuation_price??h.manual_price??h.cur,'السعر اليدوي',Number.MIN_VALUE),date:dateValue};});return validateState(s);
 }
 class Repository{

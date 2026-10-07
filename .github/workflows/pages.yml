@@ -22,6 +22,11 @@ jobs:
           node-version: '22'
       - run: npm test
       - run: node scripts/update-news.mjs
+      - name: Generate public evidence analysis with Gemini
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/update-ai.mjs
       - run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

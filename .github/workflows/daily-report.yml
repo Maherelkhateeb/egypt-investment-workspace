@@ -1,0 +1,58 @@
+name: Generate daily close report
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run at both possible UTC offsets for Cairo; guard step below keeps only 16:00 Cairo.
+    - cron: '0 13 * * *'
+    - cron: '0 14 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-close-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check Cairo 4 PM window
+        id: cairo
+        shell: bash
+        run: |
+          HOUR=$(TZ=Africa/Cairo date +%H)
+          echo "hour=$HOUR" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$HOUR" = "16" ]; then
+            echo "run_report=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_report=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate daily report
+        if: steps.cairo.outputs.run_report == 'true'
+        run: node scripts/generate-daily-report.mjs
+
+      - name: Commit daily report archive
+        if: steps.cairo.outputs.run_report == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add daily-report.json daily-reports/
+          if git diff --cached --quiet; then
+            echo "No daily report changes to commit."
+            exit 0
+          fi
+          REPORT_DATE=$(TZ=Africa/Cairo date +%F)
+          git commit -m "report: daily close ${REPORT_DATE} 16:00 Cairo"
+          git push

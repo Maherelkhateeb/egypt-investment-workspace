@@ -1,6 +1,6 @@
 {
   "name": "egypt-investment-workspace",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "scripts": {
     "test": "node --test test/*.test.cjs",
@@ -8,3 +8,4 @@
     "build": "node scripts/stage-pages.cjs"
   }
 }
+

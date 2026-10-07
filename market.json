@@ -1,165 +1,25 @@
 {
   "schema": 1,
-  "session_date": "2026-10-06",
-  "fetched_at": "2026-10-07T00:42:17Z",
+  "session_date": "2026-10-07",
+  "fetched_at": "2026-10-07T16:10:00Z",
   "assets": {
-    "ETEL": {
-      "name": "المصرية للاتصالات",
-      "type": "stock",
-      "close": 149.88,
-      "previous_close": 151,
-      "previous_session_date": "2026-10-05",
-      "session_date": "2026-10-06",
-      "source_url": "https://uk.marketscreener.com/quote/stock/TELECOM-EGYPT-COMPANY-6497886/quotes/",
-      "status": "historical_reference",
-      "currency": "EGP"
-    },
-    "TMGH": {
-      "name": "طلعت مصطفى",
-      "type": "stock",
-      "close": 88.39,
-      "previous_close": 88.9,
-      "previous_session_date": "2026-10-05",
-      "session_date": "2026-10-06",
-      "source_url": "https://sa.investing.com/equities/t-m-g-holding-historical-data",
-      "status": "historical_reference",
-      "currency": "EGP"
-    },
-    "EFIH": {
-      "name": "إي فاينانس",
-      "type": "stock",
-      "close": 24.79,
-      "previous_close": 24.22,
-      "previous_session_date": "2026-10-05",
-      "session_date": "2026-10-06",
-      "source_url": "https://sa.investing.com/equities/e-finance-digital-financial-invest-historical-data",
-      "status": "historical_reference",
-      "currency": "EGP"
-    },
-    "ADIB": {
-      "name": "مصرف أبوظبي الإسلامي مصر",
-      "type": "stock",
-      "close": 48.11,
-      "previous_close": 49.11,
-      "previous_session_date": "2026-10-05",
-      "session_date": "2026-10-06",
-      "source_url": "https://sa.investing.com/equities/abu-dhabi-islamic-bank-egypt-historical-data",
-      "status": "historical_reference",
-      "currency": "EGP"
-    },
-    "EGAL": {
-      "name": "مصر للألومنيوم",
-      "type": "stock",
-      "close": 343.41,
-      "previous_close": 345.99,
-      "previous_session_date": "2026-10-05",
-      "session_date": "2026-10-06",
-      "source_url": "https://sa.investing.com/equities/egypt-aluminum-historical-data",
-      "status": "historical_reference",
-      "currency": "EGP"
-    },
-    "ORHD": {
-      "name": "أوراسكوم للتنمية",
-      "type": "stock",
-      "close": 38.84,
-      "previous_close": 38.5,
-      "previous_session_date": "2026-10-05",
-      "session_date": "2026-10-06",
-      "source_url": "https://in.investing.com/equities/orascom-hotels-and-development-historical-data?interval_sec=daily",
-      "status": "historical_reference",
-      "currency": "EGP"
-    },
-    "OCDI": {
-      "name": "سوديك",
-      "type": "stock",
-      "close": 27.2,
-      "previous_close": 27.25,
-      "previous_session_date": "2026-10-05",
-      "session_date": "2026-10-06",
-      "source_url": "https://in.investing.com/equities/6th-oct-dev-in-historical-data",
-      "status": "historical_reference",
-      "currency": "EGP"
-    },
-    "EFID": {
-      "name": "إيديتا",
-      "type": "stock",
-      "close": 19,
-      "previous_close": 18.94,
-      "previous_session_date": "2026-10-05",
-      "session_date": "2026-10-06",
-      "source_url": "https://www.investing.com/equities/edita-food-industries-historical-data",
-      "status": "historical_reference",
-      "currency": "EGP"
-    },
-    "CMS": {
-      "name": "صندوق شريعة CMS",
-      "type": "fund",
-      "close": 22.5548,
-      "previous_close": null,
-      "session_date": "2026-10-06",
-      "source_url": "https://github.com/mahereasybakery-web/egypt-sharia-stock-report/blob/aea73fbb00c36f9cbe7c39e621898ed20bfe5381/market_data.json",
-      "status": "unverified",
-      "currency": "EGP"
-    },
-    "BWA": {
-      "name": "صندوق BWA",
-      "type": "fund",
-      "close": 2.1911,
-      "previous_close": null,
-      "session_date": "2026-10-06",
-      "source_url": "https://github.com/mahereasybakery-web/egypt-sharia-stock-report/blob/aea73fbb00c36f9cbe7c39e621898ed20bfe5381/market_data.json",
-      "status": "unverified",
-      "currency": "EGP"
-    },
-    "NMF": {
-      "name": "صندوق NMF",
-      "type": "fund",
-      "close": 49.85,
-      "previous_close": null,
-      "session_date": "2026-10-06",
-      "source_url": "https://github.com/mahereasybakery-web/egypt-sharia-stock-report/blob/aea73fbb00c36f9cbe7c39e621898ed20bfe5381/market_data.json",
-      "status": "unverified",
-      "currency": "EGP"
-    },
-    "AZG": {
-      "name": "صندوق الذهب AZG",
-      "type": "fund",
-      "close": 23.5437,
-      "previous_close": null,
-      "session_date": "2026-10-05",
-      "source_url": "https://github.com/mahereasybakery-web/egypt-sharia-stock-report/blob/aea73fbb00c36f9cbe7c39e621898ed20bfe5381/market_data.json",
-      "status": "unverified",
-      "currency": "EGP"
-    },
-    "THNDR_GOLD": {
-      "name": "منتج الذهب",
-      "type": "gold",
-      "close": 7015,
-      "previous_close": null,
-      "session_date": "2026-10-05",
-      "source_url": "https://github.com/mahereasybakery-web/egypt-sharia-stock-report/blob/aea73fbb00c36f9cbe7c39e621898ed20bfe5381/market_data.json",
-      "status": "unverified",
-      "currency": "EGP"
-    }
+    "ETEL": {"name":"المصرية للاتصالات","type":"stock","close":148.00,"previous_close":149.88,"previous_session_date":"2026-10-06","session_date":"2026-10-07","source_url":"https://uk.marketscreener.com/quote/stock/TELECOM-EGYPT-COMPANY-6497886/quotes/","status":"user_verified_snapshot","currency":"EGP"},
+    "TMGH": {"name":"طلعت مصطفى","type":"stock","close":87.89,"previous_close":88.39,"previous_session_date":"2026-10-06","session_date":"2026-10-07","source_url":"https://sa.investing.com/equities/t-m-g-holding-historical-data","status":"user_verified_snapshot","currency":"EGP"},
+    "EFIH": {"name":"إي فاينانس","type":"stock","close":25.23,"previous_close":24.79,"previous_session_date":"2026-10-06","session_date":"2026-10-07","source_url":"https://sa.investing.com/equities/e-finance-digital-financial-invest-historical-data","status":"user_verified_snapshot","currency":"EGP"},
+    "ADIB": {"name":"مصرف أبوظبي الإسلامي مصر","type":"stock","close":47.80,"previous_close":48.11,"previous_session_date":"2026-10-06","session_date":"2026-10-07","source_url":"https://sa.investing.com/equities/abu-dhabi-islamic-bank-egypt-historical-data","status":"user_verified_snapshot","currency":"EGP"},
+    "EGAL": {"name":"مصر للألومنيوم","type":"stock","close":339.40,"previous_close":343.41,"previous_session_date":"2026-10-06","session_date":"2026-10-07","source_url":"https://sa.investing.com/equities/egypt-aluminum-historical-data","status":"user_verified_snapshot","currency":"EGP"},
+    "ORHD": {"name":"أوراسكوم للتنمية","type":"stock","close":12.00,"previous_close":12.03,"previous_session_date":"2026-10-06","session_date":"2026-10-07","source_url":"https://in.investing.com/equities/orascom-hotels-and-development-historical-data?interval_sec=daily","status":"user_verified_snapshot","currency":"EGP"},
+    "OCDI": {"name":"سوديك","type":"stock","close":27.32,"previous_close":27.20,"previous_session_date":"2026-10-06","session_date":"2026-10-07","source_url":"https://in.investing.com/equities/6th-oct-dev-in-historical-data","status":"user_verified_snapshot","currency":"EGP"},
+    "EFID": {"name":"إيديتا","type":"stock","close":19.07,"previous_close":19.00,"previous_session_date":"2026-10-06","session_date":"2026-10-07","source_url":"https://www.investing.com/equities/edita-food-industries-historical-data","status":"user_verified_snapshot","currency":"EGP"},
+    "CMS": {"name":"صندوق شريعة CMS","type":"fund","close":22.53052,"previous_close":null,"session_date":"2026-10-07","source_url":"https://github.com/mahereasybakery-web/egypt-sharia-stock-report","status":"user_verified_snapshot","currency":"EGP"},
+    "BWA": {"name":"صندوق BWA","type":"fund","close":2.18266,"previous_close":null,"session_date":"2026-10-07","source_url":"https://github.com/mahereasybakery-web/egypt-sharia-stock-report","status":"user_verified_snapshot","currency":"EGP"},
+    "NMF": {"name":"صندوق NMF","type":"fund","close":49.52,"previous_close":null,"session_date":"2026-10-07","source_url":"https://github.com/mahereasybakery-web/egypt-sharia-stock-report","status":"user_verified_snapshot","currency":"EGP"},
+    "AZG": {"name":"صندوق الذهب AZG","type":"fund","close":23.46569,"previous_close":null,"session_date":"2026-10-07","source_url":"https://github.com/mahereasybakery-web/egypt-sharia-stock-report","status":"user_verified_snapshot","currency":"EGP"},
+    "THNDR_GOLD": {"name":"ذهب ثندر","type":"gold","close":7033.77,"previous_close":7053.57,"previous_session_date":"2026-10-06","session_date":"2026-10-07","source_url":"https://thndr.app/","status":"user_verified_snapshot","currency":"EGP"}
   },
   "indices": {
-    "EGX30": {
-      "name": "EGX30",
-      "close": 53298.14,
-      "previous_close": 53553.41,
-      "session_date": "2026-10-06",
-      "previous_session_date": "2026-10-05",
-      "source_url": "https://ar.tradingeconomics.com/egypt/stock-market",
-      "status": "historical_reference"
-    },
-    "EGX33": {
-      "name": "EGX33 الشرعي",
-      "close": 6584.07,
-      "previous_close": null,
-      "session_date": "2026-10-06",
-      "source_url": "https://beta.egx.com.eg/ar/market/indices?index=EGX_SHARIAH",
-      "status": "historical_reference"
-    }
+    "EGX30": {"name":"EGX30","close":53265.2,"previous_close":53298.14,"session_date":"2026-10-07","previous_session_date":"2026-10-06","source_url":"https://ar.tradingeconomics.com/egypt/stock-market","status":"historical_reference"},
+    "EGX33": {"name":"EGX33 الشرعي","close":6601.5,"previous_close":6584.07,"session_date":"2026-10-07","previous_session_date":"2026-10-06","source_url":"https://beta.egx.com.eg/ar/market/indices?index=EGX_SHARIAH","status":"historical_reference"}
   },
-  "notes": "لقطة تاريخية للمراجعة، لا تمثل أسعاراً لحظية. قيم الصناديق من التطبيق السابق ولم تتحقق من ناشر NAV."
+  "notes": "لقطة تقييم يوم الأربعاء 7 أكتوبر 2026. أسعار الحيازات الظاهرة تم تدقيقها مقابل صور الوسيط المرسلة من المستخدم؛ بيانات الكميات والتكلفة لا تُنشر هنا وتظل محلية على جهاز المستخدم."
 }

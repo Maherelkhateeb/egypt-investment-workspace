@@ -1,0 +1,41 @@
+{
+  "schema": 3,
+  "reports": [
+    {
+      "date": "2026-10-04",
+      "label": "تقرير الأحد 2026-10-04",
+      "sessionDay": "الأحد",
+      "audited": true,
+      "complete": true,
+      "file": "daily-reports/2026-10-04.json",
+      "source_commit": "d0c5c0b31dcfc6078c42da8f8be3e7811554eac9"
+    },
+    {
+      "date": "2026-10-05",
+      "label": "تقرير الاثنين 2026-10-05",
+      "sessionDay": "الاثنين",
+      "audited": true,
+      "complete": true,
+      "file": "daily-reports/2026-10-05.json",
+      "source_commit": "30c5c842d762f72203a061dee132e909ead730a8"
+    },
+    {
+      "date": "2026-10-06",
+      "label": "تقرير الثلاثاء 2026-10-06",
+      "sessionDay": "الثلاثاء",
+      "audited": true,
+      "complete": true,
+      "file": "daily-reports/2026-10-06.json",
+      "source_commit": "63df5ab7a850a35fe973713eef7d449cfdbe217c"
+    },
+    {
+      "date": "2026-10-07",
+      "label": "تقرير الأربعاء 2026-10-07",
+      "sessionDay": "الأربعاء",
+      "audited": true,
+      "complete": true,
+      "file": "daily-reports/2026-10-07.json",
+      "source_commit": "2f96348aad1b1d13a62f4b2f2fe99dcb60b74a4d"
+    }
+  ]
+}

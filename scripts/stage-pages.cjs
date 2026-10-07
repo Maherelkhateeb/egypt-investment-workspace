@@ -1,0 +1,1 @@
+const fs=require('node:fs');fs.mkdirSync('_site',{recursive:true});for(const f of ['index.html','styles.css','core.js','app.js','providers.js','market.json','news.json'])fs.copyFileSync(f,'_site/'+f);fs.writeFileSync('_site/.nojekyll','');

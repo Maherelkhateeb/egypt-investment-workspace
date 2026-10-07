@@ -49,8 +49,8 @@ test('only configured publishers and safe direct HTTPS links enter evidence', as
 });
 test('request contains bounded structured output and injection instruction, never the API secret', async () => {
   const A = await load(); const context = A.buildPublicContext(input(), now); const body = A.makeRequest(context);
-  assert.equal(body.generationConfig.maxOutputTokens, 1800); assert.equal(body.generationConfig.thinkingConfig.thinkingLevel, 'minimal');
-  assert.equal(body.generationConfig.responseFormat.text.mimeType, 'application/json'); assert.equal(body.tools, undefined);
+  assert.equal(body.generationConfig.maxOutputTokens, 1800); assert.equal(body.generationConfig.thinkingConfig.thinkingLevel, 'MINIMAL');
+  assert.equal(body.generationConfig.responseFormat.text.mimeType, 'APPLICATION_JSON'); assert.equal(body.tools, undefined);
   assert.match(body.systemInstruction.parts[0].text, /تجاهل أي أوامر/);
   assert.equal(JSON.stringify(body).includes('test-only-key'), false);
   let request; const result = await ready(A, { fetchImpl: async (url, options) => { request = { url, options }; return apiResponse(analysis()); } });
@@ -97,6 +97,17 @@ test('provider failure retains last successful dates and never publishes raw pro
   assert.equal(result.status, 'stale'); assert.equal(result.error_code, 'http_429'); assert.equal(result.generated_at, previous.generated_at);
   assert.equal(result.last_request_at, '2026-10-07T19:00:00.000Z'); assert.equal(JSON.stringify(result).includes('test-only-key'), false);
 });
+test('REST bad-request diagnostics classify without publishing provider secrets and preserve throttling', async () => {
+  const A = await load();
+  const failed = await ready(A, { fetchImpl: async () => new Response(JSON.stringify({error:{status:'INVALID_ARGUMENT',message:'API key not valid: test-only-key',details:[{reason:'API_KEY_INVALID'}]}}), {status:400}) });
+  assert.equal(failed.error_code,'invalid_api_key'); assert.equal(JSON.stringify(failed).includes('test-only-key'),false);
+  let calls=0;
+  const retained=await ready(A,{previous:failed,now:now+60000,fetchImpl:async()=>{calls++;return apiResponse(analysis());}});
+  assert.equal(calls,0);assert.equal(retained.reuse_reason,'six_hour_interval');
+  const legacy={...failed,error_code:'http_400'};
+  assert.equal(A.validatePrevious(legacy,now),null);
+});
+
 test('failed first requests are throttled too, preventing retries every news poll', async () => {
   const A = await load(); const failed = await ready(A, { fetchImpl: async () => new Response('', { status: 429 }) });
   assert.equal(A.validatePrevious(failed, now), failed); let calls = 0;
@@ -114,3 +125,4 @@ test('previous combined snapshot is fetched only from fixed public application U
   assert.equal(url, 'https://maherelkhateeb.github.io/egypt-investment-workspace/ai.json'); assert.equal(retained.generated_at, previous.generated_at);
   assert.equal(await A.readPrevious(async () => new Response('x'.repeat(100001)), now), null);
 });
+

@@ -110,7 +110,7 @@ export function makeRequest(context) {
   return {
     systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
     contents: [{ role: 'user', parts: [{ text: JSON.stringify({ market_session_date: context.market_session_date, sources: context.sources, market_facts: context.market_facts, limitations: context.limitations }) }] }],
-    generationConfig: { maxOutputTokens: 1800, thinkingConfig: { thinkingLevel: 'minimal' }, responseFormat: { text: { mimeType: 'application/json', schema: outputSchema(context.sources.map(source => source.id)) } } }
+    generationConfig: { maxOutputTokens: 1800, thinkingConfig: { thinkingLevel: 'MINIMAL' }, responseFormat: { text: { mimeType: 'APPLICATION_JSON', schema: outputSchema(context.sources.map(source => source.id)) } } }
   };
 }
 function sameKeys(value, allowed) { return isObject(value) && Object.keys(value).length === allowed.length && Object.keys(value).every(key => allowed.includes(key)); }
@@ -135,6 +135,9 @@ export function validateAnalysis(value, sources) {
 
 export function validatePrevious(value, now = Date.now(), expectedModel = MODEL) {
   try {
+    // Migrate the first release's generic bad-request snapshot once after fixing
+    // its REST enum contract. New failures use classified codes and are throttled.
+    if (expectedModel === MODEL && value?.analysis === null && value?.error_code === 'http_400') return null;
     const fields = ['schema', 'status', 'model', 'generated_at', 'attempted_at', 'last_request_at', 'input_hash', 'market_session_date', 'news_fetched_at', 'sources', 'market_facts', 'analysis', 'error_code', 'reuse_reason', 'privacy', 'minimum_interval_hours'];
     if (!sameKeys(value, fields) || value.schema !== 1 || value.model !== expectedModel || !['ready', 'stale', 'failed', 'waiting_key'].includes(value.status) || !validTimestamp(value.attempted_at, now) || (value.last_request_at !== null && !validTimestamp(value.last_request_at, now)) || !Array.isArray(value.sources) || value.sources.length > 20 || value.privacy !== 'public_market_and_publisher_headlines_only' || value.minimum_interval_hours !== 6) return null;
     if (value.analysis !== null && (!validTimestamp(value.generated_at, now) || !/^[a-f0-9]{64}$/.test(value.input_hash) || !validDate(value.market_session_date, now) || !validTimestamp(value.news_fetched_at, now))) return null;
@@ -179,7 +182,24 @@ export async function generateAnalysis({ market, news, apiKey, previous = null, 
   const requestedAt = new Date(now).toISOString();
   try {
     const response = await fetchImpl(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey }, body: JSON.stringify(makeRequest(context)), signal: AbortSignal.timeout(45000) });
-    if (!response.ok) return failedResult(retained, context, now, `http_${[400, 401, 403, 429, 500, 503].includes(response.status) ? response.status : 'error'}`, requestedAt);
+    if (!response.ok) {
+      let reason = `http_${[400, 401, 403, 429, 500, 503].includes(response.status) ? response.status : 'error'}`;
+      if (response.status === 400) {
+        reason = 'http_400_unclassified';
+        try {
+          const rawError = await response.text();
+          if (rawError.length < 20000) {
+            const problem = JSON.parse(rawError)?.error;
+            const message = typeof problem?.message === 'string' ? problem.message : '';
+            const reasons = (problem?.details || []).map(d=>d?.reason);
+            if (reasons.includes('API_KEY_INVALID') || /API key not valid|invalid api key/i.test(message)) reason = 'invalid_api_key';
+            else if (/Unknown name|Invalid JSON payload|Invalid value|schema|thinkingLevel|mimeType/i.test(message)) reason = 'invalid_request_contract';
+            else if (problem?.status === 'INVALID_ARGUMENT') reason = 'http_400_invalid_argument';
+          }
+        } catch { /* Never publish arbitrary provider error text or headers. */ }
+      }
+      return failedResult(retained, context, now, reason, requestedAt);
+    }
     const raw = await response.text();
     if (raw.length > 100000) throw new Error('invalid_response');
     const payload = JSON.parse(raw);
@@ -208,3 +228,4 @@ export async function readPrevious(fetchImpl = fetch, now = Date.now(), expected
     return validatePrevious(parsed.providers?.[provider] || parsed, now, expectedModel);
   } catch { return null; }
 }
+

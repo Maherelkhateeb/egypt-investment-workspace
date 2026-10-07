@@ -63,10 +63,13 @@ test('corrupt cached market does not block loading a valid published snapshot or
 });
 
 test('newer validated cache survives an older published source',async()=>{
- const newer=C.clone(snapshot);newer.session_date='2026-10-07';newer.fetched_at='2026-10-07T10:00:00Z';newer.assets.TMGH.close=99;
+ const newer=C.clone(snapshot);newer.session_date='2026-10-08';newer.fetched_at='2026-10-08T10:00:00Z';
+ for(const q of Object.values(newer.assets)){if(q.session_date==='2026-10-07'){q.session_date='2026-10-08';if(q.previous_session_date)q.previous_session_date='2026-10-07';}}
+ for(const q of Object.values(newer.indices)){if(q.session_date==='2026-10-07'){q.session_date='2026-10-08';if(q.previous_session_date)q.previous_session_date='2026-10-07';}}
+ newer.assets.TMGH.close=99;
  const app=boot({cache:JSON.stringify(newer)});
  await settle();
- assert.equal(app.read('market.session_date'),'2026-10-07');
+ assert.equal(app.read('market.session_date'),'2026-10-08');
  assert.equal(app.read('market.assets.TMGH.close'),99);
  assert.equal(app.writes.length,0);
 });

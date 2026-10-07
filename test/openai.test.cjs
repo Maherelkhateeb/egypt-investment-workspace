@@ -19,7 +19,7 @@ function input(title = 'مبيعات طلعت مصطفى تدعم النشاط �
 function analysis() {
   return {
     summary: 'تحتاج النظرة الاقتصادية إلى متابعة الإفصاحات المؤكدة.',
-    findings: [{ fact: 'عنوان المصدر يشير إلى نمو نشاط الشركة.', possible_implication: 'قد يدعم النشاط الإيرادات إذا تأكد بالأرقام المنشورة.', uncertainty: 'لم يُقرأ نص المقال الكامل.', source_ids: ['N1'] }],
+    findings: [{ fact: 'مبيعات طلعت مصطفى تدعم النشاط العقاري', possible_implication: 'قد يدعم النشاط الإيرادات إذا تأكد بالأرقام المنشورة.', uncertainty: 'لم يُقرأ نص المقال الكامل.', source_ids: ['N1'] }],
     scenarios: [{ label: 'أساسي', condition: 'إذا تأكد نمو النشاط في الإفصاحات.', possible_effect: 'قد تتحسن النظرة التشغيلية.', source_ids: ['N1'] }],
     questions: [{ question: 'هل تدعم التدفقات النقدية النمو المعلن؟', source_ids: ['N1'] }],
     limitations: ['الأدلة عناوين صحفية وأسعار تاريخية فقط.']
@@ -191,3 +191,4 @@ test('no valid publisher evidence makes no model request', async () => {
   assert.equal(result.error_code, 'no_valid_public_news');
   assert.equal(result.last_request_at, null);
 });
+

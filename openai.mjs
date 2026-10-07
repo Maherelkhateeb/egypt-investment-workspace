@@ -19,12 +19,11 @@ export function makeOpenAIRequest(context) {
     input: [{ role: 'user', content: JSON.stringify({
       market_session_date: context.market_session_date,
       sources: context.sources,
-      market_facts: context.market_facts,
       limitations: context.limitations
     }) }],
     text: { format: {
       type: 'json_schema', name: 'public_economic_analysis', strict: true,
-      schema: outputSchema(context.sources.map(source => source.id))
+      schema: outputSchema(context.sources.map(source => source.id), context.sources.map(source => source.title))
     } }
   };
 }
@@ -112,3 +111,4 @@ export function validateOpenAIPrevious(value, now = Date.now()) {
 export async function readPreviousOpenAI(fetcher = fetch, now = Date.now()) {
   return readPrevious(fetcher, now, MODEL, 'openai');
 }
+

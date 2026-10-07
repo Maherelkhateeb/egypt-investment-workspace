@@ -11,7 +11,7 @@ const input = () => ({
 });
 const analysis = () => ({
   summary: 'يشير عنوان الخبر إلى مراجعة التمويل، ويحتاج الأثر على الشركات إلى تحقق إضافي.',
-  findings: [{ fact: 'ورد في عنوان المصدر أن الشركات تراجع خطط التمويل.', possible_implication: 'قد يؤثر تغير تكلفة الاقتراض على قرارات التوسع.', uncertainty: 'لم تتوفر تفاصيل شروط التمويل أو نص الخبر.', source_ids: ['N1'] }],
+  findings: [{ fact: 'الشركات تراجع خطط التمويل مع تغير تكلفة الاقتراض', possible_implication: 'قد يؤثر تغير تكلفة الاقتراض على قرارات التوسع.', uncertainty: 'لم تتوفر تفاصيل شروط التمويل أو نص الخبر.', source_ids: ['N1'] }],
   scenarios: [{ label: 'أساسي', condition: 'إذا استمرت مراجعة خطط التمويل.', possible_effect: 'قد تتغير أولويات التوسع بحسب تكلفة الاقتراض.', source_ids: ['N1'] }],
   questions: [{ question: 'ما شروط التمويل المعلنة من الشركات؟', source_ids: ['N1'] }],
   limitations: ['المعلومات المتاحة عناوين صحفية فقط، والأسعار مؤرخة وليست لحظية.']
@@ -106,6 +106,16 @@ test('REST bad-request diagnostics classify without publishing provider secrets 
   assert.equal(calls,0);assert.equal(retained.reuse_reason,'six_hour_interval');
   const legacy={...failed,error_code:'http_400'};
   assert.equal(A.validatePrevious(legacy,now),null);
+});
+
+test('headline evidence binding rejects valid citation IDs attached to invented stock-price facts', async () => {
+  const A=await load(),ctx=A.buildPublicContext(input(),now);
+  const bad=analysis();bad.findings[0].fact='سجل سهم طلعت مصطفى هبوطاً بسبب ضغط المؤسسات';
+  assert.throws(()=>A.validateAnalysis(bad,ctx.sources));
+  const numbered=[{...ctx.sources[0],title:'مبيعات الشركة ترتفع 8%'}];const good=analysis();good.findings[0].fact=numbered[0].title;
+  assert.equal(A.validateAnalysis(good,numbered),good);
+  const body=A.makeRequest(ctx);assert.equal(JSON.parse(body.contents[0].parts[0].text).market_facts,undefined);
+  assert.deepEqual(body.generationConfig.responseFormat.text.schema.properties.findings.items.properties.fact.enum,[ctx.sources[0].title]);
 });
 
 test('failed first requests are throttled too, preventing retries every news poll', async () => {

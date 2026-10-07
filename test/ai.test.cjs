@@ -115,7 +115,7 @@ test('headline evidence binding rejects valid citation IDs attached to invented 
   const numbered=[{...ctx.sources[0],title:'مبيعات الشركة ترتفع 8%'}];const good=analysis();good.findings[0].fact=numbered[0].title;
   assert.equal(A.validateAnalysis(good,numbered),good);
   const body=A.makeRequest(ctx);assert.equal(JSON.parse(body.contents[0].parts[0].text).market_facts,undefined);
-  assert.deepEqual(body.generationConfig.responseFormat.text.schema.properties.findings.items.properties.fact.enum,[ctx.sources[0].title]);
+  assert.equal(body.generationConfig.responseFormat.text.schema.properties.findings.items.properties.fact.enum,undefined);
 });
 
 test('failed first requests are throttled too, preventing retries every news poll', async () => {

@@ -1,8 +1,16 @@
 import fs from 'node:fs';
 import { generateAnalysis, readPrevious, validatePrevious, MODEL as GEMINI_MODEL } from '../ai.mjs';
 import { generateOpenAI, MODEL as OPENAI_MODEL } from '../openai.mjs';
+import {loadBudget,reserveCall} from '../budget.mjs';
 
 const now = Date.now();
+let savedBudget=null;try{savedBudget=JSON.parse(fs.readFileSync('ai-budget.json','utf8'));}catch{}
+const budget=loadBudget(savedBudget,now),limited={};
+const countedFetch=provider=>async(...args)=>{
+ if(!reserveCall(budget,provider)){limited[provider]=true;throw Error('daily_call_limit');}
+ fs.writeFileSync('ai-budget.json',JSON.stringify(budget));
+ return fetch(...args);
+};
 const market = JSON.parse(fs.readFileSync('market.json', 'utf8'));
 const news = JSON.parse(fs.readFileSync('news.json', 'utf8'));
 let local = null;
@@ -16,13 +24,16 @@ for (const [provider, remote] of published) {
   prior[provider] = latestTime(remote) >= latestTime(saved) ? remote : saved;
 }
 const [gemini, openai] = await Promise.all([
-  generateAnalysis({ market, news, apiKey: process.env.GEMINI_API_KEY, previous: prior.gemini, now }),
-  generateOpenAI({ market, news, apiKey: process.env.OPENAI_API_KEY, previous: prior.openai, now })
+  generateAnalysis({ market, news, apiKey: process.env.GEMINI_API_KEY, previous: prior.gemini, now,fetchImpl:countedFetch('gemini') }),
+  generateOpenAI({ market, news, apiKey: process.env.OPENAI_API_KEY, previous: prior.openai, now,fetchImpl:countedFetch('openai') })
 ]);
+if(limited.gemini)gemini.error_code='daily_call_limit';if(limited.openai)openai.error_code='daily_call_limit';
+fs.writeFileSync('ai-budget.json',JSON.stringify(budget));
 const reports = [gemini, openai];
 const status = ['ready', 'stale', 'failed', 'waiting_key'].find(value => reports.some(report => report.status === value));
 const dates = reports.map(report => report.generated_at).filter(Boolean).sort();
-const result = { schema: 1, status, generated_at: dates.at(-1) || null, attempted_at: new Date(now).toISOString(), privacy: 'public_market_and_publisher_headlines_only', providers: { gemini, openai } };
+const result = { schema: 1, status, generated_at: dates.at(-1) || null, attempted_at: new Date(now).toISOString(), privacy: 'public_market_and_publisher_headlines_only', usage:budget, providers: { gemini, openai } };
 fs.writeFileSync('ai.json', JSON.stringify(result, null, 2) + '\n');
 // No key, request headers, raw API errors, prompts, or private state enter workflow logs.
 console.log(JSON.stringify({ status: result.status, providers: Object.fromEntries(Object.entries(result.providers).map(([provider, report]) => [provider, { status: report.status, model: report.model, generated_at: report.generated_at, source_count: report.sources.length, error_code: report.error_code, reuse_reason: report.reuse_reason }])) }));
+

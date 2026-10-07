@@ -87,7 +87,9 @@ export function outputSchema(sourceIds, sourceTitles = []) {
   const item = properties => ({ type: 'object', additionalProperties: false, properties: { ...properties, source_ids: citations }, required: [...Object.keys(properties), 'source_ids'] });
   return { type: 'object', additionalProperties: false, properties: {
     summary: { type: 'string' },
-    findings: { type: 'array', minItems: 1, maxItems: 5, items: item({ fact: { type: 'string', ...(sourceTitles.length ? { enum: sourceTitles } : {}) }, possible_implication: { type: 'string' }, uncertainty: { type: 'string' } }) },
+    // Exact headline binding is checked after generation; long publisher title
+    // enums inflate constrained decoding complexity on smaller providers.
+    findings: { type: 'array', minItems: 1, maxItems: 5, items: item({ fact: { type: 'string' }, possible_implication: { type: 'string' }, uncertainty: { type: 'string' } }) },
     scenarios: { type: 'array', minItems: 0, maxItems: 3, items: item({ label: { type: 'string', enum: OUTCOME_LABELS }, condition: { type: 'string' }, possible_effect: { type: 'string' } }) },
     questions: { type: 'array', minItems: 1, maxItems: 5, items: item({ question: { type: 'string' } }) },
     limitations: { type: 'array', minItems: 1, maxItems: 5, items: { type: 'string' } }
@@ -141,7 +143,7 @@ export function validatePrevious(value, now = Date.now(), expectedModel = MODEL)
   try {
     // Migrate the first release's generic bad-request snapshot once after fixing
     // its REST enum contract. New failures use classified codes and are throttled.
-    if (expectedModel === MODEL && value?.analysis === null && value?.error_code === 'http_400') return null;
+    if (expectedModel === MODEL && value?.analysis === null && ['http_400','http_400_invalid_argument'].includes(value?.error_code)) return null;
     const fields = ['schema', 'status', 'model', 'generated_at', 'attempted_at', 'last_request_at', 'input_hash', 'market_session_date', 'news_fetched_at', 'sources', 'market_facts', 'analysis', 'error_code', 'reuse_reason', 'privacy', 'minimum_interval_hours'];
     if (!sameKeys(value, fields) || value.schema !== 1 || value.model !== expectedModel || !['ready', 'stale', 'failed', 'waiting_key'].includes(value.status) || !validTimestamp(value.attempted_at, now) || (value.last_request_at !== null && !validTimestamp(value.last_request_at, now)) || !Array.isArray(value.sources) || value.sources.length > 20 || value.privacy !== 'public_market_and_publisher_headlines_only' || value.minimum_interval_hours !== 6) return null;
     if (value.analysis !== null && (!validTimestamp(value.generated_at, now) || !/^[a-f0-9]{64}$/.test(value.input_hash) || !validDate(value.market_session_date, now) || !validTimestamp(value.news_fetched_at, now))) return null;
@@ -197,8 +199,9 @@ export async function generateAnalysis({ market, news, apiKey, previous = null, 
             const message = typeof problem?.message === 'string' ? problem.message : '';
             const reasons = (problem?.details || []).map(d=>d?.reason);
             if (reasons.includes('API_KEY_INVALID') || /API key not valid|invalid api key/i.test(message)) reason = 'invalid_api_key';
+            else if (/too many states|too complex|complex.*schema|schema.*complex|constrained decoding/i.test(message)) reason = 'output_schema_too_complex';
             else if (/Unknown name|Invalid JSON payload|Invalid value|schema|thinkingLevel|mimeType/i.test(message)) reason = 'invalid_request_contract';
-            else if (problem?.status === 'INVALID_ARGUMENT') reason = 'http_400_invalid_argument';
+            else if (problem?.status === 'INVALID_ARGUMENT') reason = 'provider_invalid_argument';
           }
         } catch { /* Never publish arbitrary provider error text or headers. */ }
       }

@@ -1,0 +1,983 @@
+{
+  "schema": 3,
+  "report_type": "complete_audited_eod",
+  "date": "2026-10-07",
+  "sessionDay": "الأربعاء",
+  "status": "مغلق — تقرير نهاية اليوم بعد 4:00 م",
+  "title": "التقرير اليومي الشامل — الأربعاء 2026-10-07",
+  "subtitle": "تقرير تاريخي مدقق مبني على لقطة نهاية الجلسة",
+  "generated_from": {
+    "repository": "mahereasybakery-web/egypt-sharia-stock-report",
+    "commit": "2f96348aad1b1d13a62f4b2f2fe99dcb60b74a4d",
+    "file": "market_data.json",
+    "snapshot_updated_at": "2026-10-07T17:19:46.243847+03:00"
+  },
+  "audit": {
+    "audited": true,
+    "policy": "الأرقام من لقطة نهاية اليوم مع تطبيق التصحيحات الموثقة فقط؛ لا تُخترع بيانات مفقودة.",
+    "notes": [
+      "تم تطبيق أسعار الحيازات المدققة ليوم 7 أكتوبر من اللقطات الموثقة.",
+      "تم استبعاد تغير ORHD غير المعدل واعتماد التغير اليومي الموثق."
+    ]
+  },
+  "session_analysis": {
+    "headline": "جلسة الأربعاء: قراءة متوازن للمؤشرات",
+    "nature": "داخل البيانات المتاحة: 24 سهمًا صاعدًا مقابل 18 هابطًا و3 دون تغير.",
+    "liquidity": "لا يتم وصف تدفقات مؤسسية أو أجنبية دون بيانات موثقة.",
+    "tomorrow": "تُراقب قمم وقيعان الجلسة كمستويات أولية مع تأكيد السعر والحجم."
+  },
+  "indices": {
+    "EGX30": {
+      "name": "مؤشر EGX30 الرئيسي",
+      "open": 53293.3,
+      "close": 53265.2,
+      "change_pct": -0.06,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "EGX33": {
+      "name": "مؤشر الشريعة EGX33 Shariah",
+      "open": 6585.08,
+      "close": 6601.5,
+      "change_pct": 0.25,
+      "source": "EGX Official / TradingView"
+    },
+    "EGX70": {
+      "name": "مؤشر EGX70 EWI للشركات المتوسطة والصغيرة",
+      "open": 19650.6,
+      "close": 19695,
+      "change_pct": 0.27,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "EGX100": {
+      "name": "مؤشر EGX100 EWI الأوسع نطاقاً",
+      "open": 25960.8,
+      "close": 26010,
+      "change_pct": 0.22,
+      "source": "TradingView Official Egypt Scanner"
+    }
+  },
+  "market_summary": {
+    "stocks_with_change": 45,
+    "gainers": 24,
+    "losers": 18,
+    "flat": 3,
+    "best": {
+      "ticker": "ORAS",
+      "name": "ORAS",
+      "open": 842.99,
+      "high": 894,
+      "low": 839,
+      "close": 877.02,
+      "change_pct": 4.04,
+      "volume": 729229,
+      "rsi": 62.4,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "worst": {
+      "ticker": "ALCN",
+      "name": "ALCN",
+      "open": 34.5,
+      "high": 34.7,
+      "low": 33.2,
+      "close": 33.55,
+      "change_pct": -2.75,
+      "volume": 605156,
+      "rsi": 53,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "index_bias": "متوازن",
+    "average_index_change": 0.17,
+    "top_gainers": [
+      {
+        "ticker": "ORAS",
+        "name": "ORAS",
+        "open": 842.99,
+        "high": 894,
+        "low": 839,
+        "close": 877.02,
+        "change_pct": 4.04,
+        "volume": 729229,
+        "rsi": 62.4,
+        "source": "TradingView Official Egypt Scanner"
+      },
+      {
+        "ticker": "ABUK",
+        "name": "ABUK",
+        "open": 86.54,
+        "high": 90,
+        "low": 86.35,
+        "close": 90,
+        "change_pct": 4,
+        "volume": 1052897,
+        "rsi": 55.2,
+        "source": "TradingView Official Egypt Scanner"
+      },
+      {
+        "ticker": "MASR",
+        "name": "MASR",
+        "open": 7.61,
+        "high": 7.87,
+        "low": 7.51,
+        "close": 7.86,
+        "change_pct": 3.29,
+        "volume": 7734086,
+        "rsi": 53.9,
+        "source": "TradingView Official Egypt Scanner"
+      },
+      {
+        "ticker": "FWRY",
+        "name": "FWRY",
+        "open": 18.72,
+        "high": 19.25,
+        "low": 18.72,
+        "close": 19.06,
+        "change_pct": 1.82,
+        "volume": 17635537,
+        "rsi": 54.2,
+        "source": "TradingView Official Egypt Scanner"
+      },
+      {
+        "ticker": "EFIH",
+        "name": "EFIH",
+        "open": 24.79,
+        "high": 25.37,
+        "low": 24.25,
+        "close": 25.23,
+        "change_pct": 1.77,
+        "volume": 4778640,
+        "rsi": 64.1,
+        "source": "TradingView Official Egypt Scanner"
+      }
+    ],
+    "top_losers": [
+      {
+        "ticker": "ALCN",
+        "name": "ALCN",
+        "open": 34.5,
+        "high": 34.7,
+        "low": 33.2,
+        "close": 33.55,
+        "change_pct": -2.75,
+        "volume": 605156,
+        "rsi": 53,
+        "source": "TradingView Official Egypt Scanner"
+      },
+      {
+        "ticker": "EAST",
+        "name": "EAST",
+        "open": 29,
+        "high": 29.18,
+        "low": 28.21,
+        "close": 28.21,
+        "change_pct": -2.72,
+        "volume": 1401109,
+        "rsi": 19.4,
+        "source": "TradingView Official Egypt Scanner"
+      },
+      {
+        "ticker": "GBCO",
+        "name": "GBCO",
+        "open": 31.78,
+        "high": 32,
+        "low": 31.01,
+        "close": 31.01,
+        "change_pct": -2.42,
+        "volume": 3395072,
+        "rsi": 52.5,
+        "source": "TradingView Official Egypt Scanner"
+      },
+      {
+        "ticker": "CERA",
+        "name": "CERA",
+        "open": 1.41,
+        "high": 1.43,
+        "low": 1.36,
+        "close": 1.38,
+        "change_pct": -2.13,
+        "volume": 109041457,
+        "rsi": 49.3,
+        "source": "TradingView Official Egypt Scanner"
+      },
+      {
+        "ticker": "DOMT",
+        "name": "DOMT",
+        "open": 24.5,
+        "high": 25.4,
+        "low": 23.9,
+        "close": 24,
+        "change_pct": -2.04,
+        "volume": 439751,
+        "rsi": 35.4,
+        "source": "TradingView Official Egypt Scanner"
+      }
+    ]
+  },
+  "portfolio_analysis": [
+    {
+      "ticker": "EFID",
+      "name": "EFID",
+      "open": 19,
+      "high": 19.1,
+      "low": 18.9,
+      "close": 19.07,
+      "change_pct": 0.37,
+      "volume": 798257,
+      "rsi": 41.9,
+      "source": "TradingView Official Egypt Scanner",
+      "analysis": {
+        "state": "إيجابي بحذر",
+        "tone": "positive",
+        "text": "تتم متابعة حركة السعر مع تأكيد الحجم والثبات حول نطاق الجلسة.",
+        "support": 18.9,
+        "resistance": 19.1
+      }
+    },
+    {
+      "ticker": "ORHD",
+      "name": "ORHD",
+      "open": 12.03,
+      "high": 12.18,
+      "low": 11.75,
+      "close": 12,
+      "change_pct": -0.25,
+      "volume": 7851596,
+      "rsi": 9.5,
+      "source": "TradingView Official Egypt Scanner",
+      "analysis": {
+        "state": "تراجع محدود",
+        "tone": "negative",
+        "text": "تتم متابعة حركة السعر مع تأكيد الحجم والثبات حول نطاق الجلسة.",
+        "support": 11.75,
+        "resistance": 12.18
+      }
+    },
+    {
+      "ticker": "TMGH",
+      "name": "TMGH",
+      "open": 88.39,
+      "high": 88.6,
+      "low": 87.05,
+      "close": 87.89,
+      "change_pct": -0.57,
+      "volume": 1232863,
+      "rsi": 29.8,
+      "source": "TradingView Official Egypt Scanner",
+      "analysis": {
+        "state": "تراجع محدود",
+        "tone": "negative",
+        "text": "تتم متابعة حركة السعر مع تأكيد الحجم والثبات حول نطاق الجلسة.",
+        "support": 87.05,
+        "resistance": 88.6
+      }
+    },
+    {
+      "ticker": "ADIB",
+      "name": "ADIB",
+      "open": 48.11,
+      "high": 48.3,
+      "low": 47.45,
+      "close": 47.8,
+      "change_pct": -0.64,
+      "volume": 1525188,
+      "rsi": 33.1,
+      "source": "TradingView Official Egypt Scanner",
+      "analysis": {
+        "state": "تراجع محدود",
+        "tone": "negative",
+        "text": "تتم متابعة حركة السعر مع تأكيد الحجم والثبات حول نطاق الجلسة.",
+        "support": 47.45,
+        "resistance": 48.3
+      }
+    },
+    {
+      "ticker": "EFIH",
+      "name": "EFIH",
+      "open": 24.79,
+      "high": 25.37,
+      "low": 24.25,
+      "close": 25.23,
+      "change_pct": 1.77,
+      "volume": 4778640,
+      "rsi": 64.1,
+      "source": "TradingView Official Egypt Scanner",
+      "analysis": {
+        "state": "إيجابي بحذر",
+        "tone": "positive",
+        "text": "تتم متابعة حركة السعر مع تأكيد الحجم والثبات حول نطاق الجلسة.",
+        "support": 24.25,
+        "resistance": 25.37
+      }
+    },
+    {
+      "ticker": "EGAL",
+      "name": "EGAL",
+      "open": 343.41,
+      "high": 344.99,
+      "low": 334.73,
+      "close": 339.4,
+      "change_pct": -1.17,
+      "volume": 309904,
+      "rsi": 40.8,
+      "source": "TradingView Official Egypt Scanner",
+      "analysis": {
+        "state": "تراجع محدود",
+        "tone": "negative",
+        "text": "تتم متابعة حركة السعر مع تأكيد الحجم والثبات حول نطاق الجلسة.",
+        "support": 334.73,
+        "resistance": 344.99
+      }
+    },
+    {
+      "ticker": "ETEL",
+      "name": "ETEL",
+      "open": 149.88,
+      "high": 150.1,
+      "low": 147.6,
+      "close": 148,
+      "change_pct": -1.25,
+      "volume": 851694,
+      "rsi": 72.2,
+      "source": "TradingView Official Egypt Scanner",
+      "analysis": {
+        "state": "تراجع محدود",
+        "tone": "negative",
+        "text": "تتم متابعة حركة السعر مع تأكيد الحجم والثبات حول نطاق الجلسة.",
+        "support": 147.6,
+        "resistance": 150.1
+      }
+    },
+    {
+      "ticker": "OCDI",
+      "name": "OCDI",
+      "open": 27.2,
+      "high": 27.69,
+      "low": 27.02,
+      "close": 27.32,
+      "change_pct": 0.44,
+      "volume": 543704,
+      "rsi": 40.5,
+      "source": "TradingView Official Egypt Scanner",
+      "analysis": {
+        "state": "إيجابي بحذر",
+        "tone": "positive",
+        "text": "تتم متابعة حركة السعر مع تأكيد الحجم والثبات حول نطاق الجلسة.",
+        "support": 27.02,
+        "resistance": 27.69
+      }
+    }
+  ],
+  "stocks": {
+    "EFID": {
+      "ticker": "EFID",
+      "name": "EFID",
+      "open": 19,
+      "high": 19.1,
+      "low": 18.9,
+      "close": 19.07,
+      "change_pct": 0.37,
+      "volume": 798257,
+      "rsi": 41.9,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "DSCW": {
+      "ticker": "DSCW",
+      "name": "DSCW",
+      "open": 1.7,
+      "high": 1.71,
+      "low": 1.69,
+      "close": 1.7,
+      "change_pct": 0,
+      "volume": 3533086,
+      "rsi": 35.1,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ORHD": {
+      "ticker": "ORHD",
+      "name": "ORHD",
+      "open": 12.03,
+      "high": 12.18,
+      "low": 11.75,
+      "close": 12,
+      "change_pct": -0.25,
+      "volume": 7851596,
+      "rsi": 9.5,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "CCAP": {
+      "ticker": "CCAP",
+      "name": "CCAP",
+      "open": 6.55,
+      "high": 6.62,
+      "low": 6.45,
+      "close": 6.62,
+      "change_pct": 1.07,
+      "volume": 51695592,
+      "rsi": 51.9,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ACGC": {
+      "ticker": "ACGC",
+      "name": "ACGC",
+      "open": 14.39,
+      "high": 14.52,
+      "low": 14.15,
+      "close": 14.33,
+      "change_pct": 0,
+      "volume": 191178,
+      "rsi": 54.1,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "RMDA": {
+      "ticker": "RMDA",
+      "name": "RMDA",
+      "open": 5.4,
+      "high": 5.45,
+      "low": 5.32,
+      "close": 5.41,
+      "change_pct": 0.19,
+      "volume": 2665885,
+      "rsi": 37.4,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ICFC": {
+      "ticker": "ICFC",
+      "name": "ICFC",
+      "open": 23.06,
+      "high": 23.22,
+      "low": 22.64,
+      "close": 23.2,
+      "change_pct": 0.61,
+      "volume": 649227,
+      "rsi": 57.1,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "SAUD": {
+      "ticker": "SAUD",
+      "name": "SAUD",
+      "open": 23.08,
+      "high": 23.25,
+      "low": 22.89,
+      "close": 23.12,
+      "change_pct": 0.17,
+      "volume": 151672,
+      "rsi": 48.5,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "MASR": {
+      "ticker": "MASR",
+      "name": "MASR",
+      "open": 7.61,
+      "high": 7.87,
+      "low": 7.51,
+      "close": 7.86,
+      "change_pct": 3.29,
+      "volume": 7734086,
+      "rsi": 53.9,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ALCN": {
+      "ticker": "ALCN",
+      "name": "ALCN",
+      "open": 34.5,
+      "high": 34.7,
+      "low": 33.2,
+      "close": 33.55,
+      "change_pct": -2.75,
+      "volume": 605156,
+      "rsi": 53,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "CIRA": {
+      "ticker": "CIRA",
+      "name": "CIRA",
+      "open": 39.49,
+      "high": 40.2,
+      "low": 39.21,
+      "close": 39.42,
+      "change_pct": -0.18,
+      "volume": 1003146,
+      "rsi": 55.1,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "GBCO": {
+      "ticker": "GBCO",
+      "name": "GBCO",
+      "open": 31.78,
+      "high": 32,
+      "low": 31.01,
+      "close": 31.01,
+      "change_pct": -2.42,
+      "volume": 3395072,
+      "rsi": 52.5,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ARAB": {
+      "ticker": "ARAB",
+      "name": "ARAB",
+      "open": 0.28,
+      "high": 0.28,
+      "low": 0.27,
+      "close": 0.27,
+      "change_pct": -1.09,
+      "volume": 464272200,
+      "rsi": 65.8,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "SKPC": {
+      "ticker": "SKPC",
+      "name": "SKPC",
+      "open": 16.05,
+      "high": 16.28,
+      "low": 15.99,
+      "close": 16.19,
+      "change_pct": 0.87,
+      "volume": 3387612,
+      "rsi": 37.7,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "TMGH": {
+      "ticker": "TMGH",
+      "name": "TMGH",
+      "open": 88.39,
+      "high": 88.6,
+      "low": 87.05,
+      "close": 87.89,
+      "change_pct": -0.57,
+      "volume": 1232863,
+      "rsi": 29.8,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "LCSW": {
+      "ticker": "LCSW",
+      "name": "LCSW",
+      "open": 35.2,
+      "high": 35.49,
+      "low": 34.55,
+      "close": 34.85,
+      "change_pct": -0.99,
+      "volume": 718160,
+      "rsi": 58.9,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "AMOC": {
+      "ticker": "AMOC",
+      "name": "AMOC",
+      "open": 14.31,
+      "high": 14.74,
+      "low": 14.12,
+      "close": 14.48,
+      "change_pct": 1.19,
+      "volume": 17390295,
+      "rsi": 66.6,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ADIB": {
+      "ticker": "ADIB",
+      "name": "ADIB",
+      "open": 48.11,
+      "high": 48.3,
+      "low": 47.45,
+      "close": 47.8,
+      "change_pct": -0.64,
+      "volume": 1525188,
+      "rsi": 33.1,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "RACC": {
+      "ticker": "RACC",
+      "name": "RACC",
+      "open": 9.4,
+      "high": 9.53,
+      "low": 9.25,
+      "close": 9.32,
+      "change_pct": -0.85,
+      "volume": 427166,
+      "rsi": 44.6,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "CERA": {
+      "ticker": "CERA",
+      "name": "CERA",
+      "open": 1.41,
+      "high": 1.43,
+      "low": 1.36,
+      "close": 1.38,
+      "change_pct": -2.13,
+      "volume": 109041457,
+      "rsi": 49.3,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "MFPC": {
+      "ticker": "MFPC",
+      "name": "MFPC",
+      "open": 45.9,
+      "high": 46.68,
+      "low": 45.12,
+      "close": 46.5,
+      "change_pct": 1.31,
+      "volume": 576608,
+      "rsi": 53.4,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "BTFH": {
+      "ticker": "BTFH",
+      "name": "BTFH",
+      "open": 2.76,
+      "high": 2.79,
+      "low": 2.73,
+      "close": 2.77,
+      "change_pct": 0.36,
+      "volume": 26258446,
+      "rsi": 40.2,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "FAIT": {
+      "ticker": "FAIT",
+      "name": "FAIT",
+      "open": 45.42,
+      "high": 45.92,
+      "low": 44.55,
+      "close": 45.59,
+      "change_pct": 0.37,
+      "volume": 50262,
+      "rsi": 54.4,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "EFIH": {
+      "ticker": "EFIH",
+      "name": "EFIH",
+      "open": 24.79,
+      "high": 25.37,
+      "low": 24.25,
+      "close": 25.23,
+      "change_pct": 1.77,
+      "volume": 4778640,
+      "rsi": 64.1,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "DOMT": {
+      "ticker": "DOMT",
+      "name": "DOMT",
+      "open": 24.5,
+      "high": 25.4,
+      "low": 23.9,
+      "close": 24,
+      "change_pct": -2.04,
+      "volume": 439751,
+      "rsi": 35.4,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "CICH": {
+      "ticker": "CICH",
+      "name": "CICH",
+      "open": 12.01,
+      "high": 12.2,
+      "low": 11.9,
+      "close": 12.1,
+      "change_pct": 0.58,
+      "volume": 144096,
+      "rsi": 47.5,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "EGAL": {
+      "ticker": "EGAL",
+      "name": "EGAL",
+      "open": 343.41,
+      "high": 344.99,
+      "low": 334.73,
+      "close": 339.4,
+      "change_pct": -1.17,
+      "volume": 309904,
+      "rsi": 40.8,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ARCC": {
+      "ticker": "ARCC",
+      "name": "ARCC",
+      "open": 70.01,
+      "high": 71.9,
+      "low": 68.7,
+      "close": 71.07,
+      "change_pct": 1.51,
+      "volume": 286668,
+      "rsi": 52.3,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "PHDC": {
+      "ticker": "PHDC",
+      "name": "PHDC",
+      "open": 12.9,
+      "high": 13.03,
+      "low": 12.51,
+      "close": 12.93,
+      "change_pct": 0.23,
+      "volume": 5810586,
+      "rsi": 36.1,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ABUK": {
+      "ticker": "ABUK",
+      "name": "ABUK",
+      "open": 86.54,
+      "high": 90,
+      "low": 86.35,
+      "close": 90,
+      "change_pct": 4,
+      "volume": 1052897,
+      "rsi": 55.2,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ISPH": {
+      "ticker": "ISPH",
+      "name": "ISPH",
+      "open": 11.7,
+      "high": 11.78,
+      "low": 11.54,
+      "close": 11.7,
+      "change_pct": 0,
+      "volume": 1872122,
+      "rsi": 39.8,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "MCQE": {
+      "ticker": "MCQE",
+      "name": "MCQE",
+      "open": 196,
+      "high": 203.5,
+      "low": 193.1,
+      "close": 196.73,
+      "change_pct": 0.37,
+      "volume": 380316,
+      "rsi": 44.2,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "HELI": {
+      "ticker": "HELI",
+      "name": "HELI",
+      "open": 7.37,
+      "high": 7.51,
+      "low": 7.3,
+      "close": 7.49,
+      "change_pct": 1.63,
+      "volume": 3779287,
+      "rsi": 43.6,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ETEL": {
+      "ticker": "ETEL",
+      "name": "ETEL",
+      "open": 149.88,
+      "high": 150.1,
+      "low": 147.6,
+      "close": 148,
+      "change_pct": -1.25,
+      "volume": 851694,
+      "rsi": 72.2,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "EAST": {
+      "ticker": "EAST",
+      "name": "EAST",
+      "open": 29,
+      "high": 29.18,
+      "low": 28.21,
+      "close": 28.21,
+      "change_pct": -2.72,
+      "volume": 1401109,
+      "rsi": 19.4,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "SWDY": {
+      "ticker": "SWDY",
+      "name": "SWDY",
+      "open": 118,
+      "high": 118.93,
+      "low": 114.8,
+      "close": 116,
+      "change_pct": -1.69,
+      "volume": 438226,
+      "rsi": 45.6,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "COMI": {
+      "ticker": "COMI",
+      "name": "COMI",
+      "open": 125.16,
+      "high": 125.9,
+      "low": 124.14,
+      "close": 124.65,
+      "change_pct": -0.41,
+      "volume": 3345837,
+      "rsi": 27.6,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ORWE": {
+      "ticker": "ORWE",
+      "name": "ORWE",
+      "open": 27,
+      "high": 27.17,
+      "low": 26.81,
+      "close": 27.14,
+      "change_pct": 0.52,
+      "volume": 403483,
+      "rsi": 50.8,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "OCDI": {
+      "ticker": "OCDI",
+      "name": "OCDI",
+      "open": 27.2,
+      "high": 27.69,
+      "low": 27.02,
+      "close": 27.32,
+      "change_pct": 0.44,
+      "volume": 543704,
+      "rsi": 40.5,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ASCM": {
+      "ticker": "ASCM",
+      "name": "ASCM",
+      "open": 57.38,
+      "high": 58,
+      "low": 57,
+      "close": 57.53,
+      "change_pct": 0.23,
+      "volume": 57897,
+      "rsi": 40.7,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "JUFO": {
+      "ticker": "JUFO",
+      "name": "JUFO",
+      "open": 25.2,
+      "high": 25.48,
+      "low": 24.94,
+      "close": 25,
+      "change_pct": -0.79,
+      "volume": 731558,
+      "rsi": 38.5,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "FWRY": {
+      "ticker": "FWRY",
+      "name": "FWRY",
+      "open": 18.72,
+      "high": 19.25,
+      "low": 18.72,
+      "close": 19.06,
+      "change_pct": 1.82,
+      "volume": 17635537,
+      "rsi": 54.2,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "POUL": {
+      "ticker": "POUL",
+      "name": "POUL",
+      "open": 10.02,
+      "high": 10.03,
+      "low": 9.82,
+      "close": 9.99,
+      "change_pct": -0.3,
+      "volume": 1615949,
+      "rsi": 43.8,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ORAS": {
+      "ticker": "ORAS",
+      "name": "ORAS",
+      "open": 842.99,
+      "high": 894,
+      "low": 839,
+      "close": 877.02,
+      "change_pct": 4.04,
+      "volume": 729229,
+      "rsi": 62.4,
+      "source": "TradingView Official Egypt Scanner"
+    },
+    "ATQA": {
+      "ticker": "ATQA",
+      "name": "ATQA",
+      "open": 12.09,
+      "high": 12.3,
+      "low": 11.9,
+      "close": 12.25,
+      "change_pct": 1.32,
+      "volume": 4609584,
+      "rsi": 52.9,
+      "source": "TradingView Official Egypt Scanner"
+    }
+  },
+  "funds": [
+    {
+      "code": "CMS",
+      "name": "مصر شريعة إكويتي (CMS)",
+      "price": 22.4805,
+      "change_pct": 2.72,
+      "source": "منصة سندك + إفصاح الصندوق (2026-10-07)"
+    },
+    {
+      "code": "AZG",
+      "name": "أزيموت جولد (AZG)",
+      "price": 23.5686,
+      "change_pct": -0.28,
+      "source": "منصة سندك + إفصاح الصندوق (2026-10-06)"
+    },
+    {
+      "code": "BWA",
+      "name": "بلتون وفرة للشريعة (BWA)",
+      "price": 2.1827,
+      "change_pct": 2.9,
+      "source": "منصة سندك + إفصاح الصندوق (2026-10-07)"
+    },
+    {
+      "code": "NMF",
+      "name": "نعيم مصر للشريعة (NMF)",
+      "price": 49.52,
+      "change_pct": 1.31,
+      "source": "منصة سندك + إفصاح الصندوق (2026-10-07)"
+    },
+    {
+      "code": "THNDR_GOLD",
+      "name": "سبائك الذهب عيار 24 (ثندر)",
+      "price": 7015,
+      "change_pct": 0.6,
+      "source": "تسعير ثندر المعتمد للذهب الرقمي عيار 24"
+    }
+  ],
+  "fx_gold": {
+    "usd_egp": {
+      "close": 52.31,
+      "chgPct": 0.15,
+      "unit": "ج.م / USD",
+      "source": "TradingView (FX_IDC:USDEGP) / البنوك المصرية"
+    },
+    "gold_24k_local": {
+      "close": 6895.67,
+      "chgPct": -1.52,
+      "unit": "ج.م / جرام عيار 24",
+      "purity": "24K",
+      "calc": "(4100.16 USD / 31.1035 oz) * 52.31 USDEGP",
+      "source": "سعر الذهب عيار 24 المعادل عالمياً (TradingView TVC:GOLD)"
+    },
+    "gold_21k_local": {
+      "close": 6033.71,
+      "chgPct": -1.52,
+      "unit": "ج.م / جرام عيار 21",
+      "purity": "21K",
+      "source": "سعر الذهب عيار 21 المعادل (عيار 24 * 21/24)"
+    },
+    "xau_usd_ounce": {
+      "close": 4100.16,
+      "chgPct": -1.52,
+      "unit": "USD / أونصة عالمية",
+      "source": "الأسواق العالمية (TradingView TVC:GOLD Spot)"
+    },
+    "clawdz_yield": {
+      "annual_rate": 17.31,
+      "daily_rate": 0.0474,
+      "source": "أذون خزانة البنك المركزي / كلودز"
+    }
+  },
+  "disclaimer": "تحليل معلوماتي تاريخي وليس توصية شراء أو بيع."
+}

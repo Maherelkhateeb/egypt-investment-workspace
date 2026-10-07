@@ -79,4 +79,5 @@ function decorate(){
 const previousRender=render;
 render=function(){previousRender();decorate();};
 decorate();
+if(route==='dailyreport')setTimeout(()=>render(),0);
 })();

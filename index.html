@@ -1,8 +1,123 @@
 <!doctype html>
-<html lang="ar" dir="rtl" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080c14"><title>منظومة الأسهم الشرعية | المحفظة والأبحاث</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css?v=1.4.1"><link rel="stylesheet" href="portal-match.css?v=1.4.1"><link rel="stylesheet" href="daily-report-match.css?v=1.4.1"><link rel="stylesheet" href="daily-report-enhance.css?v=1.4.1"><link rel="stylesheet" href="legacy-pages.css?v=1.4.1"><script src="core.js?v=1.1.2" defer></script><script src="providers.js?v=1.1.2" defer></script><script src="app.js?v=1.1.2" defer></script><script src="design.js?v=1.4.1" defer></script><script src="daily-report-view.js?v=1.4.1" defer></script><script src="legacy-pages.js?v=1.4.1" defer></script><script src="ai-view.js?v=1.1.2" defer></script></head>
-<body><header class="app-header"><div class="header-inner"><div class="sync-actions"><button id="headerSync" class="sync-button" title="إعادة تحميل ملف السوق والأخبار؛ لا يضيف بث أسعار لحظي">🔄 مزامنة</button><span class="sync-label"><i class="status-dot"></i><span id="sourceSession">أسعار مؤرخة</span></span></div><div class="brand"><span class="logo" aria-hidden="true">⚡</span><div><strong>الأسهم الشرعية <span lang="en">EGX</span></strong><small>محفظتك وأبحاثك · نسخة مستقلة</small></div></div><div class="header-actions"><button id="backup" class="backup-button" title="تنزيل نسخة احتياطية">نسخة احتياطية</button><button id="import" class="import-button" title="استيراد محفظة">استيراد</button><button id="themeToggle" class="theme-toggle" title="تبديل الوضع الليلي والنهاري" aria-label="تبديل الوضع الليلي والنهاري"><span id="themeIcon">🌙</span> <span id="themeLabel" class="theme-label">ليلي</span></button></div></div><div class="ticker-shell" aria-label="الأسعار المرجعية المؤرخة؛ ليست بثاً لحظياً"><div id="marketTicker" class="ticker-track"><span class="ticker-item">جار تحميل أسعار المصدر…</span></div></div></header>
-<div id="notice" class="notice" role="status">جار تحميل البيانات…</div>
-<nav class="bottom-dock" aria-label="أقسام التطبيق"><button data-route="portfolio"><span class="nav-icon" aria-hidden="true">💼</span><span>محفظتي</span></button><button data-route="performance" hidden>الأداء والمردود</button><button data-route="radar"><span class="nav-icon" aria-hidden="true">⚡</span><span>نبض السوق</span></button><button data-route="news"><span class="nav-icon" aria-hidden="true">📰</span><span>الأخبار</span></button><button data-route="research"><span class="nav-icon" aria-hidden="true">🎯</span><span>أبحاث الأسهم</span></button><button data-route="dailyreport"><span class="nav-icon" aria-hidden="true">📋</span><span>التقارير اليومية</span></button><button data-route="tools"><span class="nav-icon" aria-hidden="true">🛠️</span><span>أدواتي</span></button></nav>
-<main id="view" tabindex="-1"></main><div id="toast" role="alert" hidden></div>
-<dialog id="entryDialog"><form id="entryForm"><div class="title-row"><h2>تسجيل عملية</h2><button type="button" id="closeEntry" aria-label="إغلاق">×</button></div><p class="muted">تسجيل محلي للمحفظة؛ لا ينفذ صفقة لدى الوسيط.</p><div class="form-grid"><label>نوع العملية<select name="type"><option value="opening">رصيد افتتاحي</option><option value="buy">شراء</option><option value="sell">بيع</option><option value="deposit">إيداع نقدي</option><option value="withdraw">سحب نقدي</option><option value="dividend">توزيع نقدي</option><option value="fee">رسوم مستقلة</option></select></label><label>التاريخ<input name="date" type="date" required></label><label>رمز الأصل<input name="ticker" list="symbols" placeholder="TMGH"></label><label>نوع الأصل<select name="assetType"><option value="stock">سهم</option><option value="fund">صندوق</option><option value="gold">ذهب</option></select></label><label>الكمية<input name="qty" type="number" step="any" min="0"></label><label>سعر الوحدة<input name="price" type="number" step="any" min="0"></label><label>المبلغ (للعمليات النقدية)<input name="amount" type="number" step="any" min="0"></label><label>الرسوم المدفوعة (ج.م)<input name="fee" type="number" step="any" min="0" placeholder="فارغ = غير معلومة"></label><label class="span2">مرجع العملية أو كشف الوسيط<input name="source" maxlength="400" placeholder="رقم العملية أو تاريخ الكشف"></label></div><p id="entryError" class="bad" role="alert"></p><button class="primary" type="submit">حفظ العملية</button></form></dialog>
-<input id="fileInput" type="file" accept=".json,application/json" hidden><datalist id="symbols"></datalist><footer>تُحفظ المحفظة في هذا المتصفح. احتفظ بنسخة احتياطية لنقلها إلى جهاز آخر. الأرقام الناقصة تظهر صراحة.</footer></body></html>
+<html lang="ar" dir="rtl" class="dark" data-theme="dark"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080c14">
+<title>منظومة الأسهم الشرعية | المحفظة والأبحاث</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="legacy-interface.css?v=2.0.0"><link rel="stylesheet" href="workspace-interface.css?v=2.0.0">
+<script src="core.js?v=1.1.2" defer></script><script src="providers.js?v=1.1.2" defer></script><script src="app.js?v=2.0.0" defer></script>
+<script src="legacy-templates.js?v=2.0.0" defer></script><script src="legacy-holding-card.js?v=2.0.0" defer></script><script src="legacy-market-cards.js?v=2.0.0" defer></script><script src="legacy-adapter.js?v=2.0.0" defer></script>
+<script src="legacy-report-layout.js?v=2.0.0" defer></script><script src="daily-report-view.js?v=2.0.0" defer></script><script src="ai-view.js?v=2.0.0" defer></script></head>
+<body class="bg-[#080c14] text-slate-100 min-h-screen pb-24 md:pb-8"><header class="sticky top-0 z-40 bg-[#080c14]/90 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
+<div class="flex items-center justify-between gap-2 mb-2" dir="rtl">
+
+
+            <div class="flex items-center gap-2">
+                <button data-legacy-click="refreshData()" id="headerSync" title="إعادة تحميل المصدر المؤرخ"
+                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl
+                           bg-emerald-950/80 border border-emerald-700/60 text-emerald-300
+                           hover:bg-emerald-900/90 active:scale-95 transition-all text-[11.5px] font-bold select-none">
+                    <span id="visibleRefreshIcon" class="text-[15px] inline-block transition-transform duration-500">🔄</span>
+                    <span>مزامنة</span>
+                </button>
+
+                <span class="flex items-center gap-1 text-[10px] text-emerald-400 font-medium whitespace-nowrap">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-live inline-block"></span>
+                    <span id="sourceSession">أسعار مؤرخة</span>
+                </span>
+            </div>
+
+
+            <div class="flex items-center gap-3">
+                <span class="text-[12px] font-extrabold text-slate-200 tracking-wide whitespace-nowrap flex items-center gap-1.5 cursor-pointer" data-legacy-click="switchTab('portfolio', null)">
+                    <span class="text-emerald-400 text-sm">⚡</span>
+                    <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-400 bg-clip-text text-transparent font-bold">الأسهم الشرعية EGX</span>
+                </span>
+            </div>
+
+
+
+            <button id="visibleLockBtn" data-legacy-click="lockApplicationNow()" title="إخفاء الشاشة مؤقتًا"
+                class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-rose-900/60
+                       bg-rose-950/40 text-rose-300 hover:text-white hover:bg-rose-900/60
+                       transition-all active:scale-95 select-none text-[11px] font-bold shadow-sm">
+                <span>🔒</span>
+                <span>قفل</span>
+            </button>
+
+            <button id="themeToggle" data-legacy-click="toggleThemeMode()" title="تبديل الوضع الليلي / النهاري"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border
+                       transition-all active:scale-95 select-none text-[11.5px] font-bold
+                       dark:bg-slate-800/80 dark:border-slate-600/50 dark:text-amber-300 dark:hover:bg-slate-700/80
+                       bg-amber-50/90 border-amber-300/60 text-amber-700 hover:bg-amber-100">
+                <span id="themeIcon" class="text-[15px] leading-none">🌙</span>
+                <span id="themeLabel">ليلي</span>
+            </button>
+        </div>
+
+
+
+
+        <div class="relative overflow-hidden w-full text-[11px] select-none" dir="ltr">
+            <div id="marketTicker" class="ticker-marquee-track flex gap-2 items-center"><span class="text-slate-400">جار تحميل الأسعار المؤرخة…</span></div></div></header><div id="notice" class="sr-only" role="status"></div><nav aria-label="أقسام التطبيق" class="fixed bottom-0 left-0 right-0 z-50 max-w-lg md:max-w-xl mx-auto md:bottom-2.5 md:rounded-2xl md:border md:border-slate-800/90 shadow-2xl" style="background:rgba(8,12,20,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.08);padding-bottom:env(safe-area-inset-bottom,0px)">
+        <div class="grid grid-cols-6 text-center" style="padding:4px 2px 6px">
+
+            <button data-legacy-click="switchTab('portfolio', this)" id="tabBtn_portfolio" data-route="portfolio" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-2xl transition active:scale-90 text-emerald-400 font-bold" style="font-size:10px">
+                <span style="font-size:18px;line-height:1.2">💼</span>
+                <span>محفظتي</span>
+            </button>
+
+            <button data-legacy-click="switchTab('radar', this)" id="tabBtn_radar" data-route="radar" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-2xl transition active:scale-90 text-slate-400" style="font-size:10px">
+                <span style="font-size:18px;line-height:1.2">⚡</span>
+                <span>نبض السوق</span>
+            </button>
+
+            <button data-legacy-click="switchTab('news_hub', this)" id="tabBtn_news_hub" data-route="news" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-2xl transition active:scale-90 text-slate-400" style="font-size:10px">
+                <span style="font-size:18px;line-height:1.2">📰</span>
+                <span>الأخبار</span>
+            </button>
+
+            <button data-legacy-click="switchTab('recommendations', this)" id="tabBtn_recommendations" data-route="research" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-2xl transition active:scale-95 text-slate-400" style="font-size:9px">
+                <span style="font-size:18px;line-height:1.2">🎯</span>
+                <span class="whitespace-nowrap font-medium">أبحاث الأسهم</span>
+            </button>
+
+            <button data-legacy-click="switchTab('dailyreport', this)" id="tabBtn_dailyreport" data-route="dailyreport" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-2xl transition active:scale-90 text-slate-400" style="font-size:9px">
+                <span style="font-size:18px;line-height:1.2">📋</span>
+                <span class="whitespace-nowrap font-medium">التقارير اليومية</span>
+            </button>
+
+            <button data-legacy-click="switchTab('tools', this)" id="tabBtn_tools" data-route="tools" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-0.5 rounded-2xl transition active:scale-90 text-slate-400" style="font-size:10px">
+                <span style="font-size:18px;line-height:1.2">🛠️</span>
+                <span>أدواتي</span>
+            </button>
+        </div>
+
+        <style>
+            .tab-btn.text-emerald-400 { color:#34d399 !important; }
+            .tab-btn.text-emerald-400 span:first-child { filter: drop-shadow(0 0 6px rgba(52,211,153,0.5)); }
+
+        /* Master Security Lock & PIN Keypad Styles */
+        .pin-dot.active {
+            background-color: #10b981 !important;
+            border-color: #10b981 !important;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.6) !important;
+            transform: scale(1.15);
+        }
+        @keyframes pinShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .pin-shake {
+            animation: pinShake 0.4s ease-in-out;
+        }
+        .app-locked-blur {
+            filter: blur(16px) !important;
+            pointer-events: none !important;
+            user-select: none !important;
+        }
+
+</style>
+    </nav><main id="view" tabindex="-1" class="max-w-4xl mx-auto px-3.5 pt-3.5 space-y-4 pb-24 md:pb-8"></main><div id="toast" role="alert" hidden></div><button id="backup" hidden></button><button id="import" hidden></button><dialog id="entryDialog"><form id="entryForm"><div class="title-row"><h2>تسجيل عملية</h2><button type="button" id="closeEntry" aria-label="إغلاق">×</button></div><p class="muted">تسجيل محلي للمحفظة؛ لا ينفذ صفقة لدى الوسيط.</p><div class="form-grid"><label>نوع العملية<select name="type"><option value="opening">رصيد افتتاحي</option><option value="buy">شراء</option><option value="sell">بيع</option><option value="deposit">إيداع نقدي</option><option value="withdraw">سحب نقدي</option><option value="dividend">توزيع نقدي</option><option value="fee">رسوم مستقلة</option></select></label><label>التاريخ<input name="date" type="date" required></label><label>رمز الأصل<input name="ticker" list="symbols" placeholder="TMGH"></label><label>نوع الأصل<select name="assetType"><option value="stock">سهم</option><option value="fund">صندوق</option><option value="gold">ذهب</option></select></label><label>الكمية<input name="qty" type="number" step="any" min="0"></label><label>سعر الوحدة<input name="price" type="number" step="any" min="0"></label><label>المبلغ (للعمليات النقدية)<input name="amount" type="number" step="any" min="0"></label><label>الرسوم المدفوعة (ج.م)<input name="fee" type="number" step="any" min="0" placeholder="فارغ = غير معلومة"></label><label class="span2">مرجع العملية أو كشف الوسيط<input name="source" maxlength="400" placeholder="رقم العملية أو تاريخ الكشف"></label></div><p id="entryError" class="bad" role="alert"></p><button class="primary" type="submit">حفظ العملية</button></form></dialog>
+<input id="fileInput" type="file" accept=".json,application/json" hidden><datalist id="symbols"></datalist></body></html>

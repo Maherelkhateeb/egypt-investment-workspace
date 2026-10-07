@@ -1,0 +1,160 @@
+/* Original interface DOM. InvestCore and the independent data files remain authoritative. */
+(function(){
+'use strict';
+const templates=window.LegacyTemplates;
+const ui={holdingsMode:'cards',stockFilter:'all',fundFilter:'all',stockSort:'value',fundSort:'value',newsTab:'stocks',researchTab:'recs',marketTab:'pulse',toolsTab:'audit',search:'',radarFilter:'all',fundsFilter:'all',radarSort:'chg',sortDir:-1,newsSearch:'',recAction:'all',recType:'stocks'};
+try{ui.holdingsMode=localStorage.getItem('egx_independent_holdings_view')==='list'?'list':'cards';}catch{}
+const n=(v,d=2)=>v==null||!Number.isFinite(v)?'غير متاح':v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const pc=v=>v==null?'غير متاح':(v>0?'+':'')+n(v,2)+'%';
+const short=v=>v==null?'غير متاح':v>=1000?n(v/1000,2)+'k ج':n(v,2)+' ج';
+const by=(root,id)=>root.querySelector('[id="'+id+'"]');
+function put(root,id,value){const el=by(root,id);if(el)el.textContent=String(value??'غير متاح');return el;}
+function html(root,id,value){const el=by(root,id);if(el)el.innerHTML=value;return el;}
+function fragment(name){const t=document.createElement('template');t.innerHTML=templates[name];const root=t.content.firstElementChild;root.classList.remove('hidden');root.dataset.legacyView=name;const unbound=new Set(['equitiesAnalyticsView','fundsAnalyticsView','marketSubViewAi','auditReportContainer','toolSubViewHealth']);const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),texts=[];while(walker.nextNode())texts.push(walker.currentNode);for(const text of texts){const parent=text.parentElement?.closest('[id]');if(unbound.has(parent?.id)&&/\d.*(?:%|ج\b)|[+]\d/.test(text.textContent))text.textContent='غير متاح في المصدر الحالي';}return root;}
+function money(root,id,value,d=2,suffix=' ج'){const el=put(root,id,n(value,d)+suffix);if(el){el.classList.remove('text-emerald-400','text-rose-400');el.classList.add(value==null?'text-slate-400':value>=0?'text-emerald-400':'text-rose-400');}}
+const category=h=>h.assetType==='gold'?'gold':h.assetType==='fund'?'fund':'stock';
+function grouped(p){return {stock:p.positions.filter(h=>category(h)==='stock'),fund:p.positions.filter(h=>category(h)==='fund'),gold:p.positions.filter(h=>category(h)==='gold')};}
+function total(items){const complete=items.every(h=>h.value!=null);return {value:items.reduce((a,h)=>a+(h.value??0),0),cost:items.reduce((a,h)=>a+h.cost,0),profit:complete?items.reduce((a,h)=>a+(h.unrealized??0),0):null,complete};}
+function ratio(profit,cost){return profit==null||cost<=0?null:profit/cost*100;}
+function workspace(content){return '<div class="workspace-ui">'+content+'</div>';}
+function section(title,body){return '<section class="glass-card rounded-2xl p-3.5 space-y-3"><h3 class="text-xs font-bold text-white">'+e(title)+'</h3>'+body+'</section>';}
+function note(text){return '<div class="legacy-data-note">'+e(text)+'</div>';}
+function exportMenu(root,name){const drop=by(root,'exportDropdown_'+name);if(!drop)return;const buttons=drop.querySelectorAll('button');buttons.forEach((b,i)=>{b.removeAttribute('data-legacy-click');b.dataset.action=['csv','print','backup'][i]||'backup';});}
+function portfolioOriginal(){
+ const root=fragment('portfolio'),p=C.portfolio(state,market),groups=grouped(p);
+ put(root,'p_thndr_grand_wealth',n(p.cashKnown?p.totalWealth:p.value,0));
+ put(root,'liveUpdateBadge','⚡ أسعار مؤرخة');by(root,'liveUpdateBadge').title='جلسة '+market.session_date+'؛ ليست بثاً لحظياً';
+ put(root,'p_thndr_grand_pnl',p.unrealized==null?'غير متاح':(p.unrealized>=0?'▲ +':'▼ ')+n(Math.abs(p.unrealized),0));
+ put(root,'p_thndr_grand_return','('+pc(ratio(p.unrealized,p.positions.reduce((a,h)=>a+h.cost,0)))+')');
+ put(root,'p_thndr_grand_label','أرباح غير محققة');
+ const grand=by(root,'p_thndr_grand_badge');grand.classList.remove('text-slate-400');grand.classList.add(p.unrealized==null?'text-slate-400':p.unrealized>=0?'text-emerald-400':'text-rose-400');
+ for(const [type,prefix]of [['stock','stocks'],['fund','funds'],['gold','gold']]){
+  const items=groups[type],t=total(items);
+  put(root,'p_thndr_'+prefix+'_card',short(t.value));money(root,'p_thndr_'+prefix+'_card_egp',t.profit,2);put(root,'p_thndr_'+prefix+'_card_pnl','('+pc(ratio(t.profit,t.cost))+')');
+  const summary=by(root,'p_thndr_'+prefix+'_card');if(type!=='gold')summary?.closest('.min-w-0')?.querySelector('.truncate span.truncate')?.replaceChildren(document.createTextNode((type==='stock'?'الأسهم':'الصناديق')+' ('+items.length+')'));
+  put(root,prefix+'SubtotalBadge',n(t.value,0)+' ج.م ('+pc(ratio(t.profit,t.cost))+')');
+  put(root,prefix+'FilterAllCount',items.length);put(root,prefix+'FilterGainersCount',items.filter(h=>h.unrealized!=null&&h.unrealized>=0).length);put(root,prefix+'FilterLosersCount',items.filter(h=>h.unrealized!=null&&h.unrealized<0).length);
+  const chosen=ui[type+'Filter']||'all';let shown=items.filter(h=>chosen==='all'||chosen==='gainers'&&h.unrealized!=null&&h.unrealized>=0||chosen==='losers'&&h.unrealized!=null&&h.unrealized<0);
+  shown.sort((a,b)=>ui[type+'Sort']==='return'?(ratio(b.unrealized,b.cost)??-Infinity)-(ratio(a.unrealized,a.cost)??-Infinity):(b.value??-Infinity)-(a.value??-Infinity));
+  html(root,prefix+'HoldingsCardsContainer',shown.map(h=>window.LegacyHoldingCard(h,t.value>0&&h.value!=null?h.value/t.value*100:0)).join('')||'<p class="text-xs text-slate-400 py-4">لا توجد حيازات مسجلة في هذا النطاق.</p>');
+  const cards=by(root,prefix+'HoldingsCardsContainer'),smart=by(root,prefix+'HoldingsSmartContainer');cards?.classList.toggle('hidden',ui.holdingsMode==='list');smart?.classList.toggle('hidden',ui.holdingsMode!=='list');
+  html(root,prefix+'HoldingsSmartBody',shown.map(h=>`<tr class="border-b border-slate-800/60 text-xs"><td class="p-2"><button data-legacy-symbol="${e(h.ticker)}" class="font-mono font-bold text-emerald-400">${e(h.ticker)}</button><div class="text-[9px] text-slate-400">${e(h.name)}</div></td><td class="p-2 font-mono">${n(h.qty,4)}</td><td class="p-2 font-mono">${n(h.price,4)}</td><td class="p-2 font-mono">${n(h.value)}</td><td class="p-2 font-mono ${tone(h.unrealized)}">${n(h.unrealized)}</td><td class="p-2 font-mono ${tone(h.unrealized)}">${pc(ratio(h.unrealized,h.cost))}</td></tr>`).join(''));
+  const ranked=[...items].sort((a,b)=>(b.value??0)-(a.value??0));put(root,prefix+'TopWeightLabel',ranked.slice(0,2).map(h=>h.ticker+' '+n(t.value?h.value/t.value*100:0,1)+'%').join(' • '));
+  const colors=['#10b981','#06b6d4','#6366f1','#f59e0b','#ec4899','#8b5cf6','#14b8a6','#64748b'];html(root,prefix+'AllocationRibbon',ranked.filter(h=>h.value>0&&t.value>0).map((h,i)=>'<span title="'+e(h.ticker)+' '+n(h.value/t.value*100,1)+'%" style="height:100%;width:'+h.value/t.value*100+'%;background:'+colors[i%colors.length]+'"></span>').join(''));
+ }
+ put(root,'p_thndr_cash_top_card',p.cashKnown?n(p.cash)+' ج':'غير موثق');put(root,'p_thndr_cash',p.cashKnown?n(p.cash)+' ج':'غير موثق');put(root,'portfolioActiveCountBadge',p.positions.length+' أصل');
+ put(root,'p_thndr_invested',short(p.positions.reduce((sum,h)=>sum+h.cost,0)));for(const id of ['p_thndr_clawdz','p_thndr_usd_val','p_thndr_sar_val','p_thndr_health_score'])put(root,id,'غير متاح');put(root,'p_thndr_gold_val',n(total(groups.gold).value)+' ج');
+ by(root,'viewModeCardsBtn')?.setAttribute('aria-pressed',String(ui.holdingsMode==='cards'));by(root,'viewModeCompactBtn')?.setAttribute('aria-pressed',String(ui.holdingsMode==='list'));
+ put(root,'p_thndr_fees_card',n(p.fees)+' ج');
+  const feeBox=by(root,'portfolioThndrFeesAuditSection');if(feeBox){feeBox.querySelector('h3').textContent='تدقيق رسوم وعمولات التداول المنفذة';feeBox.querySelector('p')?.replaceChildren(document.createTextNode('الرسوم الفعلية من سجل العمليات؛ لا تُفترض نسبة موحدة ولا تُخصم الرسوم مرتين.'));const cells=feeBox.querySelectorAll('.grid>div');if(cells[1])cells[1].innerHTML='<div class="text-[10px] text-slate-400">اكتمال الرسوم المسجلة</div><div class="text-sm font-bold font-mono text-white">'+(p.feesComplete?'مكتملة':'جزئية')+'</div><div class="text-[10px] text-slate-400">'+p.unknownFees+' عملية برسوم غير معلومة</div>';if(cells[2])cells[2].innerHTML='<div class="text-[10px] text-slate-400">مصدر الحساب</div><div class="text-xs font-bold text-white">دفتر العمليات</div><div class="text-[10px] text-slate-400">الرسوم المسجلة فقط</div>';}
+ put(root,'portfolioBalanceStatusBadge',p.complete?'تقييم الأصول المسجلة':'تقييم جزئي');html(root,'portfolioSectorBars',workspace(allocation(p)));put(root,'portfolioSectorAlert','توزيع الحيازات من سجل المشروع الجديد. أسعار جلسة '+market.session_date+'؛ '+(p.cashKnown?'النقد مسجل.':'الرصيد النقدي السابق غير موثق.'));
+ if(!p.positions.length)root.insertAdjacentHTML('beforeend',section('أضف حيازاتك إلى المحفظة','<p class="text-xs text-slate-400">استورد ملف محفظتك أو سجل الرصيد الافتتاحي في هذه النسخة.</p><div class="flex gap-2"><button data-action="import" class="bg-emerald-600 text-white px-3 py-2 rounded-xl text-xs">📂 استيراد محفظتي</button><button data-action="add" class="bg-slate-800 px-3 py-2 rounded-xl text-xs">➕ تسجيل عملية</button></div>'));
+ if(state.importMeta)root.title=(state.importMeta.source_label||'محفظة مستوردة')+' · الحيازات حتى '+(state.importMeta.holdings_as_of||'تاريخ غير موثق')+' · '+(p.feesComplete?'الرسوم محددة':'الرسوم غير مكتملة');
+ exportMenu(root,'portfolio');return root.outerHTML;
+}
+function performanceOriginal(){
+ const root=fragment('performance'),p=C.portfolio(state,market),groups=grouped(p),cost=p.positions.reduce((a,h)=>a+h.cost,0);
+ for(const[id,val]of Object.entries({perf_kpi_current_val:p.cashKnown?p.totalWealth:p.value,perf_kpi_total_cost:cost,perf_kpi_pnl_egp:p.unrealized,perf_gross_pnl:p.gross,perf_paid_fees:p.fees,perf_net_pnl:p.net,perf_realized_pnl:p.realized,perf_unrealized_pnl:p.unrealized}))money(root,id,val);
+ put(root,'perf_kpi_return_pct',pc(ratio(p.unrealized,cost)));put(root,'perfAlphaBadge','تحتاج سجل فترات مكتمل');for(const id of ['perfBenchPortfolio','perfBenchEgx33','perfBenchCbe'])put(root,id,'غير متاح');
+ for(const[type,prefix]of [['stock','stocks'],['fund','funds'],['gold','gold']]){const t=total(groups[type]);money(root,'perf_'+prefix+'_pnl_egp',t.profit);put(root,'perf_'+prefix+'_val',n(t.value)+' ج');put(root,'perf_'+prefix+'_return_pct',pc(ratio(t.profit,t.cost)));}
+ html(root,'perfHoldingsDetailedTableBody',p.positions.map(h=>`<tr class="border-b border-slate-800/60"><td class="p-2 font-bold">${e(h.ticker)}</td><td class="p-2 font-mono">${n(h.qty,4)}</td><td class="p-2 font-mono">${n(h.average,4)}</td><td class="p-2 font-mono">${n(h.price,4)}</td><td class="p-2 font-mono">${n(h.cost)}</td><td class="p-2 font-mono">${n(h.value)}</td><td class="p-2 font-mono ${tone(h.unrealized)}">${n(h.unrealized)}</td><td class="p-2 font-mono">${pc(ratio(h.unrealized,h.cost))}</td></tr>`).join(''));
+ html(root,'perfBestWorstContainer',p.positions.map(h=>'<div class="flex items-center justify-between text-xs"><span>'+e(h.ticker)+'</span><span class="font-mono '+tone(h.unrealized)+'">'+n(h.unrealized)+' ج</span></div>').join('')||'<p class="text-xs text-slate-400">لا توجد حيازات مسجلة.</p>');
+ root.title='الحسابات من دفتر المشروع الجديد. المقارنة المعيارية والعائد عبر الزمن تحتاج اكتمال تقييمات الفترة والتدفقات.';return root.outerHTML;
+}
+function quoteCard(symbol,q){return window.LegacyMarketCards[q.type==='stock'?'stock':'fund'](symbol,q);}
+function radarStocks(){const owned=C.portfolio(state,market).positions.map(h=>h.ticker);return selectedQuotes().filter(([t,q])=>{if(q.type!=='stock'||!(t+' '+q.name).toLowerCase().includes(ui.search.toLowerCase()))return false;const change=quoteChange(q).pct;return ui.radarFilter==='all'||ui.radarFilter==='portfolio'&&owned.includes(t)||ui.radarFilter==='gainers'&&change!=null&&change>0||ui.radarFilter==='losers'&&change!=null&&change<0||ui.radarFilter==='unchanged'&&change===0||ui.radarFilter==='oversold'&&q.rsi!=null&&q.rsi<=35||ui.radarFilter==='overbought'&&q.rsi!=null&&q.rsi>=70;}).sort(([a,x],[b,y])=>{const av=ui.radarSort==='name'?x.name:ui.radarSort==='chg'?quoteChange(x).pct:x[ui.radarSort],bv=ui.radarSort==='name'?y.name:ui.radarSort==='chg'?quoteChange(y).pct:y[ui.radarSort];return typeof av==='string'?ui.sortDir*av.localeCompare(bv):ui.sortDir*((av??-Infinity)-(bv??-Infinity));});}
+function radarOriginal(){
+ const root=fragment('radar'),quotes=selectedQuotes(),moves=quotes.map(([t,q])=>quoteChange(q).pct).filter(v=>v!=null),up=moves.filter(v=>v>0).length,down=moves.filter(v=>v<0).length;
+ put(root,'slicerStocksBadge',Object.values(market.assets).filter(q=>q.type==='stock').length);put(root,'slicerFundsBadge',Object.values(market.assets).filter(q=>q.type!=='stock').length);
+ put(root,'marketPulseLiveBadge','لقطة مؤرخة');put(root,'marketPulseSessionTime',market.session_date);put(root,'pulseNextTickTimer','تحديث المصدر');put(root,'marketPulseTrendBadge','العينة المتاحة');put(root,'pulseAdvancersCount',up);put(root,'pulseDeclinersCount',down);put(root,'pulseUnchangedCount',moves.filter(v=>v===0).length);put(root,'pulseAvgMarketChg',pc(moves.length?moves.reduce((a,b)=>a+b,0)/moves.length:null));
+ for(const id of ['pulseBuyerPowerPct','pulseSellerPowerPct','pulseFearGreedScore','pulseMarketAvgRsi','ai_score_badge','ai_sector_badge','ai_strategy_badge','macroCbeVal','fgFactorBreadth','fgFactorMomentum','fgFactorRsi','fgFactorVolume','fgFactorAtr'])put(root,id,'غير متاح');for(const id of ['fgBarBreadth','fgBarMomentum','fgBarRsi','fgBarVolume','fgBarAtr','pulseBuyerBar','pulseSellerBar']){const bar=by(root,id);if(bar)bar.style.width='0%';}const needle=by(root,'pulseFearGreedNeedle');if(needle)needle.style.visibility='hidden';put(root,'pulseFearGreedBadge','بيانات غير مكتملة');put(root,'pulseFearGreedNarrative','لم تتوفر مدخلات موثقة كافية لحساب مؤشر الخوف والطمع.');put(root,'ai_pulse_text','تُعرض العينة المؤرخة من المشروع الجديد. لا يُستنتج شراء المؤسسات أو قوة المشترين من تغير الأسعار وحده.');
+ for(const [code,prefix]of [['EGX33','macroEgx33'],['EGX30','macroEgx30']]){const q=market.indices?.[code];put(root,prefix+'Val',n(q?.close));put(root,prefix+'Chg',q?pc(C.change(q.close,q.previous_close).pct):'غير متاح');}
+ put(root,'macroGoldVal',n(market.assets.THNDR_GOLD?.close));put(root,'macroGoldChg','غير متاح');put(root,'macroUsdVal','غير متاح');put(root,'macroUsdChg','غير متاح');
+ const list=radarStocks();html(root,'stocksContainer',list.map(([t,q])=>quoteCard(t,q)).join('')||'<p class="text-xs text-slate-400 py-6">لا تتوفر بيانات تطابق التصفية المحددة.</p>');const fundRows=Object.entries(market.assets).filter(([t,q])=>q.type!=='stock'&&(ui.fundsFilter==='all'||ui.fundsFilter==='gold'&&(q.type==='gold'||t==='AZG')||ui.fundsFilter==='equity_funds'&&q.type==='fund'&&t!=='AZG'));html(root,'fundsCardsContainer',fundRows.map(([t,q])=>quoteCard(t,q)).join('')||'<p class="text-xs text-slate-400 py-6">لا تتوفر بيانات موثقة لهذه التصفية.</p>');for(const code of ['AZG','THNDR_GOLD','CMS','BWA','NMF'])put(root,'matrix-price-'+code,n(market.assets[code]?.close,4));by(root,'searchInput').value=ui.search;
+ const funds=filter==='fund'||filter==='gold';by(root,'equitiesAnalyticsView')?.classList.toggle('hidden',funds);by(root,'fundsAnalyticsView')?.classList.toggle('hidden',!funds);by(root,'marketSubViewPulse')?.classList.toggle('hidden',ui.marketTab!=='pulse');by(root,'marketSubViewFair')?.classList.toggle('hidden',ui.marketTab!=='fair');
+ for(const id of ['whaleFlowFeed','cashlessPairTradeFeed'])html(root,id,'<p class="text-[10px] text-slate-400">لا توجد بيانات موثقة لهذه القراءة في المصدر الحالي.</p>');
+ return root.outerHTML;
+}
+function newsCard(item){return window.LegacyMarketCards.news(item);}
+function newsOriginal(){
+ const root=fragment('news'),items=(externalNews?.items||[]).filter(x=>(ui.newsTab==='stocks'?x.category==='stock':x.category!=='stock')&&(x.title+' '+x.publisher+' '+(x.symbols||[]).join(' ')).toLowerCase().includes(ui.newsSearch.toLowerCase()));
+ put(root,'newsStocksCountBadge',(externalNews?.items||[]).filter(x=>x.category==='stock').length);put(root,'newsFundsCountBadge',(externalNews?.items||[]).filter(x=>x.category!=='stock').length);
+ by(root,'newsSubViewStocks').classList.toggle('hidden',ui.newsTab!=='stocks');by(root,'newsSubViewFunds').classList.toggle('hidden',ui.newsTab!=='funds');
+ html(root,ui.newsTab==='stocks'?'newsStocksFeedContainer':'newsFundsFeedContainer',items.map(newsCard).join('')||'<p class="text-xs text-slate-400 py-6">لا توجد عناوين متاحة في هذا النطاق.</p>');
+ root.title='آخر جلب '+(externalNews?.fetched_at||'غير متاح')+' · تحديث دوري؛ تظهر تواريخ الناشرين.';return root.outerHTML;
+}
+function researchOriginal(){
+ const root=fragment('research'),p=C.portfolio(state,market);put(root,'recsTopCountBadge',Object.keys(market.assets).length);put(root,'recPortfolioCount',p.positions.length);put(root,'recTotalCountBadge',Object.keys(market.assets).length);for(const id of ['recBuyCount','recDcaCount','recHoldCount','recSellCount'])put(root,id,'—');
+ html(root,'recommendationsListContainer',Object.entries(market.assets).filter(([t,q])=>(ui.recType==='stocks'?q.type==='stock':q.type!=='stock')&&(ui.recAction==='all'||ui.recAction==='hold'||ui.recAction==='portfolio'&&p.positions.some(h=>h.ticker===t))).map(([t,q])=>window.LegacyMarketCards.research(t,q)).join('')||'<p class="text-xs text-slate-400 py-6">لا توجد توصية محسوبة موثقة لهذه التصفية.</p>');put(root,'geminiKeyStatusBadge','حالة الاتصال');put(root,'geminiKeyStatusDesc','اتصال المشروع الجديد محفوظ على الخادم. لا تُطلب مفاتيح داخل الصفحة.');put(root,'aiAdvisorActiveCount','النشرة المنشورة');
+ by(root,'recSlicerPanel_recs').classList.toggle('hidden',ui.researchTab!=='recs');by(root,'recSlicerPanel_analysis').classList.toggle('hidden',ui.researchTab!=='analysis');
+ html(root,'aiAdvisorCardsGrid',workspace(baseViews.research()));return root.outerHTML;
+}
+function toolsOriginal(){
+ const root=fragment('tools'),p=C.portfolio(state,market);root.querySelectorAll('[id^="toolSubView"]').forEach(x=>x.classList.toggle('hidden',x.id!=='toolSubView'+ui.toolsTab.charAt(0).toUpperCase()+ui.toolsTab.slice(1)));
+ for(const id of ['zakat_val','goal_current','inh_wealth_val']){const input=by(root,id);if(input)input.value=p.cashKnown?p.totalWealth:p.value;}
+ const feeIntro=by(root,'fee_tax_output')?.parentElement?.querySelector('p');if(feeIntro)feeIntro.textContent='تسجل الرسوم الفعلية لكل عملية في دفتر المشروع الجديد دون افتراض نسب أو ضرائب غير موثقة.';
+ put(root,'auditStatusBadge','بانتظار الفحص');for(const id of ['auditOverallScoreVal','auditPillarCodePct','auditPillarAccountingPct','auditPillarAnalysisPct'])put(root,id,'غير مقاس');for(const id of ['auditPillarCodeBar','auditPillarAccountingBar','auditPillarAnalysisBar'])by(root,id).style.width='0%';put(root,'actTotalCount',state.transactions.length);put(root,'actDirectCount',state.transactions.length);put(root,'actOcrCount','غير متاح');put(root,'actTradeCount',state.transactions.filter(t=>['buy','sell'].includes(t.type)).length);
+ html(root,'userActivityFeedContainer',workspace(transactionsView()));
+ const auditBox=by(root,'auditReportSummary');if(auditBox)auditBox.innerHTML='<div id="auditResult" class="workspace-ui"></div>';
+ return root.outerHTML;
+}
+const baseViews={portfolio:portfolioView,performance:performanceView,radar:radarView,news:newsView,research:researchView,tools:toolsView};
+portfolioView=portfolioOriginal;performanceView=performanceOriginal;radarView=radarOriginal;newsView=newsOriginal;researchView=researchOriginal;toolsView=toolsOriginal;
+addProviderPanels=function(){};
+function originalTicker(){
+ const track=$('marketTicker');if(!track)return;const box='bg-slate-900/90 border border-slate-800 rounded-lg px-2.5 py-1 flex items-center gap-1.5 whitespace-nowrap shrink-0';
+ const session='<div dir="rtl" class="'+box+' text-slate-300"><span class="w-2 h-2 rounded-full bg-slate-400"></span><span class="font-bold">'+(marketLoading&&!hasMarketPrices()?'جار تحميل المصدر':'أسعار جلسة '+e(market.session_date))+'</span><span class="font-mono text-[10px] text-slate-400">مرجع مؤرخ</span></div>';
+ const indices=Object.entries(market.indices||{}).map(([t,q])=>'<div dir="rtl" class="'+box+'"><span class="text-slate-300 font-medium">📊 '+e(q.name||t)+':</span><span class="text-[10px] font-bold '+tone(C.change(q.close,q.previous_close).pct)+'" dir="ltr">'+pc(C.change(q.close,q.previous_close).pct)+'</span><span class="font-bold text-white font-mono" dir="ltr">'+n(q.close)+'</span></div>').join('');
+ const stocks=Object.entries(market.assets||{}).filter(([,q])=>q.type==='stock').slice(0,8).map(([t,q])=>'<div dir="rtl" class="'+box+'"><span class="text-slate-300 font-medium">📈 '+e(t)+':</span><span class="text-[10px] font-bold '+tone(quoteChange(q).pct)+'" dir="ltr">'+pc(quoteChange(q).pct)+'</span><span class="font-bold text-white font-mono" dir="ltr">'+n(q.close)+' ج</span></div>').join('');
+ const seq='<div class="flex gap-2 items-center shrink-0">'+session+indices+stocks+'</div>';track.innerHTML=seq+'<div aria-hidden="true" class="flex gap-2 items-center shrink-0">'+session+indices+stocks+'</div>';$('sourceSession').textContent=marketLoading&&!hasMarketPrices()?'جار…':'مؤرخة';
+}
+function setTheme(mode){const dark=mode==='dark';document.documentElement.dataset.theme=mode;document.documentElement.classList.toggle('dark',dark);$('themeIcon').textContent=dark?'🌙':'☀️';$('themeLabel').textContent=dark?'ليلي':'نهاري';document.querySelector('meta[name="theme-color"]').content=dark?'#080c14':'#f8fafc';}
+try{setTheme(localStorage.getItem('egx_independent_theme_v1')==='light'?'light':'dark');}catch{setTheme('dark');}
+$('themeToggle').addEventListener('click',()=>{const mode=document.documentElement.dataset.theme==='dark'?'light':'dark';setTheme(mode);try{localStorage.setItem('egx_independent_theme_v1',mode);}catch{}});
+$('headerSync').addEventListener('click',async()=>{const button=$('headerSync');button.disabled=true;try{await Promise.allSettled([refreshMarket(),fetchNews()]);}finally{button.disabled=false;}});
+const priorRender=render;render=function(){priorRender();document.querySelectorAll('nav [data-route]').forEach(b=>{const active=b.dataset.route===route||route==='performance'&&b.dataset.route==='portfolio';b.classList.toggle('text-emerald-400',active);b.classList.toggle('text-slate-400',!active);b.classList.toggle('font-bold',active);b.setAttribute('aria-current',active?'page':'false');});document.querySelectorAll('.print-head').forEach(x=>x.className='hidden legacy-print-head');originalTicker();};
+function showEditor(kind,ticker){if(ticker&&market.assets[ticker])researchTicker=ticker;const dialog=document.createElement('dialog');dialog.className='workspace-ui';dialog.dataset.legacyEditor=kind;dialog.legacyRefresh=()=>{dialog.innerHTML='<div class="title-row"><h2>'+e(kind==='research'?'الشارت والتحليل الفني':'أدوات المشروع الجديد')+'</h2><button type="button" data-close-legacy-dialog aria-label="إغلاق">×</button></div>'+baseViews[kind]();dialog.querySelector('[data-close-legacy-dialog]').onclick=()=>dialog.close();bindView(dialog);if(kind==='research'&&market.assets[researchTicker]?.type==='stock')dialog.insertAdjacentHTML('beforeend',window.ProviderView.markup('chart','EGX:'+researchTicker));};document.body.append(dialog);dialog.legacyRefresh();dialog.addEventListener('close',()=>dialog.remove(),{once:true});dialog.showModal();}
+function args(call){return [...call.matchAll(/'([^']*)'/g)].map(m=>m[1]);}
+function execute(call,element){
+ const names=[...call.matchAll(/(?:^|;\s*)(?:window\.)?(\w+)\s*\(/g)].map(m=>m[1]),name=names.at(-1)||'',a=args(call);
+ if(element.closest('nav')||['headerSync','themeToggle'].includes(element.id))return;
+ if(name==='toggleUniversalExportDropdown')return;
+ if(['setDailyReportFilter','setDrSection3Slicer'].includes(name))return;
+ if(name==='switchTab')return go(({recommendations:'research',news_hub:'news'})[a[0]]||a[0]);
+ if(name==='switchPortfolioSubTab')return go(a[0]==='performance'?'performance':'portfolio');
+ if(['refreshData','ultraFastSync','syncFundsNavLive','quickThndrPreset','syncAllLiveSections','syncLiveFundsEngine'].includes(name))return refreshMarket();
+ if(['loadThndrVerifiedPresetAndApply','openThndrScannerModal'].includes(name))return $('fileInput').click();
+ if(['openTransactionModal','openAddHoldingModal'].includes(name)){openEntry();if(a[0])$('entryForm').elements.ticker.value=a[0];return;}
+ if(['openStockChart','openStockChartModal','openPivotModal','openStockValuation','showNewsTechnicalAnalysis','openStockFromNews'].includes(name))return showEditor('research',a[0]);
+ if(['editHoldingDirect','editHolding'].includes(name)){const t=[...state.transactions].reverse().find(x=>x.ticker===a[0]&&['opening','buy','sell'].includes(x.type));return openEntry(t);}
+ if(name==='toggleStockBuyPrice'){const box=$('buyPriceCard_'+a[0]);box?.classList.toggle('hidden');return;}
+ if(name==='setPortfolioViewMode'){ui.holdingsMode=a[0]==='compact'?'list':'cards';try{localStorage.setItem('egx_independent_holdings_view',ui.holdingsMode);}catch{}return render();}
+ if(name==='setHoldingsFilter'){const type=a[0]==='stocks'?'stock':'fund';ui[type+'Filter']=a[1];return render();}
+ if(['sortHoldings','sortHoldingsTable'].includes(name)){const type=a[0]==='stocks'?'stock':'fund';ui[type+'Sort']=a[1]?.includes('return')||a[1]?.includes('pnl')?'return':'value';return render();}
+ if(name==='setAssetSlicer'){filter=a[0]==='funds'?'fund':'stock';return render();}
+ if(name==='switchMarketSubTab'){ui.marketTab=a[0]==='fair'?'fair':'pulse';return render();}
+ if(name==='switchNewsSubTab'){ui.newsTab=a[0]==='funds'?'funds':'stocks';filter=ui.newsTab==='stocks'?'stock':'fund';return render();}
+ if(['setRecAnalysisSlicer','switchRecAnalysisSlicer'].includes(name)){ui.researchTab=a[0]==='analysis'?'analysis':'recs';if(names.includes('switchTab'))return go('research');return render();}
+ if(name==='setFilter'){ui.radarFilter=a[0];return render();}if(name==='setFundsFilter'){ui.fundsFilter=a[0];return render();}if(name==='sortRadar'){ui.radarSort=a[0];return render();}if(name==='toggleRadarSortDir'){ui.sortDir=-ui.sortDir;return render();}
+ if(name==='setRecActionFilter'){ui.recAction=a[0];return render();}if(name==='setRecTypeFilter'){ui.recType=a[0];return render();}
+ if(name==='switchToolsSubTab'){ui.toolsTab=a[0];return render();}
+ if(name==='runComprehensiveSystemAudit'){const box=$('auditReportContainer');box?.classList.remove('hidden');return audit();}
+ if(name==='runGoalsMonteCarloSimulation'){try{const r=C.goal($('goal_target').value,$('goal_current').value,$('goal_monthly').value,$('goal_rate').value,120);$('goal_output').innerHTML=workspace('<h3>'+n(r.value)+' ج.م</h3><p>محاكاة حتمية لمدة 120 شهراً وفق افتراضاتك؛ لا تمثل احتمالاً أو عائداً مضموناً.</p><p>'+(r.reached?'بلغ الهدف وفق الافتراضات':'المتبقي '+n(r.gap)+' ج.م')+'</p>');}catch(err){toast(err.message,true);}return;}
+ if(['backupPortfolioData','openPortfolioBackupModal','exportPortfolioJsonBackup'].includes(name))return backup();
+ if(['exportUniversalExcel','exportMultiSheetExcel','exportUserActivityLog'].includes(name))return exportCSV();
+ if(name==='exportUniversalPdf')return window.print();
+ if(name==='fillZakatFromPortfolio'){const p=C.portfolio(state,market);$('zakat_val').value=p.cashKnown?p.totalWealth:p.value;return;}
+ if(['calculateZakat','calculateInheritanceDistribution','runDcaCalculation','runSurplusAllocation','calculateThndrFeesAndTaxes'].includes(name)){const id={calculateZakat:'zakat_output',calculateInheritanceDistribution:'inh_output',runDcaCalculation:'calc_dca_output',runSurplusAllocation:'advisor_output',calculateThndrFeesAndTaxes:'fee_tax_output'}[name];const output=$(id);if(output){output.classList.remove('hidden');output.innerHTML='<p class="text-xs text-slate-400">هذا الحساب غير متاح في محرك المشروع الجديد. تتوفر الحسابات المدعومة في أدواته وسجل عملياته.</p>';return;}}
+ if(name==='toggleFearGreedBreakdown')return $('fearGreedBreakdownBox')?.classList.toggle('hidden');
+ if(name==='toggleAllBuyPrices'){document.querySelectorAll('[id^="buyPriceCard_"]').forEach(box=>box.classList.toggle('hidden'));return;}
+ if(name.toLowerCase().includes('gemini')||name.toLowerCase().includes('ai')||name==='openFloatingAiCopilot')return $('aiAdvisorButton')?.click();
+ if(name==='lockApplicationNow'){const curtain=document.createElement('div');curtain.className='legacy-privacy-curtain';curtain.innerHTML='<span style="font-size:40px">🔒</span><h2>شاشة المحفظة مخفية</h2><p>حجب بصري مؤقت؛ ليس قفلاً بكلمة مرور.</p><button>إظهار التطبيق</button>';curtain.querySelector('button').onclick=()=>curtain.remove();document.body.append(curtain);return;}
+ if(name==='openThndrFeePolicyModal')return showEditor('performance');
+ if(name)return showEditor('tools');
+}
+document.addEventListener('click',event=>{const el=event.target.closest('[data-legacy-click],[data-legacy-symbol]');if(!el)return;if(el.dataset.legacySymbol){event.preventDefault();showEditor('research',el.dataset.legacySymbol);return;}execute(el.dataset.legacyClick,el);});
+document.addEventListener('input',ev=>{if(ev.target.id==='searchInput'){ui.search=ev.target.value;const box=$('stocksContainer');if(box)box.innerHTML=radarStocks().map(([t,q])=>quoteCard(t,q)).join('');}if(['newsStockSearchInput','newsFundsSearchInput'].includes(ev.target.id)){ui.newsSearch=ev.target.value;const box=$(ui.newsTab==='stocks'?'newsStocksFeedContainer':'newsFundsFeedContainer');if(box)box.innerHTML=(externalNews?.items||[]).filter(x=>(ui.newsTab==='stocks'?x.category==='stock':x.category!=='stock')&&(x.title+' '+x.publisher).toLowerCase().includes(ui.newsSearch.toLowerCase())).map(newsCard).join('');}});
+document.addEventListener('click',ev=>{const b=ev.target.closest('[id^="universalExportBtn_"]');if(b){const menu=$('exportDropdown_'+b.id.replace('universalExportBtn_',''));menu?.classList.toggle('hidden');}});
+document.addEventListener('click',ev=>{if(ev.target.closest('button,a'))return;const card=ev.target.closest('[data-news-url]');if(card?.dataset.newsUrl){try{const url=new URL(card.dataset.newsUrl);if(url.protocol==='https:')window.open(url.href,'_blank','noopener,noreferrer');}catch{}}});
+window.LegacyUI={fragment,by,put,html,workspace,section,n,pc,showEditor,exportMenu};render();
+})();

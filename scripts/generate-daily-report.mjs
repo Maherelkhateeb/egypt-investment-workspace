@@ -2,63 +2,43 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const market=JSON.parse(fs.readFileSync('market.json','utf8'));
-const news=fs.existsSync('news.json')?JSON.parse(fs.readFileSync('news.json','utf8')):[];
-const ai=fs.existsSync('ai.json')?JSON.parse(fs.readFileSync('ai.json','utf8')):null;
-
 const cairoNow=new Date();
-const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Cairo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(cairoNow);
+const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Cairo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23',weekday:'long'}).formatToParts(cairoNow);
 const get=t=>parts.find(p=>p.type===t)?.value;
 const localDate=`${get('year')}-${get('month')}-${get('day')}`;
 const localTime=`${get('hour')}:${get('minute')}:${get('second')}`;
+const dayMap={Sunday:'الأحد',Monday:'الاثنين',Tuesday:'الثلاثاء',Wednesday:'الأربعاء',Thursday:'الخميس',Friday:'الجمعة',Saturday:'السبت'};
+const sessionDay=dayMap[get('weekday')]||get('weekday')||'';
+const finite=v=>Number.isFinite(Number(v));
+const round=(v,d=2)=>finite(v)?Number(Number(v).toFixed(d)):null;
+const change=(close,prev)=>finite(close)&&finite(prev)&&Number(prev)!==0?round((Number(close)-Number(prev))/Number(prev)*100,2):null;
 
-const assets=Object.entries(market.assets||{}).map(([ticker,q])=>{
-  const close=Number.isFinite(Number(q.close))?Number(q.close):null;
-  const prev=Number.isFinite(Number(q.previous_close))?Number(q.previous_close):null;
-  const delta=close!=null&&prev!=null?close-prev:null;
-  const pct=delta!=null&&prev!==0?delta/prev*100:null;
-  return {ticker,name:q.name||ticker,type:q.type||'stock',close,previous_close:prev,delta,pct,session_date:q.session_date||market.session_date||null,status:q.status||null,source_url:q.source_url||null};
-});
-const comparable=assets.filter(x=>x.pct!=null);
-const sorted=[...comparable].sort((a,b)=>b.pct-a.pct);
-const indices=Object.entries(market.indices||{}).map(([ticker,q])=>{
-  const close=Number.isFinite(Number(q.close))?Number(q.close):null;
-  const prev=Number.isFinite(Number(q.previous_close))?Number(q.previous_close):null;
-  const delta=close!=null&&prev!=null?close-prev:null;
-  const pct=delta!=null&&prev!==0?delta/prev*100:null;
-  return {ticker,name:q.name||ticker,close,previous_close:prev,delta,pct,session_date:q.session_date||market.session_date||null,status:q.status||null,source_url:q.source_url||null};
-});
+const stocks={},funds=[],fx_gold={};
+for(const [ticker,q] of Object.entries(market.assets||{})){
+ const type=q.type||'stock', item={ticker,name:q.name||ticker,open:null,high:null,low:null,close:round(q.close,5),change_pct:change(q.close,q.previous_close),volume:null,rsi:null,source:q.source_url||null,status:q.status||null};
+ if(type==='stock')stocks[ticker]=item;
+ else if(type==='fund')funds.push({code:ticker,name:q.name||ticker,price:round(q.close,5),change_pct:item.change_pct,source:q.source_url||null,status:q.status||null});
+ else fx_gold[ticker]={name:q.name||ticker,close:round(q.close,5),chgPct:item.change_pct,source:q.source_url||null,status:q.status||null};
+}
+const indices={};
+for(const [ticker,q] of Object.entries(market.indices||{}))indices[ticker]={name:q.name||ticker,open:null,close:round(q.close,2),change_pct:change(q.close,q.previous_close),source:q.source_url||null,status:q.status||null};
+const ranked=Object.values(stocks).filter(s=>finite(s.change_pct)).sort((a,b)=>b.change_pct-a.change_pct);
+const gainers=ranked.filter(x=>x.change_pct>0),losers=ranked.filter(x=>x.change_pct<0),flat=ranked.filter(x=>x.change_pct===0);
+const idxMoves=Object.values(indices).map(x=>x.change_pct).filter(finite);
+const avgIdx=idxMoves.length?round(idxMoves.reduce((a,b)=>a+Number(b),0)/idxMoves.length,2):null;
+const bias=avgIdx==null?'غير محسوم':avgIdx>.35?'إيجابي':avgIdx<-.35?'سلبي':'متوازن';
+const report={schema:3,report_type:'complete_eod',date:localDate,sessionDay,status:'مغلق — تقرير نهاية اليوم بعد 4:00 م',title:`التقرير اليومي الشامل — ${sessionDay} ${localDate}`,subtitle:'تقرير نهاية اليوم من البيانات الموثقة المتاحة في المشروع',generated_at_cairo:`${localDate}T${localTime}`,generated_from:{repository:'Maherelkhateeb/egypt-investment-workspace',file:'market.json',snapshot_updated_at:market.fetched_at||null},audit:{audited:false,policy:'لا تُخترع قيم OHLC أو RSI أو حجم أو تدفقات غير موجودة في لقطة المصدر.',notes:['القيم غير المتاحة تبقى ظاهرة كغير متاحة حتى يوفّرها مصدر موثق.']},session_analysis:{headline:`جلسة ${sessionDay}: قراءة ${bias} للمؤشرات`,nature:`داخل الأسهم ذات المقارنة المتاحة: ${gainers.length} صاعدًا مقابل ${losers.length} هابطًا و${flat.length} دون تغير.`,liquidity:'لا يتم وصف شراء مؤسسات أو تدفقات أجنبية دون بيانات موثقة.',tomorrow:'تتم متابعة الجلسة التالية من السعر والحجم والمستويات الموثقة؛ لا يتم توليد دعم أو مقاومة من بيانات ناقصة.'},indices,market_summary:{stocks_with_change:ranked.length,gainers:gainers.length,losers:losers.length,flat:flat.length,best:ranked[0]||null,worst:ranked.at(-1)||null,index_bias:bias,average_index_change:avgIdx,top_gainers:gainers.slice(0,5),top_losers:[...losers].sort((a,b)=>a.change_pct-b.change_pct).slice(0,5)},portfolio_analysis:[],stocks,funds,fx_gold,disclaimer:'تحليل معلوماتي وليس توصية شراء أو بيع.'};
 
-const report={
-  schema:1,
-  report_type:'daily_close',
-  generated_for_date:localDate,
-  generated_at_cairo:`${localDate}T${localTime}`,
-  scheduled_time:'16:00 Africa/Cairo',
-  market_session_date:market.session_date||null,
-  market_fetched_at:market.fetched_at||null,
-  summary:{
-    assets_total:assets.length,
-    comparable_assets:comparable.length,
-    gainers:comparable.filter(x=>x.pct>0).length,
-    losers:comparable.filter(x=>x.pct<0).length,
-    unchanged:comparable.filter(x=>x.pct===0).length,
-    best:sorted[0]||null,
-    worst:sorted.length?sorted.at(-1):null,
-    funds:assets.filter(x=>x.type==='fund').length,
-    gold:assets.filter(x=>x.type==='gold').length,
-    unverified:assets.filter(x=>x.status==='unverified').length
-  },
-  indices,
-  assets,
-  top_gainers:sorted.filter(x=>x.pct>0).slice(0,10),
-  top_losers:[...sorted].reverse().filter(x=>x.pct<0).slice(0,10),
-  funds_and_gold:assets.filter(x=>x.type==='fund'||x.type==='gold'),
-  news_snapshot:Array.isArray(news)?news.slice(0,30):news,
-  ai_snapshot:ai,
-  notes:'تقرير آلي محفوظ في نهاية اليوم من البيانات المتاحة في المشروع. لا يتم اختلاق بيانات غير موجودة، والقيم غير المتحققة تبقى موسومة بذلك.'
-};
-
-fs.writeFileSync('daily-report.json',JSON.stringify(report,null,2)+'\n');
 fs.mkdirSync('daily-reports',{recursive:true});
-fs.writeFileSync(path.join('daily-reports',`${localDate}.json`),JSON.stringify(report,null,2)+'\n');
-console.log(`Daily report generated for ${localDate} at ${localTime} Africa/Cairo`);
+const reportFile=path.join('daily-reports',`${localDate}.json`);
+fs.writeFileSync(reportFile,JSON.stringify(report,null,2)+'\n');
+fs.writeFileSync('daily-report.json',JSON.stringify(report,null,2)+'\n');
+const indexFile=path.join('daily-reports','index.json');
+let index={schema:3,reports:[]};
+if(fs.existsSync(indexFile)){try{index=JSON.parse(fs.readFileSync(indexFile,'utf8'));}catch{}}
+index.schema=3;index.reports=Array.isArray(index.reports)?index.reports:[];
+const meta={date:localDate,label:`تقرير ${sessionDay} ${localDate}`,sessionDay,audited:false,complete:true,file:`daily-reports/${localDate}.json`,source_commit:null};
+const at=index.reports.findIndex(x=>x.date===localDate);if(at>=0)index.reports[at]=meta;else index.reports.push(meta);
+index.reports.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+fs.writeFileSync(indexFile,JSON.stringify(index,null,2)+'\n');
+console.log(`Daily report generated for ${localDate} at ${localTime} Africa/Cairo and archive index updated`);

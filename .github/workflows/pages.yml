@@ -22,6 +22,7 @@ jobs:
           node-version: '22'
       - run: npm test
       - run: node scripts/update-news.mjs
+      - run: node scripts/import-legacy-reports.mjs
       - uses: actions/cache/restore@v4
         with:
           path: ai-budget.json
@@ -52,4 +53,3 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-

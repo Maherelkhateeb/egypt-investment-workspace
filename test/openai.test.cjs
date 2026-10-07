@@ -56,6 +56,45 @@ test('OpenAI request uses verified model, Responses structured output and public
   assert.equal(JSON.stringify(body).includes(KEY), false);
 });
 
+test('OpenAI findings bind to original headlines and one citation without changing Gemini schema', async () => {
+  const O = await modulePromise;
+  const A = await import('../ai.mjs');
+  const data = input();
+  data.news.items.push({ ...data.news.items[0], title: 'قطاع العقارات يراقب تغير السيولة', url: 'https://www.alborsaanews.com/another-public-test-story' });
+  const context = A.buildPublicContext(data, NOW);
+  const schema = O.makeOpenAIRequest(context).text.format.schema;
+  const finding = schema.properties.findings.items.properties;
+  assert.deepEqual(finding.fact.enum, context.sources.map(source => source.title));
+  assert.equal(finding.source_ids.minItems, 1);
+  assert.equal(finding.source_ids.maxItems, 1);
+  assert.deepEqual(finding.source_ids.items.enum, ['N1', 'N2']);
+  assert.equal(schema.properties.scenarios.items.properties.source_ids.maxItems, 4);
+  assert.equal(schema.properties.questions.items.properties.source_ids.maxItems, 4);
+  const gemini = A.outputSchema(context.sources.map(source => source.id));
+  assert.equal(gemini.properties.findings.items.properties.source_ids.maxItems, 4);
+  assert.equal(gemini.properties.findings.items.properties.fact.enum, undefined);
+});
+
+test('OpenAI rejects paraphrased, mismatched or multiple finding citations after generation', async () => {
+  const O = await modulePromise;
+  const data = input();
+  // Duplicate publisher headlines still have distinct references: the common
+  // validator accepts both, while OpenAI findings must select exactly one.
+  data.news.items.push({ ...data.news.items[0], url: 'https://www.alborsaanews.com/another-public-test-story' });
+  data.news.items.push({ ...data.news.items[0], title: 'قطاع العقارات يراقب تغير السيولة', url: 'https://www.alborsaanews.com/third-public-test-story' });
+  const paraphrased = analysis(); paraphrased.findings[0].fact = 'تنامي مبيعات الشركات العقارية';
+  const mismatched = analysis(); mismatched.findings[0].source_ids = ['N3'];
+  const multiple = analysis(); multiple.findings[0].source_ids = ['N1', 'N2'];
+  for (const value of [paraphrased, mismatched, multiple]) {
+    const result = await O.generateOpenAI({ ...data, apiKey: KEY, now: NOW, fetcher: async () => response(payload(value)) });
+    assert.equal(result.status, 'failed');
+    assert.equal(result.error_code, 'invalid_response');
+    assert.equal(result.analysis, null);
+  }
+  const valid = await O.generateOpenAI({ ...data, apiKey: KEY, now: NOW, fetcher: async () => response() });
+  assert.equal(valid.status, 'ready');
+});
+
 test('missing OpenAI key makes no request and reports waiting_key', async () => {
   const O = await modulePromise; let calls = 0;
   const result = await O.generateOpenAI({ ...input(), apiKey: '', now: NOW, fetcher: async () => { calls++; return response(); } });
@@ -155,6 +194,91 @@ test('rate-limit failure preserves success, never leaks provider errors and thro
   assert.equal(retained.reuse_reason, 'six_hour_interval');
 });
 
+test('known quota, spend, rate and authentication errors retain only safe machine categories', async () => {
+  const O = await modulePromise;
+  const cases = [
+    [429, { code: 'insufficient_quota', type: 'rate_limit_error' }, 'insufficient_quota'],
+    [403, { code: 'credit_balance_exhausted' }, 'credit_balance_exhausted'],
+    [429, { code: 'organization_spend_limit_exceeded' }, 'organization_spend_limit_exceeded'],
+    [403, { code: 'project_spend_limit_exceeded' }, 'project_spend_limit_exceeded'],
+    [429, { code: 'organization_usage_limit_exceeded' }, 'organization_usage_limit_exceeded'],
+    [429, { code: 'rate_limit_exceeded' }, 'rate_limit_exceeded'],
+    [429, { code: null, type: 'rate_limit_error' }, 'rate_limit_exceeded'],
+    [429, { code: 'slow_down' }, 'slow_down'],
+    [401, { code: 'invalid_api_key' }, 'invalid_api_key'],
+    [401, { type: 'authentication_error' }, 'authentication_error'],
+    [403, { code: 'permission_denied' }, 'permission_denied']
+  ];
+  const privateMessage = `${KEY} Bearer ${'x'.repeat(30)} <script>provider-error</script>`;
+  for (const [status, error, expected] of cases) {
+    const result = await O.generateOpenAI({ ...input(), apiKey: KEY, now: NOW, fetcher: async () => response({ error: { ...error, message: privateMessage, param: KEY } }, status) });
+    assert.equal(result.status, 'failed');
+    assert.equal(result.error_code, expected);
+    assert.equal(result.last_request_at, new Date(NOW).toISOString());
+    assert.equal(result.analysis, null);
+    assert.equal(JSON.stringify(result).includes(KEY), false);
+    assert.equal(JSON.stringify(result).includes(privateMessage), false);
+    assert.equal(O.validateOpenAIPrevious(result, NOW), result);
+  }
+});
+
+test('unknown and malicious error strings cannot inject categories or leak provider text', async () => {
+  const O = await modulePromise;
+  const malicious = `insufficient_quota ${KEY} sk-${'x'.repeat(30)} <script>unsafe</script>`;
+  for (const error of [
+    { code: null, type: 'invalid_request_error', message: malicious },
+    { code: malicious, type: `rate_limit_error ${KEY}`, message: malicious },
+    { code: '__proto__', type: 'constructor', message: malicious },
+    { code: { value: 'insufficient_quota' }, type: ['rate_limit_error'], message: malicious },
+    { message: malicious, details: { code: 'insufficient_quota' } },
+    malicious
+  ]) {
+    const result = await O.generateOpenAI({ ...input(), apiKey: KEY, now: NOW, fetcher: async () => response({ error }, 429) });
+    assert.equal(result.error_code, 'http_429');
+    assert.equal(JSON.stringify(result).includes(KEY), false);
+    assert.equal(JSON.stringify(result).includes('<script>'), false);
+    assert.equal(JSON.stringify(result).includes('insufficient_quota'), false);
+  }
+});
+
+test('unreadable and oversized provider errors preserve safe HTTP fallbacks', async () => {
+  const O = await modulePromise;
+  const providers = [
+    () => new Response(`malformed ${KEY}`, { status: 429 }),
+    () => response({ error: { code: 'insufficient_quota', message: KEY + 'x'.repeat(100001) } }, 429),
+    () => new Response(JSON.stringify({ error: { code: 'insufficient_quota', message: KEY } }), { status: 429, headers: { 'Content-Length': '100001' } }),
+    () => response({}, 503)
+  ];
+  for (const provider of providers) {
+    const result = await O.generateOpenAI({ ...input(), apiKey: KEY, now: NOW, fetcher: async () => provider() });
+    assert.equal(result.error_code, provider === providers.at(-1) ? 'http_503' : 'http_429');
+    assert.equal(result.last_request_at, new Date(NOW).toISOString());
+    assert.equal(JSON.stringify(result).includes(KEY), false);
+  }
+});
+
+test('classified billing failure keeps six-hour retry pacing and retained analysis', async () => {
+  const O = await modulePromise;
+  const previous = await ready();
+  const now = NOW + 7 * 3600000;
+  const data = input('قطاع العقارات يراقب تغير السيولة');
+  const failed = await O.generateOpenAI({ ...data, apiKey: KEY, previous, now, fetcher: async () => response({ error: { code: 'insufficient_quota', message: KEY } }, 429) });
+  assert.equal(failed.status, 'stale');
+  assert.equal(failed.error_code, 'insufficient_quota');
+  assert.deepEqual(failed.analysis, previous.analysis);
+  let calls = 0;
+  const retained = await O.generateOpenAI({ ...data, apiKey: KEY, previous: failed, now: now + 1800000, fetcher: async () => { calls++; return response(); } });
+  assert.equal(calls, 0);
+  assert.equal(retained.reuse_reason, 'six_hour_interval');
+  assert.equal(retained.error_code, 'new_evidence_waiting_interval');
+  assert.equal(retained.last_request_at, failed.last_request_at);
+  const first = await O.generateOpenAI({ ...input(), apiKey: KEY, now: NOW, fetcher: async () => response({ error: { code: 'credit_balance_exhausted' } }, 429) });
+  const waiting = await O.generateOpenAI({ ...input(), apiKey: KEY, previous: first, now: NOW + 1800000, fetcher: async () => { calls++; return response(); } });
+  assert.equal(calls, 0);
+  assert.equal(waiting.error_code, 'credit_balance_exhausted');
+  assert.equal(waiting.reuse_reason, 'six_hour_interval');
+});
+
 test('failed first inference retains a real request timestamp and cannot retry every poll', async () => {
   const O = await modulePromise;
   const failed = await O.generateOpenAI({ ...input(), apiKey: KEY, now: NOW, fetcher: async () => response({}, 503) });
@@ -191,4 +315,3 @@ test('no valid publisher evidence makes no model request', async () => {
   assert.equal(result.error_code, 'no_valid_public_news');
   assert.equal(result.last_request_at, null);
 });
-

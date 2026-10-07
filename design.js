@@ -40,6 +40,7 @@ portfolioView=function(){
 };
 function updateTicker(){
  const track=document.getElementById('marketTicker');if(!track)return;
+ if(!Object.keys(market.assets||{}).length&&!Object.keys(market.indices||{}).length){const loading=typeof marketLoading!=='undefined'&&marketLoading;track.innerHTML='<span class="ticker-item">'+(loading?'جار تحميل لقطة الأسعار المؤرخة…':'لا توجد لقطة أسعار متاحة؛ أعد المزامنة أو استورد ملفًا موثقًا.')+'</span>';const source=document.getElementById('sourceSession');if(source)source.textContent=loading?'جار تحميل الأسعار':'الأسعار غير متاحة';return;}
  const items=[];
  items.push('<span class="ticker-item"><i class="status-dot"></i><span>جلسة '+e(market.session_date)+'</span><small>مرجع تاريخي</small></span>');
  for(const [symbol,q]of Object.entries(market.indices||{})){const d=C.change(q.close,q.previous_close);items.push('<span class="ticker-item"><span>'+e(q.name||symbol)+'</span><b>'+format(q.close)+'</b><span class="'+tone(d.pct)+'">'+pct(d.pct)+'</span><small>'+e(q.session_date)+'</small></span>');}
@@ -49,6 +50,7 @@ function updateTicker(){
 }
 function decorate(){
  document.body.dataset.route=route;
+ if(typeof marketLoading!=='undefined'&&marketLoading&&!Object.keys(market.assets||{}).length){updateTicker();return;}
  if(route==='performance'){const view=document.getElementById('view');const printHead=view.querySelector('.print-head');if(printHead)printHead.insertAdjacentHTML('afterend',subnav());else view.insertAdjacentHTML('afterbegin',subnav());document.querySelector('nav [data-route="portfolio"]')?.classList.add('active');view.insertAdjacentHTML('beforeend',importNote()+'<p class="warning">الأداء يعتمد على أسعار التقييم المؤرخة، ومنها أسعار غير متحققة للصناديق. عند نقص الرسوم أو سجل التدفقات تكون النتائج جزئية.</p>');}
  document.querySelectorAll('[data-design-route]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.designRoute)));
  document.querySelectorAll('[data-holdings-mode]').forEach(b=>b.addEventListener('click',()=>{holdingsMode=b.dataset.holdingsMode;try{localStorage.setItem('egx_independent_holdings_view',holdingsMode);}catch{}render();}));

@@ -8,6 +8,22 @@ import {
 export const MODEL = 'gpt-6-luna';
 export const ENDPOINT = 'https://api.openai.com/v1/responses';
 const MAX_RESPONSE_BYTES = 100000;
+const ERROR_CODES = new Set([
+  'insufficient_quota', 'credit_balance_exhausted',
+  'organization_spend_limit_exceeded', 'project_spend_limit_exceeded',
+  'organization_usage_limit_exceeded', 'rate_limit_exceeded', 'slow_down',
+  'invalid_api_key', 'authentication_error', 'permission_denied'
+]);
+
+function openAIOutputSchema(sources) {
+  const schema = outputSchema(sources.map(source => source.id));
+  const finding = schema.properties.findings.items.properties;
+  finding.fact = { type: 'string', enum: [...new Set(sources.map(source => source.title))] };
+  // The shared schema reuses its citation shape across fields; replace only
+  // the finding shape so scenarios and questions keep their own citation limits.
+  finding.source_ids = { ...finding.source_ids, maxItems: 1 };
+  return schema;
+}
 
 export function makeOpenAIRequest(context) {
   return {
@@ -23,7 +39,7 @@ export function makeOpenAIRequest(context) {
     }) }],
     text: { format: {
       type: 'json_schema', name: 'public_economic_analysis', strict: true,
-      schema: outputSchema(context.sources.map(source => source.id), context.sources.map(source => source.title))
+      schema: openAIOutputSchema(context.sources)
     } }
   };
 }
@@ -49,6 +65,22 @@ async function readPayload(response) {
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
+async function classifyFailedResponse(response) {
+  const fallback = `http_${[400, 401, 403, 429, 500, 503].includes(response.status) ? response.status : 'error'}`;
+  try {
+    const payload = await readPayload(response);
+    const error = payload?.error;
+    if (!error || typeof error !== 'object' || Array.isArray(error)) return fallback;
+    // Never derive a result from provider messages or return any provider text.
+    // Only exact matches of these known machine codes may leave this function.
+    for (const code of [error.code, error.type]) {
+      if (ERROR_CODES.has(code)) return code;
+      if (code === 'rate_limit_error') return 'rate_limit_exceeded';
+    }
+  } catch { /* Unreadable or oversized errors retain the safe HTTP fallback. */ }
+  return fallback;
+}
+
 export function extractCompletedAnalysis(payload, sources) {
   if (!payload || payload.status !== 'completed' || payload.error || !Array.isArray(payload.output)) throw new Error('blocked_or_incomplete');
   const messages = payload.output.filter(item => item?.type === 'message' && item.role === 'assistant');
@@ -57,7 +89,9 @@ export function extractCompletedAnalysis(payload, sources) {
   if (content.some(item => item?.type === 'refusal')) throw new Error('blocked_or_incomplete');
   const text = content.filter(item => item?.type === 'output_text' && typeof item.text === 'string').map(item => item.text).join('');
   if (!text || text.length > 50000) throw new Error('invalid_response');
-  return validateAnalysis(JSON.parse(text), sources);
+  const analysis = validateAnalysis(JSON.parse(text), sources);
+  if (analysis.findings.some(finding => finding.source_ids.length !== 1)) throw new Error('invalid_response');
+  return analysis;
 }
 
 export async function generateOpenAI({ market, news, apiKey = process.env.OPENAI_API_KEY, previous = null, fetcher = fetch, fetchImpl, now = Date.now() }) {
@@ -86,7 +120,7 @@ export async function generateOpenAI({ market, news, apiKey = process.env.OPENAI
       signal: AbortSignal.timeout(45000),
       redirect: 'error'
     });
-    if (!response.ok) return failedResult(retained, context, now, `http_${[400, 401, 403, 429, 500, 503].includes(response.status) ? response.status : 'error'}`, requestedAt, MODEL);
+    if (!response.ok) return failedResult(retained, context, now, await classifyFailedResponse(response), requestedAt, MODEL);
     const payload = await readPayload(response);
     const analysis = extractCompletedAnalysis(payload, context.sources);
     return {
@@ -111,4 +145,3 @@ export function validateOpenAIPrevious(value, now = Date.now()) {
 export async function readPreviousOpenAI(fetcher = fetch, now = Date.now()) {
   return readPrevious(fetcher, now, MODEL, 'openai');
 }
-

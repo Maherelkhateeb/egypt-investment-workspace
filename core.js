@@ -42,7 +42,7 @@ function ledger(s,asOf='9999-12-31'){
  }else if(t.type==='deposit'){cash+=t.amount;deposits+=t.amount;cash-=f;}
  else if(t.type==='withdraw'){cash-=t.amount+f;withdrawals+=t.amount;}
  else if(t.type==='dividend'){cash+=t.amount-f;income+=t.amount;}
- else if(t.type==='fee'){cash-=t.amount;fees+=t.amount;}
+ else if(t.type==='fee'){cash-=t.amount+f;fees+=t.amount;}
  }
  const otherFees=ts.filter(t=>!['opening','buy','sell'].includes(t.type)).reduce((a,t)=>a+(t.type==='fee'?t.amount:0)+(t.fee??0),0);
  return {positions:[...positions.values()].filter(p=>p.qty>0),cash,realized,grossRealized,income,fees,otherFees,unknownFees,deposits,withdrawals,openingValue};
@@ -72,7 +72,15 @@ function validateMarket(m){
  for(const [name,q]of Object.entries(m.indices||{})){if(!q||!finite(q.close)||q.close<=0)throw Error('مؤشر غير صالح: '+name);date(q.session_date);if(q.previous_close!=null){num(q.previous_close,'المؤشر السابق',Number.MIN_VALUE);date(q.previous_session_date);if(q.previous_session_date>=q.session_date)throw Error('جلسة مؤشر سابقة غير صالحة');}if(!/^https:\/\//.test(q.source_url||''))throw Error('مصدر المؤشر غير صالح');}
  return clone(m);
 }
-function freshness(m,now=Date.now()){const ms=Date.parse(m.fetched_at);return {future:ms>now+300000,old:now-ms>24*3600000,session:m.session_date};}
+function freshness(m,now=Date.now(),calendar=null){
+ const fetched=Date.parse(m.fetched_at),at=new Date(now),Calendar=typeof module==='object'&&module.exports?require('./market-calendar.js'):root.MarketCalendar;
+ let expectedSession=null;
+ if(calendar&&Calendar){const today=Calendar.cairoDate(at),hour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Cairo',hour:'2-digit',hourCycle:'h23'}).format(at));let end=hour>=16?today:Calendar.add(today,-1);for(let i=0;i<30;i++,end=Calendar.add(end,-1)){if(Calendar.status(calendar,end).state==='UNKNOWN'){expectedSession=end;break;}}}
+ const sessionStale=expectedSession?m.session_date<expectedSession:false;
+ const today=Calendar?Calendar.cairoDate(at):at.toISOString().slice(0,10);
+ const assets=Object.entries(m.assets||{}).map(([symbol,q])=>({symbol,date:q.session_date,type:q.type,stale:expectedSession?q.session_date<expectedSession:false,future:q.session_date>today,issuerVerified:q.type==='fund'?q.status==='verified'&&q.nav_verified===true:null}));
+ return {future:!Number.isFinite(fetched)||fetched>now+300000,old:expectedSession?sessionStale:now-fetched>24*3600000,fetchedOld:now-fetched>24*3600000,session:m.session_date,expectedSession,sessionStale,assets};
+}
 function marketState(m,now=new Date()){
  const s=m.market_status;const until=Date.parse(s?.valid_until);const authoritative=s&&Number.isFinite(until)&&until>=now.getTime()&&Date.parse(s.observed_at)<=now.getTime()+300000;
  const time=new Intl.DateTimeFormat('ar-EG-u-nu-latn',{timeZone:'Africa/Cairo',dateStyle:'medium',timeStyle:'short'}).format(now);

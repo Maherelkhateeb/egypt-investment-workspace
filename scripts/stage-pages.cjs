@@ -10,7 +10,7 @@ for(const f of ['market-calendar.js','market-calendar-ui.js','market-calendar.js
 const indexPath='_site/index.html';
 if(fs.existsSync(indexPath)){
  let html=fs.readFileSync(indexPath,'utf8');
- html=html.replace('<meta charset="utf-8">','<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="app-build" content="2026-10-08-r4">');
+ html=html.replace('<meta charset="utf-8">','<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="app-build" content="2026-10-08-r5">');
  html=html.replace('report-availability.js?v=2.3.3','report-availability.js?v=2.6.0')
           .replace('report-periods.js?v=2.3.3','report-periods.js?v=2.6.0')
           .replace('daily-report-view.js?v=2.3.3','daily-report-view.js?v=2.6.0')
@@ -18,7 +18,7 @@ if(fs.existsSync(indexPath)){
           .replace('app.js?v=2.3.3','app.js?v=2.6.0')
           .replace('legacy-adapter.js?v=2.3.3','legacy-adapter.js?v=2.6.0')
           .replace('ai-view.js?v=2.3.3','ai-view.js?v=2.6.0');
- html=html.replace('</head>','<script src="estimated-investment-cost.js?v=1.2.0" defer></script><script src="news-notifications-ui.js?v=1.2.0" defer></script><script src="runtime-integrity.js?v=1.0.0" defer></script></head>');
+ html=html.replace('</head>','<script src="estimated-investment-cost.js?v=1.2.0" defer></script><script src="news-notifications-ui.js?v=1.3.0" defer></script><script src="runtime-integrity.js?v=1.0.0" defer></script></head>');
  fs.writeFileSync(indexPath,html);
 }
 for(const dir of ['daily-reports','period-reports']){

@@ -13,6 +13,10 @@ const countedFetch=provider=>async(...args)=>{
 };
 const market = JSON.parse(fs.readFileSync('market.json', 'utf8'));
 const news = JSON.parse(fs.readFileSync('news.json', 'utf8'));
+// Notifications are operational/general information for the news page. They are
+// intentionally excluded from investment AI context so a holiday, reminder or
+// general notice cannot be treated as a market-moving signal.
+const analysisNews={...news,items:(Array.isArray(news.items)?news.items:[]).filter(item=>item.category!=='notice')};
 let local = null;
 try { local = JSON.parse(fs.readFileSync('ai.json', 'utf8')); } catch { /* No local snapshot yet. */ }
 const models = { gemini: GEMINI_MODEL, openai: OPENAI_MODEL };
@@ -29,8 +33,8 @@ for (const [provider, remote] of published) {
 const transientGeminiFailure = report => report && !report.analysis && ['timeout', 'http_503'].includes(report.error_code);
 const geminiPrevious = transientGeminiFailure(prior.gemini) && budget.gemini < 4 ? null : prior.gemini;
 const [gemini, openai] = await Promise.all([
-  generateAnalysis({ market, news, apiKey: process.env.GEMINI_API_KEY, previous: geminiPrevious, now,fetchImpl:countedFetch('gemini') }),
-  generateOpenAI({ market, news, apiKey: process.env.OPENAI_API_KEY, previous: prior.openai, now,fetchImpl:countedFetch('openai') })
+  generateAnalysis({ market, news:analysisNews, apiKey: process.env.GEMINI_API_KEY, previous: geminiPrevious, now,fetchImpl:countedFetch('gemini') }),
+  generateOpenAI({ market, news:analysisNews, apiKey: process.env.OPENAI_API_KEY, previous: prior.openai, now,fetchImpl:countedFetch('openai') })
 ]);
 if(limited.gemini)gemini.error_code='daily_call_limit';if(limited.openai)openai.error_code='daily_call_limit';
 fs.writeFileSync('ai-budget.json',JSON.stringify(budget));

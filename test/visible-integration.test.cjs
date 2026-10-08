@@ -13,6 +13,7 @@ test('notifications integrate with the legacy news UI the user actually sees',()
  assert.match(s,/calendarNotices/);
  assert.match(s,/confirmed===true/);
  assert.match(s,/market-calendar\.json/);
+ assert.match(s,/box\.innerHTML!==next/);
  assert.doesNotMatch(s,/querySelector\('#assetFilter'\)/);
 });
 
@@ -27,10 +28,10 @@ test('estimated 0.7 percent cost attaches to visible legacy portfolio and stays 
 
 test('deployed shell loads fresh integration layers',()=>{
  const s=read('scripts/stage-pages.cjs');
- assert.match(s,/news-notifications-ui\.js\?v=1\.3\.0/);
+ assert.match(s,/news-notifications-ui\.js\?v=1\.4\.0/);
  assert.match(s,/estimated-investment-cost\.js\?v=1\.2\.0/);
  assert.match(s,/runtime-integrity\.js\?v=1\.0\.0/);
- assert.match(s,/app-build.*2026-10-08-r5/);
+ assert.match(s,/app-build.*2026-10-08-r6/);
 });
 
 test('visible report copy and market wording match actual dated-data policy',()=>{

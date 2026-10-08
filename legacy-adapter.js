@@ -21,7 +21,7 @@ function section(title,body){return '<section class="glass-card rounded-2xl p-3.
 function note(text){return '<div class="legacy-data-note">'+e(text)+'</div>';}
 function exportMenu(root,name){const drop=by(root,'exportDropdown_'+name);if(!drop)return;const buttons=drop.querySelectorAll('button');buttons.forEach((b,i)=>{b.removeAttribute('data-legacy-click');b.dataset.action=['excel','print','backup'][i]||'backup';});}
 function portfolioOriginal(){
- const root=fragment('portfolio'),p=C.portfolio(state,market),groups=grouped(p);
+ const root=fragment('portfolio'),p=C.portfolio(state,market),groups=grouped(p);for(const id of ['viewModeCardsBtn','viewModeCompactBtn']){const b=by(root,id);b?.classList.remove('text-[10px]','px-2.5');b?.classList.add('text-xs','px-3');}
  put(root,'p_thndr_grand_wealth',n(p.cashKnown?p.totalWealth:p.value,0));
  put(root,'liveUpdateBadge','⚡ أسعار مؤرخة');by(root,'liveUpdateBadge').title='جلسة '+market.session_date+'؛ ليست بثاً لحظياً';
  html(root,'p_thndr_grand_pnl','<span dir="ltr">'+(p.unrealized==null?'غير متاح':(p.unrealized>=0?'▲ +':'▼ -')+n(Math.abs(p.unrealized),0))+'</span>');
@@ -100,6 +100,9 @@ function researchOriginal(){
 }
 function toolsOriginal(){
  const root=fragment('tools'),p=C.portfolio(state,market);
+ const auditView=by(root,'toolSubViewAudit');if(auditView){auditView.querySelector('h2').textContent='فحص تكامل البرنامج والبيانات والحسابات';auditView.querySelector('h2').nextElementSibling.textContent='فحوص فعلية لكل صفحات التطبيق، مع تشخيص Gemini وإصلاحات محددة يعاد التحقق منها';const replacements={'محاسب قانوني معتمد SOCPA':'مراجعة دفتر العمليات','محلل مالي ومدقق شرعي':'مراجعة مصادر التحليل','فحص الـ DOM والبيانات وتزامن 49 رابطاً':'فحص الصفحات والوحدات والملفات والأزرار','توازن الميزانية بدقة 0.00 ج وإشارات المدين':'مطابقة الأرصدة والتكلفة والرسوم والتدفقات','القيمة العادلة، RSI، وضوابط AAOIFI':'التحقق من المدخلات والأدلة المؤرخة'};for(const el of auditView.querySelectorAll('h3,p'))if(replacements[el.textContent.trim()])el.textContent=replacements[el.textContent.trim()];}
+ const stepText={dom_code:'1. تكامل الصفحات والأزرار والملفات',stocks_data:'2. سلامة أسعار الأسهم وتواريخها',funds_nav:'3. مصادر أسعار الصناديق وحالة توثيقها',gold_fx:'4. اكتمال تقييم الأصول',news_links:'5. روابط الأخبار والتكرار',balance_sheet:'6. الأرصدة والتكلفة والتدفقات',analysis_rsi:'7. مصادر البحث وسلاسل OHLC',sharia_governance:'8. مستندات التصنيف الشرعي'};for(const [id,text]of Object.entries(stepText)){const box=by(root,'auditStep_'+id);if(box)box.lastElementChild.textContent=text;}
+ for(const x of root.querySelectorAll('span'))if(x.textContent.trim()==='7 في الألف وسياسة التنفيذ')x.textContent='رسوم التداول والإيداع';
  const nav=by(root,'toolSubTabAuditBtn').closest('.glass-card');const extraNav=document.createElement('div');extraNav.className='grid grid-cols-1 sm:grid-cols-3 gap-2';for(const [tab,icon,title]of [['dca','🧮','حاسبة التبريد'],['aichat','✨','المحادثة الذكية']]){extraNav.insertAdjacentHTML('beforeend','<button data-legacy-click="switchToolsSubTab(\''+tab+'\')" class="tool-subtab-btn flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 transition active:scale-95 border border-slate-700/70"><span class="text-xl">'+icon+'</span><div class="text-xs font-bold text-white">'+title+'</div></button>');}nav.append(extraNav);
  root.querySelectorAll('[id^="toolSubView"]').forEach(x=>x.classList.toggle('hidden',x.id.toLowerCase()!==('toolSubView'+ui.toolsTab).toLowerCase()));
  root.querySelectorAll('span').forEach(x=>{if(x.textContent.trim()==='0.70% رسوم ثندر')x.textContent='رسوم التنفيذ الفعلية';if(x.textContent.trim()==='SOCPA / AAOIFI')x.textContent='فحوص موثقة';});

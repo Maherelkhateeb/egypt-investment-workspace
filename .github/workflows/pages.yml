@@ -25,16 +25,17 @@ jobs:
       - run: node scripts/update-market-calendar.mjs
       - run: node scripts/import-legacy-reports.mjs
       - run: node scripts/generate-daily-report.mjs
+      - run: node scripts/update-market-from-report.mjs
       - run: node scripts/generate-period-reports.mjs
-      - name: Persist reviewed report archive
+      - name: Persist reviewed market and report archive
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add daily-reports period-reports daily-report.json report-sources 2>/dev/null || true
+          git add market.json daily-reports period-reports daily-report.json report-sources 2>/dev/null || true
           if git diff --cached --quiet; then
-            echo "No reviewed report changes to persist."
+            echo "No reviewed market/report changes to persist."
           else
-            git commit -m "chore(reports): persist reviewed reports [skip ci]"
+            git commit -m "chore(data): persist reviewed market and reports [skip ci]"
             git push
           fi
       - uses: actions/cache/restore@v4

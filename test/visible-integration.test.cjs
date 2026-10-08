@@ -27,12 +27,15 @@ test('estimated 0.7 percent cost attaches to visible legacy portfolio and stays 
  assert.match(s,/&quot;/);
 });
 
-test('deployed shell loads fresh integration layers',()=>{
+test('deployed shell loads fresh integration layers and Groq newsletter fallback',()=>{
  const s=read('scripts/stage-pages.cjs');
  assert.match(s,/news-notifications-ui\.js\?v=1\.4\.0/);
  assert.match(s,/estimated-investment-cost\.js\?v=1\.3\.0/);
  assert.match(s,/runtime-integrity\.js\?v=1\.1\.0/);
- assert.match(s,/app-build.*2026-10-08-r7/);
+ assert.match(s,/ai-view\.js\?v=2\.7\.0/);
+ assert.match(s,/data-ai-provider=\\"groq\\"/);
+ assert.match(s,/Groq · GPT-OSS 120B/);
+ assert.match(s,/app-build.*2026-10-08-r8/);
 });
 
 test('visible report copy and market wording match actual dated-data policy',()=>{

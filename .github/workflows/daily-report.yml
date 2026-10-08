@@ -40,7 +40,11 @@ jobs:
 
       - name: Generate daily report
         if: steps.cairo.outputs.run_report == 'true'
-        run: node scripts/generate-daily-report.mjs
+        run: |
+          node scripts/update-market-calendar.mjs
+          node scripts/import-legacy-reports.mjs
+          node scripts/generate-daily-report.mjs
+          node scripts/generate-period-reports.mjs
 
       - name: Commit daily report archive
         if: steps.cairo.outputs.run_report == 'true'
@@ -48,7 +52,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add daily-report.json daily-reports/
+          git add daily-report.json daily-reports/ period-reports/ market-calendar.json report-sources/
           if git diff --cached --quiet; then
             echo "No daily report changes to commit."
             exit 0

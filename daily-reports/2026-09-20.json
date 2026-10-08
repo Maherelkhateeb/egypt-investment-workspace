@@ -1,0 +1,127 @@
+{
+  "schema": 4,
+  "id": "2026-09-20",
+  "kind": "daily",
+  "report_type": "historical_partial",
+  "date": "2026-09-20",
+  "sessionDay": "الأحد",
+  "status": "لقطة إغلاق مؤرخة — مراجعة الحسابات والبيانات",
+  "title": "التقرير اليومي الشامل — الأحد 2026-09-20",
+  "subtitle": "تقرير أعده Codex من المصادر المؤرخة؛ تظهر حدود التغطية والمراجعة",
+  "prepared_by": "Codex",
+  "generated_from": {
+    "repository": "mahereasybakery-web/egypt-sharia-stock-report",
+    "commit": "77b0afcef49d6b4001b98a783baa270838851f93",
+    "file": "market_data.json",
+    "snapshot_updated_at": "2026-09-20T15:01:36.989141+03:00"
+  },
+  "audit": {
+    "audited": true,
+    "review_version": 4,
+    "audited_at": "2026-10-08T10:25:05.367Z",
+    "policy": "بيانات مفقودة = غير متاحة؛ لا اختلاق للشموع أو أسعار الصناديق أو تدفقات المستثمرين.",
+    "notes": [
+      "أعدّ Codex التقرير وراجع التاريخ وحساب نسب التغير واتساق الشموع ومصادر المقارنة. لا يعني اجتياز الحسابات اعتماد جميع أسعار المزود كسعر رسمي مستقل.",
+      "الأسهم ذات مرجع سابق مفقود لا تدخل إحصاء الصعود والهبوط. لا تُحسب نسبة التغير من سعر الافتتاح.",
+      "الأسعار المصححة من صور الوسيط تستخدم قيمة المشروع الجديد المؤرخة؛ بقية الأسعار لقطات مزود مؤرشفة مع بيان مصدرها.",
+      "رُصدت 1 نسبة مزود تختلف عن المقارنة بين الإغلاقات المختارة؛ عُرضت النسبة المعاد حسابها واحتُفظ بالقيمة الأصلية في سجل المراجعة.",
+      "لا تحتوي لقطة المصدر على أسعار صناديق؛ لم تُملأ من تاريخ لاحق."
+    ],
+    "issues": [
+      {
+        "ticker": "EGX33",
+        "code": "reported_change_mismatch",
+        "reported": -1.05,
+        "recalculated": 97.8
+      }
+    ]
+  },
+  "session_analysis": {
+    "headline": "جلسة الأحد: إيجابي للمؤشرات داخل التغطية المتاحة",
+    "nature": "داخل المقارنات المؤرخة المتاحة: 0 سهمًا صاعدًا، 0 هابطًا، 0 دون تغير، و0 دون مقارنة مكتملة.",
+    "liquidity": "أحجام التداول مأخوذة من لقطة المزود. تدفقات فئات المستثمرين غير متاحة ولا تُستنتج من تغير السعر.",
+    "tomorrow": "الموعد المعتاد التالي: 2026-09-21؛ يراجع التقويم الإجازات الموثقة ولا يفترض بثًا لحظيًا."
+  },
+  "stocks": {},
+  "indices": {
+    "EGX30": {
+      "name": "EGX30",
+      "open": null,
+      "close": 55371.5,
+      "previous_close": 55498.72,
+      "change_pct": -0.23,
+      "reported_change_pct": -0.23,
+      "session_date": "2026-09-20",
+      "source": null
+    },
+    "EGX33": {
+      "name": "EGX33",
+      "open": null,
+      "close": 6686.39,
+      "previous_close": 3380.45,
+      "change_pct": 97.8,
+      "reported_change_pct": -1.05,
+      "session_date": "2026-09-20",
+      "source": null
+    },
+    "EGX70": {
+      "name": "EGX70",
+      "open": null,
+      "close": 21063.3,
+      "previous_close": null,
+      "change_pct": null,
+      "reported_change_pct": 0.01,
+      "session_date": "2026-09-20",
+      "source": null
+    },
+    "EGX100": {
+      "name": "EGX100",
+      "open": null,
+      "close": 27633.2,
+      "previous_close": null,
+      "change_pct": null,
+      "reported_change_pct": -0.18,
+      "session_date": "2026-09-20",
+      "source": null
+    }
+  },
+  "funds": [],
+  "fx_gold": {
+    "usd_egp": {
+      "close": 52.08,
+      "chgPct": 0,
+      "session_date": null,
+      "observed_at": "2026-09-20T15:01:36.989141+03:00"
+    },
+    "gold_24k": {
+      "close": 4378.31,
+      "chgPct": 0.86,
+      "session_date": null,
+      "observed_at": "2026-09-20T15:01:36.989141+03:00"
+    }
+  },
+  "portfolio_analysis": [],
+  "market_summary": {
+    "stocks_with_change": 0,
+    "stocks_without_change": 0,
+    "gainers": 0,
+    "losers": 0,
+    "flat": 0,
+    "best": null,
+    "worst": null,
+    "top_gainers": [],
+    "top_losers": [],
+    "average_index_change": 48.78,
+    "index_bias": "إيجابي"
+  },
+  "coverage": {
+    "stocks": 0,
+    "indices": 4,
+    "funds": 0,
+    "valid_ohlc": 0,
+    "comparisons": 0,
+    "source_complete": false
+  },
+  "sources": [],
+  "disclaimer": "تحليل معلوماتي تاريخي، مع حدود مصادره، وليس توصية شراء أو بيع."
+}

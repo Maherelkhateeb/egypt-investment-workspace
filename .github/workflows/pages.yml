@@ -22,7 +22,10 @@ jobs:
           node-version: '22'
       - run: npm test
       - run: node scripts/update-news.mjs
+      - run: node scripts/update-market-calendar.mjs
       - run: node scripts/import-legacy-reports.mjs
+      - run: node scripts/generate-daily-report.mjs
+      - run: node scripts/generate-period-reports.mjs
       - uses: actions/cache/restore@v4
         with:
           path: ai-budget.json

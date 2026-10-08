@@ -1,41 +1,192 @@
 {
-  "schema": 3,
+  "schema": 4,
   "reports": [
     {
-      "date": "2026-10-04",
-      "label": "تقرير الأحد 2026-10-04",
-      "sessionDay": "الأحد",
+      "date": "2026-09-16",
+      "label": "التقرير اليومي الشامل — الأربعاء 2026-09-16",
+      "sessionDay": "الأربعاء",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "historical_partial",
+      "file": "daily-reports/2026-09-16.json",
+      "source_commit": "5931c5d72c41f8b87d0402b9c0d6eea3c8d9ad19"
+    },
+    {
+      "date": "2026-09-17",
+      "label": "التقرير اليومي الشامل — الخميس 2026-09-17",
+      "sessionDay": "الخميس",
+      "kind": "daily",
       "audited": true,
       "complete": true,
+      "report_type": "reviewed_eod",
+      "file": "daily-reports/2026-09-17.json",
+      "source_commit": "fd1a04afc930b30c78d2697219a0afde3bc6d940"
+    },
+    {
+      "date": "2026-09-20",
+      "label": "التقرير اليومي الشامل — الأحد 2026-09-20",
+      "sessionDay": "الأحد",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "historical_partial",
+      "file": "daily-reports/2026-09-20.json",
+      "source_commit": "77b0afcef49d6b4001b98a783baa270838851f93"
+    },
+    {
+      "date": "2026-09-21",
+      "label": "التقرير اليومي الشامل — الاثنين 2026-09-21",
+      "sessionDay": "الاثنين",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "historical_partial",
+      "file": "daily-reports/2026-09-21.json",
+      "source_commit": "9f451c1943ad6b973bd672adc4a6dbf59053f7f5"
+    },
+    {
+      "date": "2026-09-22",
+      "label": "التقرير اليومي الشامل — الثلاثاء 2026-09-22",
+      "sessionDay": "الثلاثاء",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "historical_partial",
+      "file": "daily-reports/2026-09-22.json",
+      "source_commit": "7e04176ca57c88c522dd74254e938924465c8504"
+    },
+    {
+      "date": "2026-09-23",
+      "label": "التقرير اليومي الشامل — الأربعاء 2026-09-23",
+      "sessionDay": "الأربعاء",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "historical_partial",
+      "file": "daily-reports/2026-09-23.json",
+      "source_commit": "b4d75af3e965ba8428941fa03d18bc7fe0740f21"
+    },
+    {
+      "date": "2026-09-24",
+      "label": "التقرير اليومي الشامل — الخميس 2026-09-24",
+      "sessionDay": "الخميس",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "historical_partial",
+      "file": "daily-reports/2026-09-24.json",
+      "source_commit": "a7ac563ccb8b055e870c3b8a974175c3cee0e627"
+    },
+    {
+      "date": "2026-09-27",
+      "label": "التقرير اليومي الشامل — الأحد 2026-09-27",
+      "sessionDay": "الأحد",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "reviewed_eod",
+      "file": "daily-reports/2026-09-27.json",
+      "source_commit": "8c06791478484257a9c1ba1e247341188f3b7307"
+    },
+    {
+      "date": "2026-09-28",
+      "label": "التقرير اليومي الشامل — الاثنين 2026-09-28",
+      "sessionDay": "الاثنين",
+      "kind": "daily",
+      "audited": true,
+      "complete": true,
+      "report_type": "reviewed_eod",
+      "file": "daily-reports/2026-09-28.json",
+      "source_commit": "8d4aabc51cf483b1e321ed296f52940f9db33300"
+    },
+    {
+      "date": "2026-09-29",
+      "label": "التقرير اليومي الشامل — الثلاثاء 2026-09-29",
+      "sessionDay": "الثلاثاء",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "reviewed_eod",
+      "file": "daily-reports/2026-09-29.json",
+      "source_commit": "a3f4e56b1979d43577d089da62c1f2feebdade89"
+    },
+    {
+      "date": "2026-09-30",
+      "label": "التقرير اليومي الشامل — الأربعاء 2026-09-30",
+      "sessionDay": "الأربعاء",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "reviewed_eod",
+      "file": "daily-reports/2026-09-30.json",
+      "source_commit": "fcdc84d6ffa4b1e72b58cb129b56601517771ab0"
+    },
+    {
+      "date": "2026-10-01",
+      "label": "التقرير اليومي الشامل — الخميس 2026-10-01",
+      "sessionDay": "الخميس",
+      "kind": "daily",
+      "audited": true,
+      "complete": false,
+      "report_type": "reviewed_eod",
+      "file": "daily-reports/2026-10-01.json",
+      "source_commit": "2cc62f22d78c3468d36f97e16c655eb9ef8c2b75"
+    },
+    {
+      "date": "2026-10-04",
+      "label": "التقرير اليومي الشامل — الأحد 2026-10-04",
+      "sessionDay": "الأحد",
+      "kind": "daily",
+      "audited": true,
+      "complete": true,
+      "report_type": "reviewed_eod",
       "file": "daily-reports/2026-10-04.json",
       "source_commit": "d0c5c0b31dcfc6078c42da8f8be3e7811554eac9"
     },
     {
       "date": "2026-10-05",
-      "label": "تقرير الاثنين 2026-10-05",
+      "label": "التقرير اليومي الشامل — الاثنين 2026-10-05",
       "sessionDay": "الاثنين",
+      "kind": "daily",
       "audited": true,
       "complete": true,
+      "report_type": "reviewed_eod",
       "file": "daily-reports/2026-10-05.json",
       "source_commit": "30c5c842d762f72203a061dee132e909ead730a8"
     },
     {
       "date": "2026-10-06",
-      "label": "تقرير الثلاثاء 2026-10-06",
+      "label": "التقرير اليومي الشامل — الثلاثاء 2026-10-06",
       "sessionDay": "الثلاثاء",
+      "kind": "daily",
       "audited": true,
       "complete": true,
+      "report_type": "reviewed_eod",
       "file": "daily-reports/2026-10-06.json",
       "source_commit": "63df5ab7a850a35fe973713eef7d449cfdbe217c"
     },
     {
       "date": "2026-10-07",
-      "label": "تقرير الأربعاء 2026-10-07",
+      "label": "التقرير اليومي الشامل — الأربعاء 2026-10-07",
       "sessionDay": "الأربعاء",
+      "kind": "daily",
       "audited": true,
       "complete": true,
+      "report_type": "reviewed_eod",
       "file": "daily-reports/2026-10-07.json",
       "source_commit": "2f96348aad1b1d13a62f4b2f2fe99dcb60b74a4d"
+    },
+    {
+      "date": "2026-10-08",
+      "label": "التقرير اليومي — الخميس 2026-10-08",
+      "sessionDay": "الخميس",
+      "kind": "daily",
+      "audited": true,
+      "complete": true,
+      "report_type": "non_trading_day",
+      "file": "daily-reports/2026-10-08.json",
+      "source_commit": null
     }
   ]
 }

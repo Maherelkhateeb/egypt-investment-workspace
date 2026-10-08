@@ -1,0 +1,40 @@
+{
+  "commit": "9f451c1943ad6b973bd672adc4a6dbf59053f7f5",
+  "snapshot": {
+    "updated_at": "2026-09-21T15:05:57.458825+03:00",
+    "indices": {
+      "EGX33": {
+        "close": 3380.45,
+        "chgPct": 1.15
+      },
+      "EGX30": {
+        "close": 54994.3,
+        "chgPct": -0.68
+      },
+      "EGX33 الشريعة": {
+        "close": 6619.35,
+        "chgPct": -0.92
+      },
+      "EGX70 EWI": {
+        "close": 20480.6,
+        "chgPct": -2.77
+      },
+      "EGX100 EWI": {
+        "close": 26999.4,
+        "chgPct": -2.29
+      }
+    },
+    "stocks": {},
+    "funds": {},
+    "fx_gold": {
+      "usd_egp": {
+        "close": 51.82,
+        "chgPct": -0.5
+      },
+      "gold_24k": {
+        "close": 4369.14,
+        "chgPct": -0.19
+      }
+    }
+  }
+}

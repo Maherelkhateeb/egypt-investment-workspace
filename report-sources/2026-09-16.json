@@ -1,0 +1,40 @@
+{
+  "commit": "5931c5d72c41f8b87d0402b9c0d6eea3c8d9ad19",
+  "snapshot": {
+    "updated_at": "2026-09-16T13:45:00Z",
+    "indices": {
+      "EGX33": {
+        "name": "مؤشر الشريعة EGX 33",
+        "close": 3380.45,
+        "chgPct": 1.15,
+        "status": "bullish"
+      },
+      "EGX30": {
+        "name": "مؤشر EGX 30",
+        "close": 31450.2,
+        "chgPct": 0.82,
+        "status": "bullish"
+      },
+      "EGX70": {
+        "name": "مؤشر الشركات الصغيرة EGX 70",
+        "close": 7820.15,
+        "chgPct": 1.45,
+        "status": "bullish"
+      }
+    },
+    "stocks": {},
+    "funds": {},
+    "fx_gold": {
+      "usd_egp": {
+        "close": 52.15,
+        "chgPct": 0.46,
+        "unit": "ج.م"
+      },
+      "gold_24k": {
+        "close": 4340.91,
+        "chgPct": 1.11,
+        "unit": "ج.م/جرام"
+      }
+    }
+  }
+}

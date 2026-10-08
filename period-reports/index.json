@@ -1,0 +1,65 @@
+{
+  "schema": 4,
+  "reports": [
+    {
+      "id": "2026-09-13",
+      "date": "2026-09-19",
+      "kind": "weekly",
+      "label": "2026-09-13 — 2026-09-19",
+      "sessionDay": "الأسبوع",
+      "file": "period-reports/weekly/2026-09-13.json",
+      "final": true,
+      "complete": false
+    },
+    {
+      "id": "2026-09-20",
+      "date": "2026-09-26",
+      "kind": "weekly",
+      "label": "2026-09-20 — 2026-09-26",
+      "sessionDay": "الأسبوع",
+      "file": "period-reports/weekly/2026-09-20.json",
+      "final": true,
+      "complete": false
+    },
+    {
+      "id": "2026-09-27",
+      "date": "2026-10-03",
+      "kind": "weekly",
+      "label": "2026-09-27 — 2026-10-03",
+      "sessionDay": "الأسبوع",
+      "file": "period-reports/weekly/2026-09-27.json",
+      "final": true,
+      "complete": false
+    },
+    {
+      "id": "2026-10-04",
+      "date": "2026-10-10",
+      "kind": "weekly",
+      "label": "2026-10-04 — 2026-10-10",
+      "sessionDay": "الأسبوع",
+      "file": "period-reports/weekly/2026-10-04.json",
+      "final": false,
+      "complete": true
+    },
+    {
+      "id": "2026-09",
+      "date": "2026-09-30",
+      "kind": "monthly",
+      "label": "2026-09",
+      "sessionDay": "الشهر",
+      "file": "period-reports/monthly/2026-09.json",
+      "final": true,
+      "complete": false
+    },
+    {
+      "id": "2026-10",
+      "date": "2026-10-31",
+      "kind": "monthly",
+      "label": "2026-10",
+      "sessionDay": "الشهر",
+      "file": "period-reports/monthly/2026-10.json",
+      "final": false,
+      "complete": false
+    }
+  ]
+}

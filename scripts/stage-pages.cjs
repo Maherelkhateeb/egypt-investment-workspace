@@ -10,16 +10,26 @@ for(const f of ['market-calendar.js','market-calendar-ui.js','market-calendar.js
 const indexPath='_site/index.html';
 if(fs.existsSync(indexPath)){
  let html=fs.readFileSync(indexPath,'utf8');
- html=html.replace('<meta charset="utf-8">','<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="app-build" content="2026-10-08-r7">');
+ html=html.replace('<meta charset="utf-8">','<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="app-build" content="2026-10-08-r8">');
  html=html.replace('report-availability.js?v=2.3.3','report-availability.js?v=2.6.0')
           .replace('report-periods.js?v=2.3.3','report-periods.js?v=2.6.0')
           .replace('daily-report-view.js?v=2.3.3','daily-report-view.js?v=2.6.0')
           .replace('legacy-report-layout.js?v=2.3.3','legacy-report-layout.js?v=2.6.0')
           .replace('app.js?v=2.3.3','app.js?v=2.6.0')
           .replace('legacy-adapter.js?v=2.3.3','legacy-adapter.js?v=2.6.0')
-          .replace('ai-view.js?v=2.3.3','ai-view.js?v=2.6.0');
+          .replace('ai-view.js?v=2.3.3','ai-view.js?v=2.7.0');
  html=html.replace('</head>','<script src="estimated-investment-cost.js?v=1.3.0" defer></script><script src="news-notifications-ui.js?v=1.4.0" defer></script><script src="runtime-integrity.js?v=1.1.0" defer></script></head>');
  fs.writeFileSync(indexPath,html);
+}
+// The newsletter UI supports the additional scheduled Groq provider. Interactive
+// chat remains limited to providers implemented by the separate private bridge.
+const aiViewPath='_site/ai-view.js';
+if(fs.existsSync(aiViewPath)){
+ let js=fs.readFileSync(aiViewPath,'utf8');
+ js=js.replace("const label=p=>p==='openai'?'ChatGPT · OpenAI':'Gemini';","const label=p=>p==='openai'?'ChatGPT · OpenAI':p==='groq'?'Groq · GPT-OSS 120B':'Gemini';");
+ js=js.replace("providers:{gemini:{status:'failed',message:'تعذر تحميل حالة الخدمة'},openai:{status:'failed',message:'تعذر تحميل حالة الخدمة'}}","providers:{gemini:{status:'failed',message:'تعذر تحميل حالة الخدمة'},groq:{status:'failed',message:'تعذر تحميل حالة الخدمة'},openai:{status:'failed',message:'تعذر تحميل حالة الخدمة'}}");
+ js=js.replace('<button data-ai-provider="gemini">Gemini</button><button data-ai-provider="openai">OpenAI</button>','<button data-ai-provider="gemini">Gemini</button><button data-ai-provider="groq">Groq · GPT-OSS</button><button data-ai-provider="openai">OpenAI</button>');
+ fs.writeFileSync(aiViewPath,js);
 }
 for(const dir of ['daily-reports','period-reports']){
  if(!fs.existsSync(dir+'/index.json'))continue;

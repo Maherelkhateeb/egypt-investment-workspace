@@ -31,6 +31,8 @@ jobs:
           path: ai-budget.json
           key: ai-call-budget-${{ github.repository_id }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: ai-call-budget-${{ github.repository_id }}-
+      - name: Select stable Gemini fallback
+        run: sed -i "s/export const MODEL = 'gemini-3.8-flash';/export const MODEL = 'gemini-3.7-flash';/" ai.mjs
       - name: Generate public evidence analysis with Gemini
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

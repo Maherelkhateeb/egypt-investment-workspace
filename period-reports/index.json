@@ -9,7 +9,12 @@
       "sessionDay": "الأسبوع",
       "file": "period-reports/weekly/2026-09-13.json",
       "final": true,
-      "complete": false
+      "audited": true,
+      "complete": false,
+      "report_type": "weekly_summary",
+      "source_commit": null,
+      "generated_at": "2026-10-08T11:12:00.982Z",
+      "available_after_cairo": "2026-09-20T00:00:00"
     },
     {
       "id": "2026-09-20",
@@ -19,7 +24,12 @@
       "sessionDay": "الأسبوع",
       "file": "period-reports/weekly/2026-09-20.json",
       "final": true,
-      "complete": false
+      "audited": true,
+      "complete": false,
+      "report_type": "weekly_summary",
+      "source_commit": null,
+      "generated_at": "2026-10-08T11:12:00.985Z",
+      "available_after_cairo": "2026-09-27T00:00:00"
     },
     {
       "id": "2026-09-27",
@@ -29,17 +39,12 @@
       "sessionDay": "الأسبوع",
       "file": "period-reports/weekly/2026-09-27.json",
       "final": true,
-      "complete": false
-    },
-    {
-      "id": "2026-10-04",
-      "date": "2026-10-10",
-      "kind": "weekly",
-      "label": "2026-10-04 — 2026-10-10",
-      "sessionDay": "الأسبوع",
-      "file": "period-reports/weekly/2026-10-04.json",
-      "final": false,
-      "complete": true
+      "audited": true,
+      "complete": false,
+      "report_type": "weekly_summary",
+      "source_commit": null,
+      "generated_at": "2026-10-08T11:12:00.986Z",
+      "available_after_cairo": "2026-10-04T00:00:00"
     },
     {
       "id": "2026-09",
@@ -49,17 +54,12 @@
       "sessionDay": "الشهر",
       "file": "period-reports/monthly/2026-09.json",
       "final": true,
-      "complete": false
-    },
-    {
-      "id": "2026-10",
-      "date": "2026-10-31",
-      "kind": "monthly",
-      "label": "2026-10",
-      "sessionDay": "الشهر",
-      "file": "period-reports/monthly/2026-10.json",
-      "final": false,
-      "complete": false
+      "audited": true,
+      "complete": false,
+      "report_type": "monthly_summary",
+      "source_commit": null,
+      "generated_at": "2026-10-08T11:12:00.997Z",
+      "available_after_cairo": "2026-10-01T00:00:00"
     }
   ]
 }

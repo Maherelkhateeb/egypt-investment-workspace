@@ -1,9 +1,12 @@
 import fs from 'node:fs';
 import Calendar from '../market-calendar.js';
+import Availability from '../report-availability.js';
 import {nonSessionReport,reviewSnapshot} from './report-review.mjs';
 const calendar=Calendar.validate(JSON.parse(fs.readFileSync('market-calendar.json','utf8'))),today=Calendar.cairoDate(),market=JSON.parse(fs.readFileSync('market.json','utf8')),index=JSON.parse(fs.readFileSync('daily-reports/index.json','utf8'));
+const now=new Date();
+if(Availability.localTime(now)<today+'T16:00:00'){console.log('Waiting for the actual Cairo daily close time:',today);process.exit(0);}
 const file='daily-reports/'+today+'.json',previousMeta=index.reports.filter(m=>m.date<today&&m.report_type!=='non_trading_day').at(-1),previous=previousMeta?JSON.parse(fs.readFileSync(previousMeta.file,'utf8')):null;
-if(fs.existsSync(file)){const existing=JSON.parse(fs.readFileSync(file,'utf8'));if(existing.audit?.review_version>=4&&existing.report_type!=='pending_session'){fs.writeFileSync('daily-report.json',JSON.stringify(existing,null,2)+'\n');console.log('Preserving reviewed report',today);process.exit(0);}}
+if(fs.existsSync(file)){const existing=JSON.parse(fs.readFileSync(file,'utf8'));if(existing.audit?.review_version>=4&&Availability.eligible(Availability.metadata(existing,file),existing,now)){fs.writeFileSync('daily-report.json',JSON.stringify(existing,null,2)+'\n');console.log('Preserving reviewed report',today);process.exit(0);}}
 // A stale snapshot can never create a new day's close. Closed days get a dated holiday bulletin.
 let report=nonSessionReport(today,calendar,previous);
 const hour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Cairo',hour:'2-digit',hourCycle:'h23'}).format(new Date()));
@@ -23,8 +26,9 @@ if(Calendar.status(calendar,today).state==='UNKNOWN'&&hour>=16){
  }catch(err){report.audit.notes.push('لم يعتمد إغلاق جديد: '+err.message);}
 }
 if(Calendar.status(calendar,today).state==='UNKNOWN'&&market.session_date===today)report.audit.notes.push('يوجد ملف سوق لليوم، لكنه لا يحتوي لقطة إغلاق كاملة ذات مراجعة؛ ينتظر التقرير المصدر الموثق.');
+if(report.report_type==='pending_session'){console.log('No verified close file; daily report was not published:',today);process.exit(0);}
 fs.writeFileSync(file,JSON.stringify(report,null,2)+'\n');fs.writeFileSync('daily-report.json',JSON.stringify(report,null,2)+'\n');
-const meta={date:today,label:report.title,sessionDay:report.sessionDay,kind:'daily',audited:true,complete:report.report_type==='non_trading_day'||report.coverage?.source_complete===true,report_type:report.report_type,file,source_commit:report.generated_from?.commit||null};
+const meta=Availability.metadata(report,file);
 const at=index.reports.findIndex(r=>r.date===today);if(at<0)index.reports.push(meta);else index.reports[at]=meta;
 index.schema=4;index.reports.sort((a,b)=>a.date.localeCompare(b.date));fs.writeFileSync('daily-reports/index.json',JSON.stringify(index,null,2)+'\n');
 console.log('Generated calendar-aware daily bulletin:',today,report.report_type);

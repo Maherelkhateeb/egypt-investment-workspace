@@ -24,14 +24,15 @@ test('estimated 0.7 percent cost attaches to visible legacy portfolio and stays 
  assert.match(s,/صافي أرصدتها كما هي/);
  assert.match(s,/لا تُخصم مرة أخرى/);
  assert.match(s,/state\.importMeta/);
+ assert.match(s,/&quot;/);
 });
 
 test('deployed shell loads fresh integration layers',()=>{
  const s=read('scripts/stage-pages.cjs');
  assert.match(s,/news-notifications-ui\.js\?v=1\.4\.0/);
- assert.match(s,/estimated-investment-cost\.js\?v=1\.2\.0/);
- assert.match(s,/runtime-integrity\.js\?v=1\.0\.0/);
- assert.match(s,/app-build.*2026-10-08-r6/);
+ assert.match(s,/estimated-investment-cost\.js\?v=1\.3\.0/);
+ assert.match(s,/runtime-integrity\.js\?v=1\.1\.0/);
+ assert.match(s,/app-build.*2026-10-08-r7/);
 });
 
 test('visible report copy and market wording match actual dated-data policy',()=>{
@@ -39,6 +40,14 @@ test('visible report copy and market wording match actual dated-data policy',()=
  assert.match(s,/الأسبوعي بعد إغلاق الخميس 16:00 بتوقيت القاهرة/);
  assert.match(s,/الأسعار والمؤشرات.*لقطات مؤرخة/);
  assert.doesNotMatch(s,/البورصة المصرية: أسعار حية 100%.*البورصة المصرية: أسعار حية 100%/);
+});
+
+test('unbound legacy financial numbers are replaced by verified market or portfolio data',()=>{
+ const s=read('runtime-integrity.js');
+ for(const id of ['p_thndr_stocks_card','p_thndr_funds_card','stocksSubtotalBadge','fundsSubtotalBadge','macroEgx30Val','macroEgx33Val','matrix-price-CMS','matrix-price-AZG'])assert.match(s,new RegExp(id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+ assert.match(s,/fetch\('market\.json'/);
+ assert.match(s,/InvestCore/);
+ assert.match(s,/لا تعرض هذه الخانة رقمًا قديمًا من القالب/);
 });
 
 test('report creation policy itself remains gated by Cairo close and Thursday week end',()=>{

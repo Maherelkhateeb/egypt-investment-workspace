@@ -240,6 +240,21 @@
       "source_commit": "2f96348aad1b1d13a62f4b2f2fe99dcb60b74a4d",
       "generated_at": "2026-10-08T10:25:05.391Z",
       "available_after_cairo": "2026-10-07T16:00:00"
+    },
+    {
+      "id": "2026-10-08",
+      "date": "2026-10-08",
+      "kind": "daily",
+      "label": "التقرير اليومي — الخميس 2026-10-08",
+      "sessionDay": "الخميس",
+      "file": "daily-reports/2026-10-08.json",
+      "final": true,
+      "audited": true,
+      "complete": true,
+      "report_type": "non_trading_day",
+      "source_commit": null,
+      "generated_at": "2026-10-08T17:47:15.971Z",
+      "available_after_cairo": "2026-10-08T16:00:00"
     }
   ]
 }

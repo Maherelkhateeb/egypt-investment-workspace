@@ -1,21 +1,22 @@
 {
   "schema": 4,
+  "generated_at": "2026-10-08T17:47:16.082Z",
   "id": "2026-10-04",
   "kind": "weekly",
-  "date": "2026-10-10",
+  "date": "2026-10-08",
   "period_start": "2026-10-04",
-  "period_end": "2026-10-10",
-  "period_final": false,
+  "period_end": "2026-10-08",
+  "period_final": true,
   "report_type": "weekly_summary",
   "sessionDay": "الأسبوع",
   "status": "ملخص الفترة — تغطية الجلسات مكتملة",
-  "title": "التقرير الأسبوعي الشامل — 2026-10-04 إلى 2026-10-10",
+  "title": "التقرير الأسبوعي الشامل — 2026-10-04 إلى 2026-10-08",
   "subtitle": "4 تقريرًا يوميًا من 4 جلسة متوقعة حتى 2026-10-08",
   "prepared_by": "Codex",
   "generated_from": {
     "repository": "Maherelkhateeb/egypt-investment-workspace",
     "file": "daily-reports/index.json",
-    "snapshot_updated_at": "2026-10-08T10:25:05.571Z"
+    "snapshot_updated_at": "2026-10-08T17:47:16.082Z"
   },
   "components": [
     {
@@ -59,6 +60,7 @@
     "policy": "تجميع زمني بلا تكرار؛ المقارنات الناقصة لا تُستبدل بصفر.",
     "notes": [
       "أعدّ Codex هذا الملخص من التقارير اليومية المراجعة، والتقرير الشهري من أيام التقارير الأسبوعية دون تكرار.",
+      "الأسبوع التداولي للبورصة المصرية في هذا النظام هو الأحد إلى الخميس؛ الجمعة والسبت لا يدخلان في التقرير الأسبوعي.",
       "عائد الفترة = إغلاق آخر جلسة ÷ الإغلاق السابق لأول جلسة − 1. لا تُجمع النسب اليومية أو الأسبوعية.",
       "الأحجام تجمع مرة واحدة لكل يوم؛ الحجم الكلي غير متاح إن نقص يوم أو رقم. لا تجمع قيم RSI أو أسعار الأسهم أو معدلات العائد السنوي.",
       "حُجبت عوائد الفترة للأصول ذات تغير أساس السعر حتى توفر سلسلة معدلة موثقة."
@@ -105,6 +107,9 @@
       "period_last_price": 87.89,
       "known_volume": 8213716,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 88.61,
+      "observed_change_pct": -0.81,
       "observed_sessions": 4
     },
     "SWDY": {
@@ -141,6 +146,9 @@
       "period_last_price": 116,
       "known_volume": 1855654,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 120.09,
+      "observed_change_pct": -3.41,
       "observed_sessions": 4
     },
     "ORAS": {
@@ -177,6 +185,9 @@
       "period_last_price": 877.02,
       "known_volume": 1219088,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 830,
+      "observed_change_pct": 5.67,
       "observed_sessions": 4
     },
     "ISPH": {
@@ -213,6 +224,9 @@
       "period_last_price": 11.7,
       "known_volume": 16269629,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 12.05,
+      "observed_change_pct": -2.9,
       "observed_sessions": 4
     },
     "ETEL": {
@@ -249,6 +263,9 @@
       "period_last_price": 148,
       "known_volume": 7121882,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 149.08,
+      "observed_change_pct": -0.72,
       "observed_sessions": 4
     },
     "AMOC": {
@@ -285,6 +302,9 @@
       "period_last_price": 14.48,
       "known_volume": 54033174,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 13.9,
+      "observed_change_pct": 4.17,
       "observed_sessions": 4
     },
     "ABUK": {
@@ -321,6 +341,9 @@
       "period_last_price": 90,
       "known_volume": 2521282,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 88.75,
+      "observed_change_pct": 1.41,
       "observed_sessions": 4
     },
     "MFPC": {
@@ -357,6 +380,9 @@
       "period_last_price": 46.5,
       "known_volume": 3000351,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 47.11,
+      "observed_change_pct": -1.29,
       "observed_sessions": 4
     },
     "SKPC": {
@@ -393,6 +419,9 @@
       "period_last_price": 16.19,
       "known_volume": 17562351,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 16.25,
+      "observed_change_pct": -0.37,
       "observed_sessions": 4
     },
     "JUFO": {
@@ -429,6 +458,9 @@
       "period_last_price": 25,
       "known_volume": 2588472,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 25.51,
+      "observed_change_pct": -2,
       "observed_sessions": 4
     },
     "EFID": {
@@ -465,6 +497,9 @@
       "period_last_price": 19.07,
       "known_volume": 9289569,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 19.37,
+      "observed_change_pct": -1.55,
       "observed_sessions": 4
     },
     "ADIB": {
@@ -501,6 +536,9 @@
       "period_last_price": 47.8,
       "known_volume": 6189614,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 49.9,
+      "observed_change_pct": -4.21,
       "observed_sessions": 4
     },
     "SAUD": {
@@ -537,6 +575,9 @@
       "period_last_price": 23.12,
       "known_volume": 1293477,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 23.91,
+      "observed_change_pct": -3.3,
       "observed_sessions": 4
     },
     "OCDI": {
@@ -573,6 +614,9 @@
       "period_last_price": 27.32,
       "known_volume": 5743941,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 27.26,
+      "observed_change_pct": 0.22,
       "observed_sessions": 4
     },
     "PHDC": {
@@ -609,6 +653,9 @@
       "period_last_price": 12.93,
       "known_volume": 30414556,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 13.19,
+      "observed_change_pct": -1.97,
       "observed_sessions": 4
     },
     "COMI": {
@@ -645,6 +692,9 @@
       "period_last_price": 124.65,
       "known_volume": 12120099,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 127.04,
+      "observed_change_pct": -1.88,
       "observed_sessions": 4
     },
     "FWRY": {
@@ -681,6 +731,9 @@
       "period_last_price": 19.06,
       "known_volume": 45290844,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 19.1,
+      "observed_change_pct": -0.21,
       "observed_sessions": 4
     },
     "EFIH": {
@@ -717,6 +770,9 @@
       "period_last_price": 25.23,
       "known_volume": 20013124,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 23.97,
+      "observed_change_pct": 5.26,
       "observed_sessions": 4
     },
     "EGAL": {
@@ -753,6 +809,9 @@
       "period_last_price": 339.4,
       "known_volume": 1077256,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 345,
+      "observed_change_pct": -1.62,
       "observed_sessions": 4
     },
     "ORHD": {
@@ -789,6 +848,9 @@
       "period_last_price": 12,
       "known_volume": 18315633,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 39.31,
+      "observed_change_pct": null,
       "observed_sessions": 4
     },
     "MCQE": {
@@ -825,6 +887,9 @@
       "period_last_price": 196.73,
       "known_volume": 2702382,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 219.45,
+      "observed_change_pct": -10.35,
       "observed_sessions": 4
     },
     "ACGC": {
@@ -861,6 +926,9 @@
       "period_last_price": 14.33,
       "known_volume": 1739194,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 14.58,
+      "observed_change_pct": -1.71,
       "observed_sessions": 4
     },
     "ARCC": {
@@ -897,6 +965,9 @@
       "period_last_price": 71.07,
       "known_volume": 3366809,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 73.43,
+      "observed_change_pct": -3.21,
       "observed_sessions": 4
     },
     "ATQA": {
@@ -933,6 +1004,9 @@
       "period_last_price": 12.25,
       "known_volume": 21844981,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 11.73,
+      "observed_change_pct": 4.43,
       "observed_sessions": 4
     },
     "RMDA": {
@@ -969,6 +1043,9 @@
       "period_last_price": 5.41,
       "known_volume": 16213508,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 5.56,
+      "observed_change_pct": -2.7,
       "observed_sessions": 4
     },
     "GBCO": {
@@ -1005,6 +1082,9 @@
       "period_last_price": 31.01,
       "known_volume": 18502781,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 32.37,
+      "observed_change_pct": -4.2,
       "observed_sessions": 4
     },
     "LCSW": {
@@ -1041,6 +1121,9 @@
       "period_last_price": 34.85,
       "known_volume": 4317373,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 33.44,
+      "observed_change_pct": 4.22,
       "observed_sessions": 4
     },
     "HELI": {
@@ -1077,6 +1160,9 @@
       "period_last_price": 7.49,
       "known_volume": 26394410,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 7.48,
+      "observed_change_pct": 0.13,
       "observed_sessions": 4
     },
     "CIEB": {
@@ -1113,6 +1199,9 @@
       "period_last_price": 24.29,
       "known_volume": 483478,
       "volume_sessions": 2,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 24.39,
+      "observed_change_pct": -0.41,
       "observed_sessions": 2
     },
     "ESRS": {
@@ -1149,6 +1238,9 @@
       "period_last_price": 141,
       "known_volume": 13026,
       "volume_sessions": 2,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 141,
+      "observed_change_pct": 0,
       "observed_sessions": 2
     },
     "CLHO": {
@@ -1185,6 +1277,9 @@
       "period_last_price": 15.25,
       "known_volume": 5022034,
       "volume_sessions": 2,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 16.05,
+      "observed_change_pct": -4.98,
       "observed_sessions": 2
     },
     "CERA": {
@@ -1221,6 +1316,9 @@
       "period_last_price": 1.38,
       "known_volume": 572351726,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 1.45,
+      "observed_change_pct": -4.83,
       "observed_sessions": 4
     },
     "CIRA": {
@@ -1257,6 +1355,9 @@
       "period_last_price": 39.42,
       "known_volume": 3008646,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 39.85,
+      "observed_change_pct": -1.08,
       "observed_sessions": 4
     },
     "EAST": {
@@ -1293,6 +1394,9 @@
       "period_last_price": 28.21,
       "known_volume": 6960647,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 29.56,
+      "observed_change_pct": -4.57,
       "observed_sessions": 4
     },
     "FAIT": {
@@ -1329,6 +1433,9 @@
       "period_last_price": 45.59,
       "known_volume": 219453,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 45,
+      "observed_change_pct": 1.31,
       "observed_sessions": 4
     },
     "ICFC": {
@@ -1365,6 +1472,9 @@
       "period_last_price": 23.2,
       "known_volume": 3746779,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 22.96,
+      "observed_change_pct": 1.05,
       "observed_sessions": 4
     },
     "MASR": {
@@ -1401,6 +1511,9 @@
       "period_last_price": 7.86,
       "known_volume": 23919254,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 7.77,
+      "observed_change_pct": 1.16,
       "observed_sessions": 4
     },
     "ORWE": {
@@ -1437,6 +1550,9 @@
       "period_last_price": 27.14,
       "known_volume": 4593671,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 27.8,
+      "observed_change_pct": -2.37,
       "observed_sessions": 4
     },
     "ALCN": {
@@ -1473,6 +1589,9 @@
       "period_last_price": 33.55,
       "known_volume": 1577974,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 35.07,
+      "observed_change_pct": -4.33,
       "observed_sessions": 3
     },
     "POUL": {
@@ -1509,6 +1628,9 @@
       "period_last_price": 9.99,
       "known_volume": 6223007,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 10.09,
+      "observed_change_pct": -0.99,
       "observed_sessions": 3
     },
     "CCAP": {
@@ -1545,6 +1667,9 @@
       "period_last_price": 6.62,
       "known_volume": 185786774,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 6.77,
+      "observed_change_pct": -2.22,
       "observed_sessions": 3
     },
     "ASCM": {
@@ -1581,6 +1706,9 @@
       "period_last_price": 57.53,
       "known_volume": 303800,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 59.48,
+      "observed_change_pct": -3.28,
       "observed_sessions": 3
     },
     "DSCW": {
@@ -1617,6 +1745,9 @@
       "period_last_price": 1.7,
       "known_volume": 19319953,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 1.71,
+      "observed_change_pct": -0.58,
       "observed_sessions": 3
     },
     "RACC": {
@@ -1653,6 +1784,9 @@
       "period_last_price": 9.32,
       "known_volume": 3430784,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 9.31,
+      "observed_change_pct": 0.11,
       "observed_sessions": 3
     },
     "ARAB": {
@@ -1689,6 +1823,9 @@
       "period_last_price": 0.27,
       "known_volume": 2266836018,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 0.26,
+      "observed_change_pct": 3.85,
       "observed_sessions": 3
     },
     "CICH": {
@@ -1725,6 +1862,9 @@
       "period_last_price": 12.1,
       "known_volume": 290939,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 12.01,
+      "observed_change_pct": 0.75,
       "observed_sessions": 3
     },
     "DOMT": {
@@ -1761,6 +1901,9 @@
       "period_last_price": 24,
       "known_volume": 709689,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 24.9,
+      "observed_change_pct": -3.61,
       "observed_sessions": 3
     },
     "BTFH": {
@@ -1797,6 +1940,9 @@
       "period_last_price": 2.77,
       "known_volume": 103208742,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 2.81,
+      "observed_change_pct": -1.42,
       "observed_sessions": 3
     }
   },
@@ -1993,6 +2139,9 @@
       "period_last_price": 87.89,
       "known_volume": 8213716,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 88.61,
+      "observed_change_pct": -0.81,
       "observed_sessions": 4
     },
     {
@@ -2029,6 +2178,9 @@
       "period_last_price": 116,
       "known_volume": 1855654,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 120.09,
+      "observed_change_pct": -3.41,
       "observed_sessions": 4
     },
     {
@@ -2065,6 +2217,9 @@
       "period_last_price": 877.02,
       "known_volume": 1219088,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 830,
+      "observed_change_pct": 5.67,
       "observed_sessions": 4
     },
     {
@@ -2101,6 +2256,9 @@
       "period_last_price": 11.7,
       "known_volume": 16269629,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 12.05,
+      "observed_change_pct": -2.9,
       "observed_sessions": 4
     },
     {
@@ -2137,6 +2295,9 @@
       "period_last_price": 148,
       "known_volume": 7121882,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 149.08,
+      "observed_change_pct": -0.72,
       "observed_sessions": 4
     },
     {
@@ -2173,6 +2334,9 @@
       "period_last_price": 14.48,
       "known_volume": 54033174,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 13.9,
+      "observed_change_pct": 4.17,
       "observed_sessions": 4
     },
     {
@@ -2209,6 +2373,9 @@
       "period_last_price": 90,
       "known_volume": 2521282,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 88.75,
+      "observed_change_pct": 1.41,
       "observed_sessions": 4
     },
     {
@@ -2245,6 +2412,9 @@
       "period_last_price": 46.5,
       "known_volume": 3000351,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 47.11,
+      "observed_change_pct": -1.29,
       "observed_sessions": 4
     },
     {
@@ -2281,6 +2451,9 @@
       "period_last_price": 16.19,
       "known_volume": 17562351,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 16.25,
+      "observed_change_pct": -0.37,
       "observed_sessions": 4
     },
     {
@@ -2317,6 +2490,9 @@
       "period_last_price": 25,
       "known_volume": 2588472,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 25.51,
+      "observed_change_pct": -2,
       "observed_sessions": 4
     },
     {
@@ -2353,6 +2529,9 @@
       "period_last_price": 19.07,
       "known_volume": 9289569,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 19.37,
+      "observed_change_pct": -1.55,
       "observed_sessions": 4
     },
     {
@@ -2389,6 +2568,9 @@
       "period_last_price": 47.8,
       "known_volume": 6189614,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 49.9,
+      "observed_change_pct": -4.21,
       "observed_sessions": 4
     },
     {
@@ -2425,6 +2607,9 @@
       "period_last_price": 23.12,
       "known_volume": 1293477,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 23.91,
+      "observed_change_pct": -3.3,
       "observed_sessions": 4
     },
     {
@@ -2461,6 +2646,9 @@
       "period_last_price": 27.32,
       "known_volume": 5743941,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 27.26,
+      "observed_change_pct": 0.22,
       "observed_sessions": 4
     },
     {
@@ -2497,6 +2685,9 @@
       "period_last_price": 12.93,
       "known_volume": 30414556,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 13.19,
+      "observed_change_pct": -1.97,
       "observed_sessions": 4
     },
     {
@@ -2533,6 +2724,9 @@
       "period_last_price": 124.65,
       "known_volume": 12120099,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 127.04,
+      "observed_change_pct": -1.88,
       "observed_sessions": 4
     },
     {
@@ -2569,6 +2763,9 @@
       "period_last_price": 19.06,
       "known_volume": 45290844,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 19.1,
+      "observed_change_pct": -0.21,
       "observed_sessions": 4
     },
     {
@@ -2605,6 +2802,9 @@
       "period_last_price": 25.23,
       "known_volume": 20013124,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 23.97,
+      "observed_change_pct": 5.26,
       "observed_sessions": 4
     },
     {
@@ -2641,6 +2841,9 @@
       "period_last_price": 339.4,
       "known_volume": 1077256,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 345,
+      "observed_change_pct": -1.62,
       "observed_sessions": 4
     },
     {
@@ -2677,6 +2880,9 @@
       "period_last_price": 12,
       "known_volume": 18315633,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 39.31,
+      "observed_change_pct": null,
       "observed_sessions": 4
     },
     {
@@ -2713,6 +2919,9 @@
       "period_last_price": 196.73,
       "known_volume": 2702382,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 219.45,
+      "observed_change_pct": -10.35,
       "observed_sessions": 4
     },
     {
@@ -2749,6 +2958,9 @@
       "period_last_price": 14.33,
       "known_volume": 1739194,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 14.58,
+      "observed_change_pct": -1.71,
       "observed_sessions": 4
     },
     {
@@ -2785,6 +2997,9 @@
       "period_last_price": 71.07,
       "known_volume": 3366809,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 73.43,
+      "observed_change_pct": -3.21,
       "observed_sessions": 4
     },
     {
@@ -2821,6 +3036,9 @@
       "period_last_price": 12.25,
       "known_volume": 21844981,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 11.73,
+      "observed_change_pct": 4.43,
       "observed_sessions": 4
     },
     {
@@ -2857,6 +3075,9 @@
       "period_last_price": 5.41,
       "known_volume": 16213508,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 5.56,
+      "observed_change_pct": -2.7,
       "observed_sessions": 4
     },
     {
@@ -2893,6 +3114,9 @@
       "period_last_price": 31.01,
       "known_volume": 18502781,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 32.37,
+      "observed_change_pct": -4.2,
       "observed_sessions": 4
     },
     {
@@ -2929,6 +3153,9 @@
       "period_last_price": 34.85,
       "known_volume": 4317373,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 33.44,
+      "observed_change_pct": 4.22,
       "observed_sessions": 4
     },
     {
@@ -2965,6 +3192,9 @@
       "period_last_price": 7.49,
       "known_volume": 26394410,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 7.48,
+      "observed_change_pct": 0.13,
       "observed_sessions": 4
     },
     {
@@ -3001,6 +3231,9 @@
       "period_last_price": 24.29,
       "known_volume": 483478,
       "volume_sessions": 2,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 24.39,
+      "observed_change_pct": -0.41,
       "observed_sessions": 2
     },
     {
@@ -3037,6 +3270,9 @@
       "period_last_price": 141,
       "known_volume": 13026,
       "volume_sessions": 2,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 141,
+      "observed_change_pct": 0,
       "observed_sessions": 2
     },
     {
@@ -3073,6 +3309,9 @@
       "period_last_price": 15.25,
       "known_volume": 5022034,
       "volume_sessions": 2,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 16.05,
+      "observed_change_pct": -4.98,
       "observed_sessions": 2
     },
     {
@@ -3109,6 +3348,9 @@
       "period_last_price": 1.38,
       "known_volume": 572351726,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 1.45,
+      "observed_change_pct": -4.83,
       "observed_sessions": 4
     },
     {
@@ -3145,6 +3387,9 @@
       "period_last_price": 39.42,
       "known_volume": 3008646,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 39.85,
+      "observed_change_pct": -1.08,
       "observed_sessions": 4
     },
     {
@@ -3181,6 +3426,9 @@
       "period_last_price": 28.21,
       "known_volume": 6960647,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 29.56,
+      "observed_change_pct": -4.57,
       "observed_sessions": 4
     },
     {
@@ -3217,6 +3465,9 @@
       "period_last_price": 45.59,
       "known_volume": 219453,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 45,
+      "observed_change_pct": 1.31,
       "observed_sessions": 4
     },
     {
@@ -3253,6 +3504,9 @@
       "period_last_price": 23.2,
       "known_volume": 3746779,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 22.96,
+      "observed_change_pct": 1.05,
       "observed_sessions": 4
     },
     {
@@ -3289,6 +3543,9 @@
       "period_last_price": 7.86,
       "known_volume": 23919254,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 7.77,
+      "observed_change_pct": 1.16,
       "observed_sessions": 4
     },
     {
@@ -3325,6 +3582,9 @@
       "period_last_price": 27.14,
       "known_volume": 4593671,
       "volume_sessions": 4,
+      "observed_start_date": "2026-10-04",
+      "observed_start_price": 27.8,
+      "observed_change_pct": -2.37,
       "observed_sessions": 4
     },
     {
@@ -3361,6 +3621,9 @@
       "period_last_price": 33.55,
       "known_volume": 1577974,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 35.07,
+      "observed_change_pct": -4.33,
       "observed_sessions": 3
     },
     {
@@ -3397,6 +3660,9 @@
       "period_last_price": 9.99,
       "known_volume": 6223007,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 10.09,
+      "observed_change_pct": -0.99,
       "observed_sessions": 3
     },
     {
@@ -3433,6 +3699,9 @@
       "period_last_price": 6.62,
       "known_volume": 185786774,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 6.77,
+      "observed_change_pct": -2.22,
       "observed_sessions": 3
     },
     {
@@ -3469,6 +3738,9 @@
       "period_last_price": 57.53,
       "known_volume": 303800,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 59.48,
+      "observed_change_pct": -3.28,
       "observed_sessions": 3
     },
     {
@@ -3505,6 +3777,9 @@
       "period_last_price": 1.7,
       "known_volume": 19319953,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 1.71,
+      "observed_change_pct": -0.58,
       "observed_sessions": 3
     },
     {
@@ -3541,6 +3816,9 @@
       "period_last_price": 9.32,
       "known_volume": 3430784,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 9.31,
+      "observed_change_pct": 0.11,
       "observed_sessions": 3
     },
     {
@@ -3577,6 +3855,9 @@
       "period_last_price": 0.27,
       "known_volume": 2266836018,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 0.26,
+      "observed_change_pct": 3.85,
       "observed_sessions": 3
     },
     {
@@ -3613,6 +3894,9 @@
       "period_last_price": 12.1,
       "known_volume": 290939,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 12.01,
+      "observed_change_pct": 0.75,
       "observed_sessions": 3
     },
     {
@@ -3649,6 +3933,9 @@
       "period_last_price": 24,
       "known_volume": 709689,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 24.9,
+      "observed_change_pct": -3.61,
       "observed_sessions": 3
     },
     {
@@ -3685,6 +3972,9 @@
       "period_last_price": 2.77,
       "known_volume": 103208742,
       "volume_sessions": 3,
+      "observed_start_date": "2026-10-05",
+      "observed_start_price": 2.81,
+      "observed_change_pct": -1.42,
       "observed_sessions": 3
     }
   ],
@@ -3729,6 +4019,9 @@
         "period_last_price": 25.23,
         "known_volume": 20013124,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 23.97,
+        "observed_change_pct": 5.26,
         "observed_sessions": 4
       },
       {
@@ -3765,6 +4058,9 @@
         "period_last_price": 12.25,
         "known_volume": 21844981,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 11.73,
+        "observed_change_pct": 4.43,
         "observed_sessions": 4
       },
       {
@@ -3801,6 +4097,9 @@
         "period_last_price": 877.02,
         "known_volume": 1219088,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 830,
+        "observed_change_pct": 5.67,
         "observed_sessions": 4
       },
       {
@@ -3837,6 +4136,9 @@
         "period_last_price": 148,
         "known_volume": 7121882,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 149.08,
+        "observed_change_pct": -0.72,
         "observed_sessions": 4
       },
       {
@@ -3873,6 +4175,9 @@
         "period_last_price": 23.2,
         "known_volume": 3746779,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 22.96,
+        "observed_change_pct": 1.05,
         "observed_sessions": 4
       }
     ],
@@ -3911,6 +4216,9 @@
         "period_last_price": 28.21,
         "known_volume": 6960647,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 29.56,
+        "observed_change_pct": -4.57,
         "observed_sessions": 4
       },
       {
@@ -3947,6 +4255,9 @@
         "period_last_price": 47.8,
         "known_volume": 6189614,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 49.9,
+        "observed_change_pct": -4.21,
         "observed_sessions": 4
       },
       {
@@ -3983,6 +4294,9 @@
         "period_last_price": 116,
         "known_volume": 1855654,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 120.09,
+        "observed_change_pct": -3.41,
         "observed_sessions": 4
       },
       {
@@ -4019,6 +4333,9 @@
         "period_last_price": 12.93,
         "known_volume": 30414556,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 13.19,
+        "observed_change_pct": -1.97,
         "observed_sessions": 4
       },
       {
@@ -4055,6 +4372,9 @@
         "period_last_price": 27.14,
         "known_volume": 4593671,
         "volume_sessions": 4,
+        "observed_start_date": "2026-10-04",
+        "observed_start_price": 27.8,
+        "observed_change_pct": -2.37,
         "observed_sessions": 4
       }
     ],

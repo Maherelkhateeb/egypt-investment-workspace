@@ -3,9 +3,9 @@
   "reports": [
     {
       "id": "2026-09-13",
-      "date": "2026-09-19",
+      "date": "2026-09-17",
       "kind": "weekly",
-      "label": "2026-09-13 — 2026-09-19",
+      "label": "2026-09-13 — 2026-09-17",
       "sessionDay": "الأسبوع",
       "file": "period-reports/weekly/2026-09-13.json",
       "final": true,
@@ -13,14 +13,14 @@
       "complete": false,
       "report_type": "weekly_summary",
       "source_commit": null,
-      "generated_at": "2026-10-08T11:12:00.982Z",
-      "available_after_cairo": "2026-09-20T00:00:00"
+      "generated_at": "2026-10-08T17:47:16.076Z",
+      "available_after_cairo": "2026-09-17T16:00:00"
     },
     {
       "id": "2026-09-20",
-      "date": "2026-09-26",
+      "date": "2026-09-24",
       "kind": "weekly",
-      "label": "2026-09-20 — 2026-09-26",
+      "label": "2026-09-20 — 2026-09-24",
       "sessionDay": "الأسبوع",
       "file": "period-reports/weekly/2026-09-20.json",
       "final": true,
@@ -28,14 +28,14 @@
       "complete": false,
       "report_type": "weekly_summary",
       "source_commit": null,
-      "generated_at": "2026-10-08T11:12:00.985Z",
-      "available_after_cairo": "2026-09-27T00:00:00"
+      "generated_at": "2026-10-08T17:47:16.078Z",
+      "available_after_cairo": "2026-09-24T16:00:00"
     },
     {
       "id": "2026-09-27",
-      "date": "2026-10-03",
+      "date": "2026-10-01",
       "kind": "weekly",
-      "label": "2026-09-27 — 2026-10-03",
+      "label": "2026-09-27 — 2026-10-01",
       "sessionDay": "الأسبوع",
       "file": "period-reports/weekly/2026-09-27.json",
       "final": true,
@@ -43,8 +43,23 @@
       "complete": false,
       "report_type": "weekly_summary",
       "source_commit": null,
-      "generated_at": "2026-10-08T11:12:00.986Z",
-      "available_after_cairo": "2026-10-04T00:00:00"
+      "generated_at": "2026-10-08T17:47:16.080Z",
+      "available_after_cairo": "2026-10-01T16:00:00"
+    },
+    {
+      "id": "2026-10-04",
+      "date": "2026-10-08",
+      "kind": "weekly",
+      "label": "2026-10-04 — 2026-10-08",
+      "sessionDay": "الأسبوع",
+      "file": "period-reports/weekly/2026-10-04.json",
+      "final": true,
+      "audited": true,
+      "complete": true,
+      "report_type": "weekly_summary",
+      "source_commit": null,
+      "generated_at": "2026-10-08T17:47:16.082Z",
+      "available_after_cairo": "2026-10-08T16:00:00"
     },
     {
       "id": "2026-09",
@@ -58,7 +73,7 @@
       "complete": false,
       "report_type": "monthly_summary",
       "source_commit": null,
-      "generated_at": "2026-10-08T11:12:00.997Z",
+      "generated_at": "2026-10-08T17:47:16.087Z",
       "available_after_cairo": "2026-10-01T00:00:00"
     }
   ]

@@ -5,7 +5,7 @@ import {
   validateAnalysis, validatePrevious, emptyResult, failedResult, readPrevious
 } from './ai.mjs';
 
-export const MODEL = 'gpt-6-luna';
+export const MODEL = 'gpt-6-astra';
 export const ENDPOINT = 'https://api.openai.com/v1/responses';
 const MAX_RESPONSE_BYTES = 100000;
 const ERROR_CODES = new Set([

@@ -33,7 +33,7 @@ test('deployed shell loads fresh integration layers and Groq newsletter fallback
  assert.match(s,/estimated-investment-cost\.js\?v=1\.3\.0/);
  assert.match(s,/runtime-integrity\.js\?v=1\.1\.0/);
  assert.match(s,/ai-view\.js\?v=2\.7\.0/);
- assert.match(s,/data-ai-provider=\\"groq\\"/);
+ assert.match(s,/data-ai-provider="groq"/);
  assert.match(s,/Groq · GPT-OSS 120B/);
  assert.match(s,/app-build.*2026-10-08-r8/);
 });

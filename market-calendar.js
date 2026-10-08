@@ -1,5 +1,5 @@
 (function(root){'use strict';
-const DAY=86400000,valid=d=>typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&new Date(d+'T12:00:00Z').toISOString().slice(0,10)===d;
+const DAY=86400000,valid=d=>typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isFinite(Date.parse(d+'T12:00:00Z'))&&new Date(d+'T12:00:00Z').toISOString().slice(0,10)===d;
 function cairoDate(now=new Date()){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Cairo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now),get=t=>p.find(x=>x.type===t).value;return get('year')+'-'+get('month')+'-'+get('day');}
 function add(date,days){if(!valid(date))throw Error('تاريخ التقويم غير صالح');return new Date(Date.parse(date+'T12:00:00Z')+days*DAY).toISOString().slice(0,10);}
 function validate(data){if(data?.schema!==1||data.timezone!=='Africa/Cairo'||!Array.isArray(data.events))throw Error('ملف تقويم السوق غير صالح');for(const x of data.events){if(!valid(x.date)||!['closure','schedule','event','suspension'].includes(x.type)||typeof x.title!=='string'||!Array.isArray(x.sources)||x.sources.some(s=>!/^https:\/\//.test(s.url||'')))throw Error('حدث تقويم غير صالح');if(x.type==='closure'&&x.confirmed&&!x.sources.length)throw Error('إغلاق مؤكد بلا مصدر');}return data;}

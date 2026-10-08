@@ -1,39 +1,26 @@
 (function(){'use strict';
-let current='all',resetting=false;
-const labels={all:'الكل',stock:'أخبار الأسهم',fund:'أخبار الصناديق',gold:'الذهب',notice:'إشعارات'};
+let snapshot=null,active='stocks',scheduled=false;
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function route(){return location.hash.replace('#tab-','')||'portfolio';}
-function onNewsPage(view){const r=route();return r==='news'||r==='news_hub'||Boolean(view?.querySelector('#newsForm'))||Boolean(view?.querySelector('#feedContent'));}
-function dispatch(select,value){select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}));}
-function ensureNoticeOption(select){if(!select.querySelector('option[value="notice"]')){const o=document.createElement('option');o.value='notice';o.textContent='إشعارات';select.append(o);}}
-function apply(){
- const view=document.getElementById('view');if(!view)return;
- const select=view.querySelector('#assetFilter');
- if(!onNewsPage(view)){
-  if(current==='notice'&&select&&!resetting){resetting=true;current='all';dispatch(select,'all');setTimeout(()=>resetting=false,0);}return;
- }
- if(!select)return;
- ensureNoticeOption(select);
- if(current!=='notice')current=select.value||'all';else select.value='notice';
- let bar=view.querySelector('[data-news-slicers]');
- if(!bar){
-  bar=document.createElement('div');bar.dataset.newsSlicers='';bar.className='section-subnav';bar.setAttribute('role','group');bar.setAttribute('aria-label','تصنيف الأخبار');
-  bar.innerHTML=Object.entries(labels).map(([value,text])=>`<button type="button" data-news-filter="${value}">${text}</button>`).join('');
-  const filters=select.closest('.filters');
-  const anchor=filters||view.querySelector('.panel')||view.firstChild;
-  (anchor?.parentNode||view).insertBefore(bar,anchor||null);
-  bar.addEventListener('click',event=>{const button=event.target.closest('[data-news-filter]');if(!button)return;current=button.dataset.newsFilter;ensureNoticeOption(select);dispatch(select,current);});
- }
- for(const button of bar.querySelectorAll('[data-news-filter]')){
-  const active=button.dataset.newsFilter===current;
-  button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));
- }
- const label=select.closest('label');if(label)label.style.display='none';
- let note=view.querySelector('[data-news-slicer-note]');
- if(!note){note=document.createElement('p');note.dataset.newsSlicerNote='';note.className='muted';bar.insertAdjacentElement('afterend',note);}
- note.textContent=current==='notice'?'تنبيهات ومعلومات عامة غير مؤثرة مباشرة على حركة الأسهم أو الصناديق، ولا تدخل كإشارة استثمارية في التحليل الآلي.':'اختر نوع الأخبار المعروضة.';
- const formSelect=view.querySelector('#newsForm select[name="assetType"]');
- if(formSelect&&!formSelect.querySelector('option[value="notice"]')){const o=document.createElement('option');o.value='notice';o.textContent='إشعار / إعلام عام';formSelect.append(o);}
+function isNews(){const r=route();return r==='news'||r==='news_hub'||Boolean(document.getElementById('newsSubTabStocksBtn'));}
+function bucket(item,tab){if(tab==='stocks')return item.category==='stock'||item.category==='economy';if(tab==='funds')return item.category==='fund'||item.category==='gold';return item.category==='notice';}
+function card(item){if(window.LegacyMarketCards?.news){try{return window.LegacyMarketCards.news(item);}catch{}}
+ let href='#';try{const u=new URL(item.url);if(u.protocol==='https:')href=u.href;}catch{}
+ return '<article class="glass-card rounded-2xl p-3 border border-slate-800"><a class="text-sm font-bold text-white" target="_blank" rel="noopener noreferrer" href="'+esc(href)+'">'+esc(item.title)+'</a><p class="text-[10px] text-slate-400 mt-1">'+esc(item.publisher||'')+' · '+esc(item.published_at||'')+'</p></article>';}
+function queryFor(tab){const id=tab==='stocks'?'newsStockSearchInput':tab==='funds'?'newsFundsSearchInput':'newsNoticeSearchInput';return (document.getElementById(id)?.value||'').trim().toLowerCase();}
+function items(tab){const q=queryFor(tab);return (snapshot?.items||[]).filter(item=>bucket(item,tab)&&(!q||(item.title+' '+item.publisher+' '+(item.symbols||[]).join(' ')).toLowerCase().includes(q)));}
+function setButton(button,on){if(!button)return;button.classList.toggle('bg-emerald-600',on);button.classList.toggle('text-white',on);button.classList.toggle('shadow',on);button.classList.toggle('text-slate-400',!on);button.setAttribute('aria-pressed',String(on));}
+function show(tab){active=tab;const stocks=document.getElementById('newsSubViewStocks'),funds=document.getElementById('newsSubViewFunds'),notices=document.getElementById('newsSubViewNotices');stocks?.classList.toggle('hidden',tab!=='stocks');funds?.classList.toggle('hidden',tab!=='funds');notices?.classList.toggle('hidden',tab!=='notices');setButton(document.getElementById('newsSubTabStocksBtn'),tab==='stocks');setButton(document.getElementById('newsSubTabFundsBtn'),tab==='funds');setButton(document.getElementById('newsSubTabNoticesBtn'),tab==='notices');renderFeeds();}
+function renderFeeds(){if(!snapshot)return;for(const [tab,id,badge]of [['stocks','newsStocksFeedContainer','newsStocksCountBadge'],['funds','newsFundsFeedContainer','newsFundsCountBadge'],['notices','newsNoticesFeedContainer','newsNoticesCountBadge']]){const all=(snapshot.items||[]).filter(x=>bucket(x,tab)),box=document.getElementById(id),count=document.getElementById(badge);if(count)count.textContent=all.length;if(box){const rows=items(tab);box.innerHTML=rows.map(card).join('')||'<p class="text-xs text-slate-400 py-6">لا توجد عناوين متاحة في هذا القسم حاليًا.</p>';}}}
+function ensure(){scheduled=false;if(!isNews())return;const stockBtn=document.getElementById('newsSubTabStocksBtn'),fundBtn=document.getElementById('newsSubTabFundsBtn');if(!stockBtn||!fundBtn)return;const stockText=stockBtn.querySelector('span:nth-child(2)'),fundText=fundBtn.querySelector('span:nth-child(2)');if(stockText)stockText.textContent='أخبار الأسهم والسوق';if(fundText)fundText.textContent='أخبار الصناديق والذهب';const bar=stockBtn.parentElement;if(bar&&!document.getElementById('newsSubTabNoticesBtn'))bar.insertAdjacentHTML('beforeend','<button id="newsSubTabNoticesBtn" type="button" class="flex-1 py-2 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-white active:scale-95" aria-pressed="false"><span>🔔</span><span>إشعارات</span><span id="newsNoticesCountBadge" class="bg-slate-800 text-sky-300 text-[10px] px-1.5 rounded-full font-mono">--</span></button>');
+ if(!document.getElementById('newsSubViewNotices')){const funds=document.getElementById('newsSubViewFunds'),view=document.createElement('div');view.id='newsSubViewNotices';view.className='space-y-3 hidden';view.innerHTML='<div class="glass-card rounded-2xl p-3 border border-sky-900/40 space-y-2"><div class="relative"><input id="newsNoticeSearchInput" type="text" dir="rtl" placeholder="بحث في الإشعارات والتنويهات..." class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 outline-none pr-8"><span class="absolute right-2.5 top-2.5 text-slate-400 text-xs">🔍</span></div><p class="text-[10.5px] text-slate-400">تنويهات وإعلامات عامة غير مصنفة كإشارة مباشرة لحركة الأسهم أو الصناديق، ولا تُرسل إلى التحليل الاستثماري الآلي.</p></div><div id="newsNoticesFeedContainer" class="space-y-2.5"></div>';funds?.insertAdjacentElement('afterend',view);}
+ const fundsVisible=!document.getElementById('newsSubViewFunds')?.classList.contains('hidden'),stocksVisible=!document.getElementById('newsSubViewStocks')?.classList.contains('hidden');if(active!=='notices')active=fundsVisible?'funds':stocksVisible?'stocks':active;show(active);
 }
-function start(){const view=document.getElementById('view');if(!view)return;new MutationObserver(()=>queueMicrotask(apply)).observe(view,{childList:true,subtree:true});window.addEventListener('hashchange',()=>setTimeout(apply,0));apply();}
+function schedule(){if(scheduled)return;scheduled=true;queueMicrotask(ensure);}
+async function load(){try{const r=await fetch('news.json',{cache:'no-store',signal:AbortSignal.timeout(12000)});if(r.ok){const data=await r.json();if(Array.isArray(data.items)){snapshot=data;renderFeeds();}}}catch{}schedule();}
+document.addEventListener('click',event=>{const notice=event.target.closest('#newsSubTabNoticesBtn');if(notice){event.preventDefault();event.stopPropagation();show('notices');return;}if(event.target.closest('#newsSubTabStocksBtn'))active='stocks';if(event.target.closest('#newsSubTabFundsBtn'))active='funds';if(event.target.closest('#headerSync'))setTimeout(load,400);});
+document.addEventListener('input',event=>{if(['newsStockSearchInput','newsFundsSearchInput','newsNoticeSearchInput'].includes(event.target.id))setTimeout(renderFeeds,0);});
+window.addEventListener('hashchange',()=>{active='stocks';setTimeout(()=>{load();schedule();},0);});
+function start(){const view=document.getElementById('view');if(!view)return;new MutationObserver(schedule).observe(view,{childList:true,subtree:true});load();schedule();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();

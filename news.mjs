@@ -11,7 +11,14 @@ export function parseFeed(xml,source,now=Date.now()){
   result.push({id:url,title,url,published_at:new Date(ms).toISOString(),publisher:source.name,source_id:source.id,kind:'press',basis:'headline',category:classify(title),symbols:matchSymbols(title)});
  }if(!items.length&&!/<rss\b/i.test(xml))throw Error('Not a supported RSS feed');return result;
 }
-function classify(title){if(/صندوق|صناديق|وثائق/.test(title))return'fund';if(/ذهب|Gold/i.test(title))return'gold';if(/بورصة|سهم|أسهم|شركة|شركات|أرباح|ارباح|بنك|bank|stock|shares|company/i.test(title))return'stock';return'economy';}
+function classify(title){
+ // Operational/public notices are deliberately separated from investment news.
+ // Keep this rule conservative: only explicit notice/holiday/schedule language is
+ // classified as a notification; company actions and market-moving disclosures
+ // remain in their normal stock/fund/economy category.
+ if(/إشعار|اشعار|تنويه|تنبيه|تذكير|إجازة|اجازة|عطلة|مواعيد العمل|مواعيد التداول|موعد العمل|موعد التداول|مواعيد البورصة|استئناف العمل|ساعات العمل|working hours|holiday|notice|reminder/i.test(title))return'notice';
+ if(/صندوق|صناديق|وثائق/.test(title))return'fund';if(/ذهب|Gold/i.test(title))return'gold';if(/بورصة|سهم|أسهم|شركة|شركات|أرباح|ارباح|بنك|bank|stock|shares|company/i.test(title))return'stock';return'economy';
+}
 function matchSymbols(title){const terms={TMGH:['طلعت مصطفى','Talaat Moustafa'],ORHD:['أوراسكوم للتنمية','Orascom Development'],EFID:['إيديتا','Edita'],ETEL:['المصرية للاتصالات','Telecom Egypt'],EFIH:['إي فاينانس','إى فاينانس','e-finance'],ADIB:['أبوظبي الإسلامي مصر','أبو ظبى الإسلامى'],EGAL:['مصر للألومنيوم','Egypt Aluminum'],OCDI:['سوديك','SODIC']};return Object.entries(terms).filter(([,names])=>names.some(n=>title.toLowerCase().includes(n.toLowerCase()))).map(([t])=>t);}
 export function mergeNews(groups){const seen=new Set(),titles=new Map(),result=[];for(const n of groups.flat().sort((a,b)=>b.published_at.localeCompare(a.published_at))){if(seen.has(n.url))continue;seen.add(n.url);const key=n.title.toLowerCase().replace(/[أإآ]/g,'ا').replace(/[\p{P}\p{S}\s]/gu,'');const prior=titles.get(key);if(prior){prior.alternatives.push({publisher:n.publisher,url:n.url});continue;}const item={...n,alternatives:[]};titles.set(key,item);result.push(item);}return result.slice(0,100);}
 let cache=null;

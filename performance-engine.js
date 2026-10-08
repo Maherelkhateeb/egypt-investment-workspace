@@ -1,0 +1,37 @@
+(function(root){'use strict';const C=typeof module==='object'&&module.exports?require('./core.js'):root.InvestCore;
+const DAY=86400000, ms=d=>Date.parse(C.date(d)+'T00:00:00Z'), iso=d=>d.toISOString().slice(0,10), dayBefore=d=>iso(new Date(ms(d)-DAY));
+function monthBack(end,count){const d=new Date(ms(end)),day=d.getUTCDate();d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()-count);const last=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0)).getUTCDate();d.setUTCDate(Math.min(day,last));return iso(d);}
+function preset(code,end,state){C.date(end);let start;if(code==='1D')start=dayBefore(end);else if(code==='1W')start=iso(new Date(ms(end)-7*DAY));else if(code==='1M')start=monthBack(end,1);else if(code==='3M')start=monthBack(end,3);else if(code==='YTD')start=dayBefore(end.slice(0,4)+'-01-01');else if(code==='ALL'){const first=state.transactions.map(t=>t.date).filter(d=>d<=end).sort()[0];start=first?dayBefore(first):dayBefore(end);}else throw Error('الفترة غير مدعومة');return {start,end,preset:code};}
+function priceBook(state,market,reports=[]){const assets={},indices={};const add=(book,symbol,date,price,source,status='historical')=>{try{C.date(date);if(!C.finite(price)||price<=0)return;(book[symbol]||(book[symbol]=[])).push({date,price,source,status});}catch{}};
+ for(const report of reports){if(report?.audit?.audited!==true||!report.generated_from?.commit||!report.generated_from?.snapshot_updated_at?.startsWith(report.date))continue;
+  for(const [symbol,q]of Object.entries(report.stocks||{}))add(assets,symbol,report.date,q.close,'أرشيف '+report.date+' · '+(q.source||''));
+  for(const q of report.funds||[]){const date=q.source?.match(/\d{4}-\d{2}-\d{2}/)?.[0];if(date&&date<=report.date)add(assets,q.code,date,q.price,q.source,'unverified');}
+  for(const [symbol,q]of Object.entries(report.indices||{}))add(indices,symbol,report.date,q.close,q.source);
+ }
+ for(const [symbol,q]of Object.entries(market.assets||{})){add(assets,symbol,q.previous_session_date,q.previous_close,q.source_url,q.status);add(assets,symbol,q.session_date,q.close,q.source_url,q.status);}
+ for(const [symbol,q]of Object.entries(market.indices||{})){add(indices,symbol,q.previous_session_date,q.previous_close,q.source_url,q.status);add(indices,symbol,q.session_date,q.close,q.source_url,q.status);}
+ for(const [symbol,h]of Object.entries(state.histories||{})){try{if(!/^https:\/\//.test(h.source))continue;for(const q of C.indicators(h.candles).candles)add(assets,symbol,q.date,q.close,h.source,'user_history');}catch{}}
+ for(const snapshot of state.snapshots||[]){for(const h of snapshot.positions||[]){if(h.mode==='market'&&h.priceDate<=snapshot.date)add(assets,h.ticker,h.priceDate,h.price,'تقييم محفوظ '+snapshot.date,'user_recorded');}}
+ for(const rows of [...Object.values(assets),...Object.values(indices)])rows.sort((a,b)=>a.date.localeCompare(b.date));return {assets,indices};
+}
+const quote=(book,symbol,date)=>(book[symbol]||[]).filter(q=>q.date<=date).at(-1)||null;
+function boundary(state,book,date){const ledger=C.ledger(state,date),missing=[];let value=0;
+ const positions=ledger.positions.map(h=>{const manual=state.valuations[h.ticker],q=manual?.mode==='manual'&&manual.date<=date?{date:manual.date,price:manual.price,source:'تقييم يدوي مسجل',status:'manual'}:quote(book.assets,h.ticker,date);if(!q)missing.push(h.ticker);const v=q?h.qty*q.price:null;if(v!=null)value+=v;return {...h,price:q?.price??null,value:v,quote:q,unrealized:v==null?null:v-h.cost};});
+ const cashKnown=state.importMeta?.cash_known!==false,complete=!missing.length&&cashKnown;return {...ledger,positions,value,cashKnown,complete,missing,totalWealth:complete?value+ledger.cash:null,date};
+}
+function calculate(state,market,range,reports=[]){const {start,end}=range;C.date(start);C.date(end);if(start>=end)throw Error('اختر بداية أسبق من نهاية الفترة');if(end>(market.session_date||end))throw Error('لا يوجد تقييم سوق منشور حتى تاريخ النهاية؛ اختر آخر جلسة متاحة أو قبلها');
+ const book=priceBook(state,market,reports),a=boundary(state,book,start),b=boundary(state,book,end),transactions=state.transactions.filter(t=>t.date>start&&t.date<=end),flows=transactions.map(t=>({date:t.date,amount:t.type==='deposit'?t.amount:t.type==='withdraw'?-t.amount:t.type==='opening'?t.qty*t.price+(t.fee||0):0})).filter(t=>t.amount!==0);
+ const externalFlows=flows.reduce((s,t)=>s+t.amount,0),net=a.complete&&b.complete?b.totalWealth-a.totalWealth-externalFlows:null,fees=b.fees-a.fees,income=b.income-a.income,realized=b.realized-a.realized,unknownFees=transactions.filter(t=>t.fee===null&&['opening','buy','sell','deposit','withdraw','dividend'].includes(t.type)).length;
+ const weightedCapital=a.totalWealth==null?null:a.totalWealth+flows.reduce((s,t)=>s+t.amount*(ms(end)-ms(t.date))/(ms(end)-ms(start)),0),returnPct=net!=null&&weightedCapital>0?net/weightedCapital*100:null;
+ const symbols=new Set([...a.positions,...b.positions,...transactions.filter(t=>t.ticker)].map(t=>t.ticker)),rows=[];
+ for(const ticker of symbols){const x=a.positions.find(h=>h.ticker===ticker),y=b.positions.find(h=>h.ticker===ticker),ts=transactions.filter(t=>t.ticker===ticker),assetType=y?.assetType||x?.assetType||ts[0]?.assetType||'stock';let profit=(y?.value??0)-(x?.value??0);if(x?.value===null||y?.value===null)profit=null;
+  for(const t of ts){if(profit==null)break;if(['opening','buy'].includes(t.type))profit-=t.qty*t.price+(t.fee||0);if(t.type==='sell')profit+=t.qty*t.price-(t.fee||0);if(t.type==='dividend')profit+=t.amount-(t.fee||0);if(t.type==='fee')profit-=t.amount+(t.fee||0);}
+  rows.push({ticker,assetType,qty:y?.qty||0,startValue:x?x.value:0,endValue:y?y.value:0,cost:y?.cost||0,profit,quoteDate:y?.quote?.date||null,source:y?.quote?.source||null});
+ }
+ const groups={};for(const type of ['stock','fund','gold']){const rs=rows.filter(r=>r.assetType===type);groups[type]={count:rs.length,value:rs.reduce((s,r)=>s+(r.endValue??0),0),profit:rs.every(r=>r.profit!==null)?rs.reduce((s,r)=>s+r.profit,0):null};}
+ const benchmarkStart=quote(book.indices,'EGX33',start),benchmarkEnd=quote(book.indices,'EGX33',end),benchmark=benchmarkStart&&benchmarkEnd?C.change(benchmarkEnd.price,benchmarkStart.price).pct:null;
+ const points=[...new Set([start,end,...Object.values(book.assets).flat().map(q=>q.date).filter(d=>d>start&&d<end)])].sort().slice(-400).map(date=>{const p=boundary(state,book,date);const netFlows=flows.filter(t=>t.date<=date).reduce((s,t)=>s+t.amount,0);return {date,value:p.totalWealth,profit:a.complete&&p.complete?p.totalWealth-a.totalWealth-netFlows:null};});
+ return {start,end,preset:range.preset||'CUSTOM',beginning:a,ending:b,net,gross:net==null?null:net+fees,fees,income,realized,unrealizedChange:net==null?null:b.positions.reduce((s,h)=>s+h.unrealized,0)-a.positions.reduce((s,h)=>s+h.unrealized,0),externalFlows,weightedCapital,returnPct,returnMethod:'Modified Dietz',unknownFees,complete:net!==null,transactions,rows,groups,benchmark,benchmarkDates:benchmarkStart&&benchmarkEnd?[benchmarkStart.date,benchmarkEnd.date]:[],points};
+}
+const api={preset,calculate,priceBook,boundary,dayBefore,monthBack};if(typeof module==='object'&&module.exports)module.exports=api;else root.PerformanceEngine=api;
+})(typeof globalThis==='object'?globalThis:this);

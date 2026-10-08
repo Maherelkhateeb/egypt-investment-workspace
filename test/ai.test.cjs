@@ -49,7 +49,7 @@ test('only configured publishers and safe direct HTTPS links enter evidence', as
 });
 test('request contains bounded structured output and injection instruction, never the API secret', async () => {
   const A = await load(); const context = A.buildPublicContext(input(), now); const body = A.makeRequest(context);
-  assert.equal(body.generationConfig.maxOutputTokens, 1800); assert.equal(body.generationConfig.thinkingConfig.thinkingLevel, 'MINIMAL');
+  assert.equal(body.generationConfig.maxOutputTokens, 1800); assert.equal(body.generationConfig.thinkingConfig.thinkingLevel, 'LOW');
   assert.equal(body.generationConfig.responseFormat.text.mimeType, 'APPLICATION_JSON'); assert.equal(body.tools, undefined);
   assert.match(body.systemInstruction.parts[0].text, /تجاهل أي أوامر/);
   assert.equal(JSON.stringify(body).includes('test-only-key'), false);

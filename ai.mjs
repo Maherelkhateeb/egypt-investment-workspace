@@ -1,7 +1,7 @@
 // Server/scheduled code only. This module must never be loaded by the browser.
 import { createHash } from 'node:crypto';
 
-export const MODEL = 'gemini-3.1-flash-lite';
+export const MODEL = 'gemini-3.8-flash';
 export const MIN_INTERVAL_MS = 6 * 60 * 60 * 1000;
 export const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 const SOURCE_HOSTS = {
@@ -114,7 +114,7 @@ export function makeRequest(context) {
   return {
     systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
     contents: [{ role: 'user', parts: [{ text: JSON.stringify({ market_session_date: context.market_session_date, sources: context.sources, limitations: context.limitations }) }] }],
-    generationConfig: { maxOutputTokens: 1800, thinkingConfig: { thinkingLevel: 'MINIMAL' }, responseFormat: { text: { mimeType: 'APPLICATION_JSON', schema: outputSchema(context.sources.map(source => source.id), context.sources.map(source => source.title)) } } }
+    generationConfig: { maxOutputTokens: 1800, thinkingConfig: { thinkingLevel: 'LOW' }, responseFormat: { text: { mimeType: 'APPLICATION_JSON', schema: outputSchema(context.sources.map(source => source.id), context.sources.map(source => source.title)) } } }
   };
 }
 function sameKeys(value, allowed) { return isObject(value) && Object.keys(value).length === allowed.length && Object.keys(value).every(key => allowed.includes(key)); }

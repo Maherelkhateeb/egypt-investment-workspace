@@ -2,7 +2,7 @@
 (function(){
 'use strict';
 const templates=window.LegacyTemplates;
-const ui={holdingsMode:'cards',stockFilter:'all',fundFilter:'all',stockSort:'value',fundSort:'value',newsTab:'stocks',researchTab:'recs',marketTab:'pulse',toolsTab:'audit',search:'',radarFilter:'all',fundsFilter:'all',radarSort:'chg',sortDir:-1,newsSearch:'',recAction:'all',recType:'stocks'};
+const ui={holdingsMode:'cards',stockFilter:'all',fundFilter:'all',stockSort:'value',fundSort:'value',stockSortDir:-1,fundSortDir:-1,newsTab:'stocks',researchTab:'recs',marketTab:'pulse',toolsTab:'audit',search:'',radarFilter:'all',fundsFilter:'all',radarSort:'chg',sortDir:-1,newsSearch:'',recAction:'all',recType:'stocks'};
 try{ui.holdingsMode=localStorage.getItem('egx_independent_holdings_view')==='list'?'list':'cards';}catch{}
 const n=(v,d=2)=>v==null||!Number.isFinite(v)?'غير متاح':v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
 const pc=(v,d=2)=>v==null?'غير متاح':(v>=0?'+':'')+n(v,d)+'%';
@@ -43,7 +43,7 @@ function portfolioOriginal(){
   subtotal.className=type==='gold'?'text-[10.5px] font-mono font-bold px-2 py-0.5 rounded-lg border '+(t.profit==null?'text-slate-400 border-slate-700':t.profit>=0?'bg-amber-500/15 text-amber-300 border-amber-500/40':'bg-rose-950 text-rose-300 border-rose-800'):'text-[10px] font-mono font-medium px-2 py-0.5 rounded border '+(t.profit==null?'text-slate-400 border-slate-700':t.profit<0?'bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800':type==='fund'?'bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800':'bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800');
   put(root,prefix+'FilterAllCount','('+items.length+')');put(root,prefix+'FilterGainersCount','('+items.filter(h=>h.unrealized!=null&&h.unrealized>=0).length+')');put(root,prefix+'FilterLosersCount','('+items.filter(h=>h.unrealized!=null&&h.unrealized<0).length+')');
   const chosen=ui[type+'Filter']||'all';let shown=items.filter(h=>chosen==='all'||chosen==='gainers'&&h.unrealized!=null&&h.unrealized>=0||chosen==='losers'&&h.unrealized!=null&&h.unrealized<0);
-  shown.sort((a,b)=>{const key=ui[type+'Sort']||'value';if(key==='ticker')return a.ticker.localeCompare(b.ticker);const val=h=>key==='return'?ratio(h.unrealized,h.cost):key==='qty'?h.qty:key==='cur'?h.price:key==='pnl'?h.unrealized:h.value;return (val(b)??-Infinity)-(val(a)??-Infinity);});
+  shown.sort((a,b)=>{const key=ui[type+'Sort']||'value';if(key==='ticker')return (ui[type+'SortDir']||-1)*a.ticker.localeCompare(b.ticker);const val=h=>key==='return'?ratio(h.unrealized,h.cost):key==='qty'?h.qty:key==='cur'?h.price:key==='pnl'?h.unrealized:h.value;return (ui[type+'SortDir']||-1)*((val(a)??-Infinity)-(val(b)??-Infinity));});
   html(root,prefix+'HoldingsCardsContainer',shown.map(h=>window.LegacyHoldingCard(h,t.value>0&&h.value!=null?h.value/t.value*100:0)).join('')||'<p class="text-xs text-slate-400 py-4">لا توجد حيازات مسجلة في هذا النطاق.</p>');
   const cards=by(root,prefix+'HoldingsCardsContainer'),smart=by(root,prefix+'HoldingsSmartContainer');cards?.classList.toggle('hidden',ui.holdingsMode==='list');smart?.classList.toggle('hidden',ui.holdingsMode!=='list');
   html(root,prefix+'HoldingsSmartBody',shown.map(h=>window.LegacyHoldingRow(h,t.value>0&&h.value!=null?h.value/t.value*100:0)).join(''));
@@ -131,6 +131,8 @@ function execute(call,element){
  const names=[...call.matchAll(/(?:^|;\s*)(?:window\.)?(\w+)\s*\(/g)].map(m=>m[1]),name=names.at(-1)||'',a=args(call);
  if(element.closest('nav')||['headerSync','themeToggle'].includes(element.id))return;
  if(window.LegacyActions?.run(call,name,a,element))return;
+ if(name==='toggleThemeMode')return $('themeToggle').click();
+ if(name==='handleUniversalExport')return action(a.some(x=>/excel|xlsx/i.test(x))?'excel':a.some(x=>/pdf/i.test(x))?'print':a.some(x=>/json|backup/i.test(x))?'backup':'csv');
  if(name==='toggleUniversalExportDropdown')return;
  if(['setDailyReportFilter','setDrSection3Slicer'].includes(name))return;
  if(name==='switchTab')return go(({recommendations:'research',news_hub:'news'})[a[0]]||a[0]);
@@ -140,10 +142,10 @@ function execute(call,element){
  if(['openTransactionModal','openAddHoldingModal'].includes(name)){openEntry();if(a[0]){$('entryForm').elements.ticker.value=a[0];const q=market.assets[a[0]];if(q)$('entryForm').elements.assetType.value=q.type;}if(['buy','sell'].includes(a[1]))$('entryForm').elements.type.value=a[1];return;}
  if(['openStockChart','openStockChartModal','openPivotModal','openStockValuation','showNewsTechnicalAnalysis','openStockFromNews'].includes(name))return showEditor('research',a[0]);
  if(['editHoldingDirect','editHolding'].includes(name)){const t=[...state.transactions].reverse().find(x=>x.ticker===a[0]&&['opening','buy','sell'].includes(x.type));return openEntry(t);}
- if(name==='toggleStockBuyPrice'){for(const id of ['buyPriceCard_'+a[0],'buyPrice_'+a[0]])$(id)?.classList.toggle('hidden');return;}
+ if(name==='toggleStockBuyPrice'){const symbols=a[0]==='THNDR_GOLD'?C.ledger(state).positions.filter(h=>h.assetType==='gold').map(h=>h.ticker):[a[0]];for(const symbol of symbols)for(const id of ['buyPriceCard_'+symbol,'buyPrice_'+symbol])$(id)?.classList.toggle('hidden');return;}
  if(name==='setPortfolioViewMode'){ui.holdingsMode=a[0]==='compact'?'list':'cards';try{localStorage.setItem('egx_independent_holdings_view',ui.holdingsMode);}catch{}return render();}
  if(name==='setHoldingsFilter'){const type=a[0]==='stocks'?'stock':'fund';ui[type+'Filter']=a[1];return render();}
- if(['sortHoldings','sortHoldingsTable'].includes(name)){const type=a[0]==='stocks'?'stock':'fund';ui[type+'Sort']=({pnlpct:'return',val:'value'}[a[1]]||a[1]||'value');return render();}
+ if(['sortHoldings','sortHoldingsTable'].includes(name)){const type=a[0]==='stocks'?'stock':'fund';const key=({pnlpct:'return',val:'value'}[a[1]]||a[1]||'value');ui[type+'SortDir']=ui[type+'Sort']===key?-(ui[type+'SortDir']||-1):(key==='ticker'?1:-1);ui[type+'Sort']=key;return render();}
  if(name==='setAssetSlicer'){filter=a[0]==='funds'?'fund':'stock';return render();}
  if(name==='switchMarketSubTab'){ui.marketTab=a[0]==='fair'?'fair':'pulse';return render();}
  if(name==='switchNewsSubTab'){ui.newsTab=a[0]==='funds'?'funds':'stocks';filter=ui.newsTab==='stocks'?'stock':'fund';return render();}
@@ -163,7 +165,7 @@ function execute(call,element){
  if(name.toLowerCase().includes('gemini')||name.toLowerCase().includes('ai')||name==='openFloatingAiCopilot')return $('aiAdvisorButton')?.click();
  if(name==='lockApplicationNow'){const curtain=document.createElement('div');curtain.className='legacy-privacy-curtain';curtain.innerHTML='<span style="font-size:40px">🔒</span><h2>شاشة المحفظة مخفية</h2><p>حجب بصري مؤقت؛ ليس قفلاً بكلمة مرور.</p><button>إظهار التطبيق</button>';curtain.querySelector('button').onclick=()=>curtain.remove();document.body.append(curtain);return;}
  if(name==='openThndrFeePolicyModal')return showEditor('performance');
- if(name)return showEditor('tools');
+ if(name){console.error('إجراء واجهة غير مسجل: '+name);return toast('تعذر تنفيذ الإجراء: '+name,true);}
 }
 document.addEventListener('click',event=>{const el=event.target.closest('[data-legacy-click],[data-legacy-symbol]');if(!el)return;if(el.dataset.legacySymbol){event.preventDefault();showEditor('research',el.dataset.legacySymbol);return;}execute(el.dataset.legacyClick,el);});
 document.addEventListener('input',ev=>{if(ev.target.id==='searchInput'){ui.search=ev.target.value;const box=$('stocksContainer');if(box)box.innerHTML=radarStocks().map(([t,q])=>quoteCard(t,q)).join('');}if(['newsStockSearchInput','newsFundsSearchInput'].includes(ev.target.id)){ui.newsSearch=ev.target.value;const box=$(ui.newsTab==='stocks'?'newsStocksFeedContainer':'newsFundsFeedContainer');if(box)box.innerHTML=(externalNews?.items||[]).filter(x=>(ui.newsTab==='stocks'?x.category==='stock':x.category!=='stock')&&(x.title+' '+x.publisher).toLowerCase().includes(ui.newsSearch.toLowerCase())).map(newsCard).join('');}});

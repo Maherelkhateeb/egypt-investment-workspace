@@ -75,7 +75,7 @@ function validateMarket(m){
 function freshness(m,now=Date.now()){const ms=Date.parse(m.fetched_at);return {future:ms>now+300000,old:now-ms>24*3600000,session:m.session_date};}
 function marketState(m,now=new Date()){
  const s=m.market_status;const until=Date.parse(s?.valid_until);const authoritative=s&&Number.isFinite(until)&&until>=now.getTime()&&Date.parse(s.observed_at)<=now.getTime()+300000;
- const time=new Intl.DateTimeFormat('ar-EG',{timeZone:'Africa/Cairo',dateStyle:'medium',timeStyle:'short'}).format(now);
+ const time=new Intl.DateTimeFormat('ar-EG-u-nu-latn',{timeZone:'Africa/Cairo',dateStyle:'medium',timeStyle:'short'}).format(now);
  return {state:authoritative?s.session_state:'UNKNOWN',label:authoritative?(s.is_open?'السوق مفتوح بحسب المصدر':'السوق مغلق بحسب المصدر'):'حالة الجلسة غير مؤكدة',time};
 }
 function csv(rows){const field=v=>{let s=String(v??'');if(/^[\s]*[=+\-@]/.test(s)&&typeof v!=='number')s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};return '\ufeff'+rows.map(r=>r.map(field).join(',')).join('\r\n');}

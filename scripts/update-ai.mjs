@@ -23,8 +23,13 @@ for (const [provider, remote] of published) {
   const saved = validatePrevious(local?.providers?.[provider] || (provider === 'gemini' ? local : null), now, models[provider]);
   prior[provider] = latestTime(remote) >= latestTime(saved) ? remote : saved;
 }
+// Timeouts and HTTP 503 are transient transport/provider failures. Do not let one
+// such first-attempt failure lock Gemini for six hours. The persisted daily call
+// budget still caps all real provider requests at four per UTC day.
+const transientGeminiFailure = report => report && !report.analysis && ['timeout', 'http_503'].includes(report.error_code);
+const geminiPrevious = transientGeminiFailure(prior.gemini) && budget.gemini < 4 ? null : prior.gemini;
 const [gemini, openai] = await Promise.all([
-  generateAnalysis({ market, news, apiKey: process.env.GEMINI_API_KEY, previous: prior.gemini, now,fetchImpl:countedFetch('gemini') }),
+  generateAnalysis({ market, news, apiKey: process.env.GEMINI_API_KEY, previous: geminiPrevious, now,fetchImpl:countedFetch('gemini') }),
   generateOpenAI({ market, news, apiKey: process.env.OPENAI_API_KEY, previous: prior.openai, now,fetchImpl:countedFetch('openai') })
 ]);
 if(limited.gemini)gemini.error_code='daily_call_limit';if(limited.openai)openai.error_code='daily_call_limit';
@@ -36,4 +41,3 @@ const result = { schema: 1, status, generated_at: dates.at(-1) || null, attempte
 fs.writeFileSync('ai.json', JSON.stringify(result, null, 2) + '\n');
 // No key, request headers, raw API errors, prompts, or private state enter workflow logs.
 console.log(JSON.stringify({ status: result.status, providers: Object.fromEntries(Object.entries(result.providers).map(([provider, report]) => [provider, { status: report.status, model: report.model, generated_at: report.generated_at, source_count: report.sources.length, error_code: report.error_code, reuse_reason: report.reuse_reason }])) }));
-

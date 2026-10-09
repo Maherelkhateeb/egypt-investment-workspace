@@ -20,7 +20,8 @@ if(Calendar.status(calendar,today).state==='UNKNOWN'&&hour>=16){
   const raw=await sourceResponse.json(),status=raw.market_status,sourceDate=status?.session_date||status?.active_session_date;
   if(Calendar.cairoDate(new Date(raw.updated_at))!==today||sourceDate!==today||status?.is_open!==false||!/CLOSED|مغلقة/.test(status.session_state||''))throw Error('المصدر ليس لقطة إغلاق مؤكدة لليوم');
   const source={commit,snapshot:{updated_at:raw.updated_at,market_status:status,stocks:raw.stocks||{},indices:raw.indices||{},funds:raw.funds||{},fx_gold:raw.fx_gold||{}}};
-  report=reviewSnapshot(today,source,previous,market,calendar);
+  const history=index.reports.filter(m=>m.date<today&&m.report_type!=='non_trading_day').map(m=>JSON.parse(fs.readFileSync(m.file,'utf8')));
+  report=reviewSnapshot(today,source,previous,market,calendar,history);
   if(!Object.keys(report.stocks).length)throw Error('لقطة الإغلاق لا تحتوي أسعار الأسهم');
   fs.mkdirSync('report-sources',{recursive:true});fs.writeFileSync('report-sources/'+today+'.json',JSON.stringify(source,null,2)+'\n');
  }catch(err){report.audit.notes.push('لم يعتمد إغلاق جديد: '+err.message);}

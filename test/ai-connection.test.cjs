@@ -21,12 +21,35 @@ test('stored connection is restored through the authenticated frame without open
  app.emit({type:'investment-ai-response',id:app.sent[0].data.id,result:{reply:'إجابة فعلية'}});
  assert.equal((await response).reply,'إجابة فعلية');assert.equal(app.timers.size,0);
 });
-test('first question waits for automatic reconnection and is sent once without another submit',async()=>{
- const app=boot(),response=app.connection.request({messages:[{role:'user',content:'لا تفقد هذا السؤال'}]});
- assert.equal(app.opened,1);assert.equal(app.sent.length,0);app.ready();await tick();
- assert.equal(app.sent.length,1);assert.equal(app.sent[0].data.payload.messages[0].content,'لا تفقد هذا السؤال');
- app.emit({type:'investment-ai-response',id:app.sent[0].data.id,result:{reply:'وصل السؤال'}});
- assert.equal((await response).reply,'وصل السؤال');
+test('a missing cross-origin browser session never opens another screen on send',async()=>{
+ const app=boot();await assert.rejects(app.connection.request({messages:[{role:'user',content:'لا تفقد هذا السؤال'}]}),/نسخة التطبيق المتصلة/);
+ assert.equal(app.opened,0);assert.equal(app.sent.length,0);
+});
+function direct(fetcher){
+ let frames=0,opened=0;const calls=[];
+ const context=vm.createContext({URL,AbortSignal,location:{origin},crypto:require('node:crypto').webcrypto,setTimeout,clearTimeout,addEventListener(){},document:{createElement(){frames++;throw Error('No frame in same-origin mode');}},open(){opened++;throw Error('No navigation in same-origin mode');},fetch:async(url,options)=>{calls.push({url,options});return fetcher(url,options);}});
+ context.window=context;vm.runInContext(fs.readFileSync(require.resolve('../ai-connection.js'),'utf8'),context);
+ return {connection:new context.InvestmentAIConnection(origin,()=>{},()=>{}),calls,get frames(){return frames;},get opened(){return opened;}};
+}
+test('same-origin app restores Groq and sends chat directly without frame, popup, or client key',async()=>{
+ const app=direct(async url=>Response.json(url==='/api/health'?{providers:{groq:{configured:true,persistent:true}}}:{reply:'رد داخل التطبيق',provider:'Groq'}));
+ await app.connection.start();assert.equal(app.connection.configured('groq'),true);
+ const result=await app.connection.request({messages:[{role:'user',content:'سؤالي'}],apiKey:'MUST_NOT_SEND'});
+ assert.equal(result.reply,'رد داخل التطبيق');assert.equal(app.frames,0);assert.equal(app.opened,0);
+ assert.equal(app.calls[1].url,'/api/chat');assert.equal(app.calls[1].options.credentials,'same-origin');assert.equal(app.calls[1].options.redirect,'error');
+ assert.equal(JSON.parse(app.calls[1].options.body).provider,'groq');assert.doesNotMatch(app.calls[1].options.body,/apiKey|MUST_NOT_SEND/);
+});
+test('same-origin first question sends before health completes and preserves newsletter and scan response types',async()=>{
+ const app=direct(async url=>Response.json(url==='/api/newsletter'?{status:'ready'}:url==='/api/scan'?{draft:{holdings:[]}}:{reply:'أول رد'}));
+ assert.equal((await app.connection.request({messages:[{role:'user',content:'أول سؤال'}]})).reply,'أول رد');
+ assert.equal((await app.connection.request({mode:'newsletter'})).report.status,'ready');
+ assert.equal((await app.connection.request({mode:'scan',provider:'gemini',image:{mimeType:'image/png',data:'image'}})).draft.holdings.length,0);
+ assert.equal(app.calls[1].options.body,undefined);assert.equal(app.opened,0);
+});
+test('expired account login is reported in place without asking for an API key or navigating',async()=>{
+ const app=direct(async()=>Response.json({message:'unauthorized'},{status:401}));
+ await assert.rejects(app.connection.request({messages:[]}),/انتهت جلسة حسابك/);
+ assert.equal(app.frames,0);assert.equal(app.opened,0);
 });
 test('untrusted origins and windows cannot establish a connection or answer a pending request',async()=>{
  const app=boot();app.connection.start();const ready={type:'investment-ai-ready',providers:{groq:{configured:true}}};

@@ -13,7 +13,7 @@
       "complete": false,
       "report_type": "historical_partial",
       "source_commit": "5931c5d72c41f8b87d0402b9c0d6eea3c8d9ad19",
-      "generated_at": "2026-10-08T10:25:05.361Z",
+      "generated_at": "2026-10-09T07:57:16.498Z",
       "available_after_cairo": "2026-09-16T16:00:00"
     },
     {
@@ -28,7 +28,7 @@
       "complete": true,
       "report_type": "reviewed_eod",
       "source_commit": "fd1a04afc930b30c78d2697219a0afde3bc6d940",
-      "generated_at": "2026-10-08T10:25:05.365Z",
+      "generated_at": "2026-10-09T07:57:16.503Z",
       "available_after_cairo": "2026-09-17T16:00:00"
     },
     {
@@ -43,7 +43,7 @@
       "complete": false,
       "report_type": "historical_partial",
       "source_commit": "77b0afcef49d6b4001b98a783baa270838851f93",
-      "generated_at": "2026-10-08T10:25:05.367Z",
+      "generated_at": "2026-10-09T07:57:16.507Z",
       "available_after_cairo": "2026-09-20T16:00:00"
     },
     {
@@ -58,7 +58,7 @@
       "complete": false,
       "report_type": "historical_partial",
       "source_commit": "9f451c1943ad6b973bd672adc4a6dbf59053f7f5",
-      "generated_at": "2026-10-08T10:25:05.368Z",
+      "generated_at": "2026-10-09T07:57:16.508Z",
       "available_after_cairo": "2026-09-21T16:00:00"
     },
     {
@@ -73,7 +73,7 @@
       "complete": false,
       "report_type": "historical_partial",
       "source_commit": "7e04176ca57c88c522dd74254e938924465c8504",
-      "generated_at": "2026-10-08T10:25:05.369Z",
+      "generated_at": "2026-10-09T07:57:16.508Z",
       "available_after_cairo": "2026-09-22T16:00:00"
     },
     {
@@ -88,7 +88,7 @@
       "complete": false,
       "report_type": "historical_partial",
       "source_commit": "b4d75af3e965ba8428941fa03d18bc7fe0740f21",
-      "generated_at": "2026-10-08T10:25:05.370Z",
+      "generated_at": "2026-10-09T07:57:16.509Z",
       "available_after_cairo": "2026-09-23T16:00:00"
     },
     {
@@ -103,7 +103,7 @@
       "complete": false,
       "report_type": "historical_partial",
       "source_commit": "a7ac563ccb8b055e870c3b8a974175c3cee0e627",
-      "generated_at": "2026-10-08T10:25:05.370Z",
+      "generated_at": "2026-10-09T07:57:16.510Z",
       "available_after_cairo": "2026-09-24T16:00:00"
     },
     {
@@ -118,7 +118,7 @@
       "complete": false,
       "report_type": "reviewed_eod",
       "source_commit": "8c06791478484257a9c1ba1e247341188f3b7307",
-      "generated_at": "2026-10-08T10:25:05.372Z",
+      "generated_at": "2026-10-09T07:57:16.517Z",
       "available_after_cairo": "2026-09-27T16:00:00"
     },
     {
@@ -133,7 +133,7 @@
       "complete": true,
       "report_type": "reviewed_eod",
       "source_commit": "8d4aabc51cf483b1e321ed296f52940f9db33300",
-      "generated_at": "2026-10-08T10:25:05.374Z",
+      "generated_at": "2026-10-09T07:57:16.523Z",
       "available_after_cairo": "2026-09-28T16:00:00"
     },
     {
@@ -148,7 +148,7 @@
       "complete": false,
       "report_type": "reviewed_eod",
       "source_commit": "a3f4e56b1979d43577d089da62c1f2feebdade89",
-      "generated_at": "2026-10-08T10:25:05.376Z",
+      "generated_at": "2026-10-09T07:57:16.527Z",
       "available_after_cairo": "2026-09-29T16:00:00"
     },
     {
@@ -163,7 +163,7 @@
       "complete": false,
       "report_type": "reviewed_eod",
       "source_commit": "fcdc84d6ffa4b1e72b58cb129b56601517771ab0",
-      "generated_at": "2026-10-08T10:25:05.379Z",
+      "generated_at": "2026-10-09T07:57:16.532Z",
       "available_after_cairo": "2026-09-30T16:00:00"
     },
     {
@@ -178,7 +178,7 @@
       "complete": false,
       "report_type": "reviewed_eod",
       "source_commit": "2cc62f22d78c3468d36f97e16c655eb9ef8c2b75",
-      "generated_at": "2026-10-08T10:25:05.382Z",
+      "generated_at": "2026-10-09T07:57:16.537Z",
       "available_after_cairo": "2026-10-01T16:00:00"
     },
     {
@@ -193,7 +193,7 @@
       "complete": true,
       "report_type": "reviewed_eod",
       "source_commit": "d0c5c0b31dcfc6078c42da8f8be3e7811554eac9",
-      "generated_at": "2026-10-08T10:25:05.384Z",
+      "generated_at": "2026-10-09T07:57:16.542Z",
       "available_after_cairo": "2026-10-04T16:00:00"
     },
     {
@@ -208,7 +208,7 @@
       "complete": true,
       "report_type": "reviewed_eod",
       "source_commit": "30c5c842d762f72203a061dee132e909ead730a8",
-      "generated_at": "2026-10-08T10:25:05.387Z",
+      "generated_at": "2026-10-09T07:57:16.547Z",
       "available_after_cairo": "2026-10-05T16:00:00"
     },
     {
@@ -223,7 +223,7 @@
       "complete": true,
       "report_type": "reviewed_eod",
       "source_commit": "63df5ab7a850a35fe973713eef7d449cfdbe217c",
-      "generated_at": "2026-10-08T10:25:05.389Z",
+      "generated_at": "2026-10-09T07:57:16.556Z",
       "available_after_cairo": "2026-10-06T16:00:00"
     },
     {
@@ -238,7 +238,7 @@
       "complete": true,
       "report_type": "reviewed_eod",
       "source_commit": "2f96348aad1b1d13a62f4b2f2fe99dcb60b74a4d",
-      "generated_at": "2026-10-08T10:25:05.391Z",
+      "generated_at": "2026-10-09T07:57:16.561Z",
       "available_after_cairo": "2026-10-07T16:00:00"
     },
     {

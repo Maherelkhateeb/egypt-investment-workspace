@@ -3,11 +3,12 @@
 class InvestmentAIConnection{
  constructor(serviceUrl,onReady,onStatus){
   const url=new URL(serviceUrl);if(url.protocol!=='https:')throw Error('رابط خدمة غير صالح');
-  this.url=url.origin;this.onReady=onReady;this.onStatus=onStatus;this.frame=null;this.popup=null;
+  this.url=url.origin;this.direct=window.location?.origin===this.url;this.providers={};this.health=null;this.onReady=onReady;this.onStatus=onStatus;this.frame=null;this.popup=null;
   this.peers=new Map();this.pending=new Map();this.waiters=new Set();
   window.addEventListener('message',event=>this.receive(event));
  }
  start(){
+  if(this.direct)return this.checkHealth();
   if(this.frame)return;
   const frame=document.createElement('iframe');frame.hidden=true;frame.title='خدمة المساعد الخاصة';
   frame.src=this.url+'/bridge';frame.setAttribute('sandbox','allow-scripts allow-same-origin');
@@ -20,13 +21,16 @@ class InvestmentAIConnection{
   }
   return null;
  }
- configured(provider){return Boolean(this.peer(provider));}
+ configured(provider){return this.direct?this.providers[provider]?.configured===true:Boolean(this.peer(provider));}
+ async checkHealth(){
+  if(this.health)return this.health;
+  this.health=(async()=>{try{const response=await fetch('/api/health',{credentials:'same-origin',redirect:'error',signal:AbortSignal.timeout(18000)});if(!response.ok)throw Error(response.status===401?'انتهت جلسة حسابك. أعد تحميل التطبيق لاستعادة الدخول؛ المفتاح محفوظ.':'تعذر فحص الاتصال المحفوظ.');const result=await response.json();this.providers=result.providers||{};this.onReady(this.providers);return this.providers;}catch(error){this.onStatus(error.message);throw error;}finally{this.health=null;}})();return this.health;
+ }
  connect(provider='groq'){
+  if(this.direct){this.checkHealth().catch(()=>{});return true;}
   this.start();if(this.configured(provider))return true;
-  if(this.popup&&!this.popup.closed){this.popup.focus();return true;}
-  this.popup=window.open(this.url,'investment-ai-service','popup,width=760,height=820');
-  this.onStatus(this.popup?'جار استعادة الاتصال المحفوظ. إذا ظهرت شاشة تسجيل الدخول، استخدم حساب مالك التطبيق.':'تعذر فتح الخدمة الخاصة. افتح المساعد للسماح باستعادة جلسة الدخول.');
-  return Boolean(this.popup);
+  this.onStatus('افتح نسخة التطبيق المتصلة من الرابط داخل المستشار. يعمل AI فيها داخل التطبيق بالمفتاح المحفوظ.');
+  return false;
  }
  waitForReady(provider){
   const source=this.peer(provider);if(source)return Promise.resolve(source);
@@ -38,7 +42,20 @@ class InvestmentAIConnection{
  }
  async request(payload){
   const provider=payload.provider||'groq';
-  if(!this.configured(provider)&&!this.connect(provider))throw Error('تعذر فتح الخدمة الخاصة لاستعادة الاتصال.');
+  if(this.direct){
+   if(!['groq','gemini','openai'].includes(provider))throw Error('مزود غير صالح');
+   const mode=payload.mode||'chat';if(!['chat','audit','scan','newsletter'].includes(mode))throw Error('نوع طلب غير صالح');
+   const endpoint=mode==='newsletter'?'/api/newsletter':mode==='scan'?'/api/scan':'/api/chat';
+   const body=mode==='scan'?{provider,image:payload.image}:{provider,messages:payload.messages,context:payload.context,mode};
+   const options={credentials:'same-origin',redirect:'error',signal:AbortSignal.timeout(mode==='newsletter'?130000:65000)};
+   if(mode!=='newsletter')Object.assign(options,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+   const response=await fetch(endpoint,options),result=await response.json();
+   if(!response.ok)throw Error(response.status===401?'انتهت جلسة حسابك. أعد تحميل التطبيق لاستعادة الدخول؛ المفتاح محفوظ.':result.message||'تعذرت استجابة الخدمة المحفوظة.');
+   const valid=mode==='newsletter'?result&&typeof result==='object':mode==='scan'?Array.isArray(result?.draft?.holdings):typeof result?.reply==='string'&&result.reply.trim();
+   if(!valid)throw Error('لم تصل إجابة صالحة من الخدمة.');
+   return mode==='newsletter'?{provider:'Groq',report:result}:result;
+  }
+  if(!this.configured(provider)&&!this.connect(provider))throw Error('استخدم نسخة التطبيق المتصلة من الرابط داخل المستشار؛ لا تحتاج إلى إدخال مفتاح.');
   const source=await this.waitForReady(provider),id=crypto.randomUUID();
   return new Promise((resolve,reject)=>{
    const timer=setTimeout(()=>{this.pending.delete(id);reject(Error('لم تصل إجابة مكتملة من الخدمة. يمكنك إعادة المحاولة دون إعادة إدخال المفتاح.'));},payload.mode==='newsletter'?135000:65000);

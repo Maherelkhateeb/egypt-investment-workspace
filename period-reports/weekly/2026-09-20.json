@@ -1,6 +1,6 @@
 {
   "schema": 4,
-  "generated_at": "2026-10-08T17:47:16.078Z",
+  "generated_at": "2026-10-09T07:57:16.682Z",
   "id": "2026-09-20",
   "kind": "weekly",
   "date": "2026-09-24",
@@ -16,7 +16,7 @@
   "generated_from": {
     "repository": "Maherelkhateeb/egypt-investment-workspace",
     "file": "daily-reports/index.json",
-    "snapshot_updated_at": "2026-10-08T17:47:16.078Z"
+    "snapshot_updated_at": "2026-10-09T07:57:16.682Z"
   },
   "components": [
     {
@@ -135,13 +135,15 @@
   "fx_gold": {
     "usd_egp": {
       "close": 51.76,
-      "chgPct": 0.76,
+      "chgPct": null,
+      "reported_change_pct": 0.76,
       "session_date": null,
       "observed_at": "2026-09-24T15:01:13.244877+03:00"
     },
-    "gold_24k": {
+    "gold_24k_local": {
       "close": 4265.3,
-      "chgPct": -0.5,
+      "chgPct": null,
+      "reported_change_pct": -0.5,
       "session_date": null,
       "observed_at": "2026-09-24T15:01:13.244877+03:00"
     }

@@ -1,6 +1,22 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const A=require('../report-availability.js');
+test('the report window is the last closed Sunday–Thursday week, including Friday and the following Sunday',()=>{
+ for(const now of ['2026-10-09T07:00:00Z','2026-10-11T12:00:00Z','2026-10-15T12:59:59Z'])assert.deepEqual(A.previousWeek(now),{start:'2026-10-04',end:'2026-10-08'});
+ assert.deepEqual(A.previousWeek('2026-10-15T13:00:00Z'),{start:'2026-10-11',end:'2026-10-15'});
+ assert.deepEqual(A.previousWeek('2026-11-05T13:59:59Z'),{start:'2026-10-25',end:'2026-10-29'});
+ assert.deepEqual(A.previousWeek('2026-11-05T14:00:00Z'),{start:'2026-11-01',end:'2026-11-05'});
+ assert.equal(A.previousWeek(null),null);
+});
+test('old sessions, monthly reports, holidays and empty reports are hidden even when valid archive files exist',()=>{
+ const now='2026-10-09T07:00:00Z';
+ assert.equal(A.inPreviousWeek({kind:'daily',date:'2026-10-01'},now),false);
+ assert.equal(A.inPreviousWeek({kind:'monthly',id:'2026-09',date:'2026-09-30'},now),false);
+ assert.equal(A.inPreviousWeek({kind:'daily',date:'2026-10-08',report_type:'non_trading_day'},now),false);
+ assert.equal(A.inPreviousWeek({kind:'weekly',id:'2026-10-04',date:'2026-10-08'},now),true);
+ assert.equal(A.hasContent({stocks:{},indices:{},funds:[]}),false);
+ assert.equal(A.hasContent({stocks:{X:{close:0}},indices:{}}),false);
+});
 function daily(overrides={}){return {id:'2026-10-08',date:'2026-10-08',kind:'daily',generated_at:'2026-10-08T13:05:00Z',report_type:'reviewed_eod',audit:{audited:true},...overrides};}
 function eligible(report,now){return A.eligible(A.metadata(report,report.kind==='daily'?'daily-reports/'+report.date+'.json':report.kind==='weekly'?'period-reports/weekly/'+report.id+'.json':'period-reports/monthly/'+report.id+'.json'),report,new Date(now));}
 test('daily close is hidden until 16:00 Cairo and until its file was actually created',()=>{const r=daily();assert.equal(eligible(r,'2026-10-08T12:59:59Z'),false);assert.equal(eligible(r,'2026-10-08T13:04:59Z'),false);assert.equal(eligible(r,'2026-10-08T13:05:00Z'),true);});

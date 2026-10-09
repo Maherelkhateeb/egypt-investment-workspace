@@ -87,14 +87,19 @@ function marketState(m,now=new Date()){
  return {state:authoritative?s.session_state:'UNKNOWN',label:authoritative?(s.is_open?'السوق مفتوح بحسب المصدر':'السوق مغلق بحسب المصدر'):'حالة الجلسة غير مؤكدة',time};
 }
 function csv(rows){const field=v=>{let s=String(v??'');if(/^[\s]*[=+\-@]/.test(s)&&typeof v!=='number')s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};return '\ufeff'+rows.map(r=>r.map(field).join(',')).join('\r\n');}
-function indicators(candles){
- if(!Array.isArray(candles))throw Error('سلسلة غير صالحة');const sorted=[...candles].sort((a,b)=>a.date.localeCompare(b.date)),seen=new Set();
- for(const c of sorted){date(c.date);if(seen.has(c.date))throw Error('جلسة مكررة');seen.add(c.date);for(const k of ['open','high','low','close','volume'])num(c[k],k,k==='volume'?0:Number.MIN_VALUE);if(c.high<Math.max(c.open,c.close,c.low)||c.low>Math.min(c.open,c.close))throw Error('شمعة غير متسقة');}
+function closingIndicators(points){
+ if(!Array.isArray(points))throw Error('سلسلة إغلاقات غير صالحة');const sorted=[...points].sort((a,b)=>a.date.localeCompare(b.date)),seen=new Set();
+ for(const p of sorted){date(p.date);if(seen.has(p.date))throw Error('جلسة مكررة');seen.add(p.date);num(p.close,'الإغلاق',Number.MIN_VALUE);}
  const closes=sorted.map(c=>Number(c.close));const sma=n=>closes.length<n?null:closes.slice(-n).reduce((a,b)=>a+b,0)/n;let rsi=null;
  if(closes.length>=15){let gain=0,loss=0;for(let i=1;i<=14;i++){let d=closes[i]-closes[i-1];gain+=Math.max(0,d)/14;loss+=Math.max(0,-d)/14;}for(let i=15;i<closes.length;i++){let d=closes[i]-closes[i-1];gain=(gain*13+Math.max(0,d))/14;loss=(loss*13+Math.max(0,-d))/14;}rsi=loss===0?(gain===0?50:100):100-100/(1+gain/loss);}
  const returns=closes.slice(1).map((v,i)=>Math.log(v/closes[i]));const avg=returns.length?returns.reduce((a,b)=>a+b,0)/returns.length:0;
  const vol=returns.length>1?Math.sqrt(returns.reduce((a,b)=>a+(b-avg)**2,0)/(returns.length-1))*Math.sqrt(252)*100:null;
  return {candles:sorted,sma20:sma(20),sma50:sma(50),sma200:sma(200),rsi,volatility:vol,lastDate:sorted.at(-1)?.date??null};
+}
+function indicators(candles){
+ if(!Array.isArray(candles))throw Error('سلسلة غير صالحة');
+ for(const c of candles){for(const k of ['open','high','low','close','volume'])num(c[k],k,k==='volume'?0:Number.MIN_VALUE);if(c.high<Math.max(c.open,c.close,c.low)||c.low>Math.min(c.open,c.close))throw Error('شمعة غير متسقة');}
+ return closingIndicators(candles);
 }
 function valuation(price,earnings,peLow,peBase,peHigh){price=num(price,'السعر',Number.MIN_VALUE);earnings=num(earnings,'ربحية السهم',Number.MIN_VALUE);const multiples=[peLow,peBase,peHigh].map(v=>num(v,'المضاعف',Number.MIN_VALUE));if(multiples[0]>multiples[1]||multiples[1]>multiples[2])throw Error('رتب مضاعفات السيناريوهات تصاعدياً');return multiples.map(pe=>{const fair=earnings*pe;return{pe,fair,upside:(fair-price)/price*100,margin:(fair-price)/fair*100};});}
 function goal(target,current,monthly,annual,months){target=num(target,'الهدف',Number.MIN_VALUE);current=num(current,'الرصيد');monthly=num(monthly,'المساهمة');annual=num(annual,'العائد',-99.99);months=num(months,'الأشهر',1);if(months>1200||annual>100)throw Error('مدخلات خارج نطاق الحساب');let value=current;const rate=(1+annual/100)**(1/12)-1;for(let i=0;i<months;i++)value=value*(1+rate)+monthly;return {value,reached:value>=target,gap:Math.max(0,target-value),assumedReturn:annual};}
@@ -109,6 +114,6 @@ class Repository{
  save(state,expectedRevision,allowRecovery=false){const raw=this.storage.getItem(this.key);let current=0;if(raw!==null){try{current=validateState(JSON.parse(raw)).revision;}catch(error){if(!allowRecovery)throw error;}}if(current!==expectedRevision)throw Error('عدلت المحفظة في تبويب آخر؛ أعد التحميل قبل الحفظ');
  const candidate=validateState({...state,revision:current+1});if(raw!==null)this.storage.setItem(this.key+'_backup',raw);this.storage.setItem(this.key,JSON.stringify(candidate));return candidate;}
 }
-const api={finite,num,clone,esc,date,ticker,empty,transaction,validateState,ledger,portfolio,change,daily,validateMarket,freshness,marketState,csv,indicators,valuation,goal,migrateLegacy,Repository};
+const api={finite,num,clone,esc,date,ticker,empty,transaction,validateState,ledger,portfolio,change,daily,validateMarket,freshness,marketState,csv,indicators,closingIndicators,valuation,goal,migrateLegacy,Repository};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.InvestCore=api;
 })(typeof globalThis==='object'?globalThis:this);

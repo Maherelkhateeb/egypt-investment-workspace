@@ -26,5 +26,15 @@
  function candidate(meta,now){const current=localTime(now),release=releaseTime(meta),created=localTime(meta?.generated_at);return Boolean(current&&release&&current>=release&&created&&created>=release&&created<=current&&meta.final===true&&meta.audited===true&&meta.file===filePath(meta)&&meta.report_type!=='pending_session');}
  function eligible(meta,report,now){if(!candidate(meta,now)||!report||report.date!==meta.date||(report.id||report.date)!==(meta.id||meta.date)||report.kind!==meta.kind||report.audit?.audited!==true)return false;const created=creationTime(report),stamp=localTime(created),current=localTime(now);if(!stamp||stamp<releaseTime(meta)||stamp>current||Date.parse(created)!==Date.parse(meta.generated_at))return false;if(meta.kind==='daily')return ['reviewed_eod','historical_partial','non_trading_day'].includes(report.report_type);return report.period_final===true&&report.period_end===meta.date&&report.report_type===meta.kind+'_summary'&&Array.isArray(report.components)&&report.components.length>0;}
  function metadata(report,file){const daily=report.kind==='daily';return {id:report.id||report.date,date:report.date,kind:report.kind,label:daily?report.title:report.kind==='weekly'?report.period_start+' — '+report.period_end:report.id,sessionDay:report.sessionDay,file,final:daily?report.report_type!=='pending_session':report.period_final===true,audited:report.audit?.audited===true,complete:daily?report.report_type==='non_trading_day'||report.coverage?.source_complete===true:report.coverage?.complete===true,report_type:report.report_type,source_commit:report.generated_from?.commit||null,generated_at:creationTime(report)||null,available_after_cairo:releaseTime(report)};}
- return {localTime,releaseTime,creationTime,candidate,eligible,metadata};
+ function previousWeek(now){
+  const current=localTime(now);if(!current)return null;
+  const date=current.slice(0,10),sunday=new Date(date+'T00:00:00Z');sunday.setUTCDate(sunday.getUTCDate()-sunday.getUTCDay());
+  const thursday=new Date(sunday);thursday.setUTCDate(thursday.getUTCDate()+4);
+  if(current<thursday.toISOString().slice(0,10)+'T16:00:00'){sunday.setUTCDate(sunday.getUTCDate()-7);thursday.setUTCDate(thursday.getUTCDate()-7);}
+  return {start:sunday.toISOString().slice(0,10),end:thursday.toISOString().slice(0,10)};
+ }
+ function inPreviousWeek(meta,now){const range=previousWeek(now);if(!range||!meta||meta.report_type==='non_trading_day'||meta.report_type==='pending_session')return false;return meta.kind==='daily'?meta.date>=range.start&&meta.date<=range.end:meta.kind==='weekly'&&meta.id===range.start&&meta.date===range.end;}
+ function hasContent(report){return Boolean(report&&[...Object.values(report.stocks||{}),...Object.values(report.indices||{})].some(q=>typeof q?.close==='number'&&Number.isFinite(q.close)&&q.close>0));}
+ function visible(meta,report,now){return inPreviousWeek(meta,now)&&hasContent(report)&&eligible(meta,report,now);}
+ return {localTime,releaseTime,creationTime,candidate,eligible,metadata,previousWeek,inPreviousWeek,hasContent,visible};
 });

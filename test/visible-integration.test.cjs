@@ -28,16 +28,16 @@ test('estimated 0.7 percent cost attaches to visible legacy portfolio and stays 
 
 test('source shell directly loads active integrations and Groq chat with explicit cache versions',()=>{
  const html=read('index.html');
- for(const file of ['ai-connection','ai-view','estimated-investment-cost','news-notifications-ui'])assert.match(html,new RegExp(file+'\\.js\\?v=3\\.0\\.0'));
+ for(const file of ['ai-connection','ai-view','estimated-investment-cost','news-notifications-ui'])assert.match(html,new RegExp(file+'\\.js\\?v=3\\.1\\.0'));
  assert.match(read('ai-view.js'),/data-ai-provider="groq"/);
  assert.match(read('ai-view.js'),/data-chat-provider="groq"/);
- assert.match(html,/app-build.*2026-10-09-r11/);
+ assert.match(html,/app-build.*2026-10-09-r12/);
  assert.doesNotMatch(html,/runtime-integrity/);
 });
 
 test('dated market wording and missing-data policy are defined in the active source',()=>{
  const templates=read('legacy-templates.js'),adapter=read('legacy-adapter.js');
- assert.match(templates+read('daily-report-view.js'),/الأسبوعي بعد إغلاق الخميس 16:00 بتوقيت القاهرة/);
+ assert.match(templates+read('daily-report-view.js'),/يتغير الأسبوع المعروض بعد إغلاق الخميس 16:00 بتوقيت القاهرة/);
  assert.match(adapter,/الأسعار والمؤشرات.*لقطات مؤرخة/);
  assert.doesNotMatch(templates,/أسعار حية 100%|نبض جلسة التداول اللحظي/);
  for(const id of ['p_thndr_stocks_card','stocksSubtotalBadge','macroEgx30','matrix-price-'])assert.ok(adapter.includes(id.replace('stocksSubtotalBadge','SubtotalBadge'))||templates.includes(id));

@@ -1,5 +1,6 @@
 {
-  "schema": 4,
+  "schema": 5,
+  "generated_at": "2026-10-09T07:57:16.523Z",
   "id": "2026-09-28",
   "kind": "daily",
   "report_type": "reviewed_eod",
@@ -17,16 +18,16 @@
   },
   "audit": {
     "audited": true,
-    "review_version": 4,
-    "audited_at": "2026-10-08T10:25:05.374Z",
+    "review_version": 5,
+    "audited_at": "2026-10-09T07:57:16.523Z",
     "policy": "بيانات مفقودة = غير متاحة؛ لا اختلاق للشموع أو أسعار الصناديق أو تدفقات المستثمرين.",
     "notes": [
       "أعدّ Codex التقرير وراجع التاريخ وحساب نسب التغير واتساق الشموع ومصادر المقارنة. لا يعني اجتياز الحسابات اعتماد جميع أسعار المزود كسعر رسمي مستقل.",
+      "المؤشرات الفنية يحسبها منطق المشروع من الإغلاقات المؤرخة المتصلة؛ لا يستخدم RSI أو SMA المحسوبين في البرنامج السابق.",
       "الأسهم ذات مرجع سابق مفقود لا تدخل إحصاء الصعود والهبوط. لا تُحسب نسبة التغير من سعر الافتتاح.",
       "الأسعار المصححة من صور الوسيط تستخدم قيمة المشروع الجديد المؤرخة؛ بقية الأسعار لقطات مزود مؤرشفة مع بيان مصدرها.",
       "استُبعدت 2 شمعة متناقضة؛ قيم الافتتاح والأعلى والأدنى والمستويات الفنية المرتبطة بها أصبحت غير متاحة.",
-      "رُصدت 19 نسبة مزود تختلف عن المقارنة بين الإغلاقات المختارة؛ عُرضت النسبة المعاد حسابها واحتُفظ بالقيمة الأصلية في سجل المراجعة.",
-      "لا تحتوي لقطة المصدر على أسعار صناديق؛ لم تُملأ من تاريخ لاحق."
+      "رُصدت 19 نسبة مزود تختلف عن المقارنة بين الإغلاقات المختارة؛ عُرضت النسبة المعاد حسابها واحتُفظ بالقيمة الأصلية في سجل المراجعة."
     ],
     "issues": [
       {
@@ -150,13 +151,43 @@
         "code": "reported_change_mismatch",
         "reported": -2.03,
         "recalculated": 1.11
+      },
+      {
+        "ticker": "CMS",
+        "code": "nav_comparison_missing_or_stale",
+        "nav_date": "2026-09-24"
+      },
+      {
+        "ticker": "AZG",
+        "code": "nav_comparison_missing_or_stale",
+        "nav_date": "2026-09-25"
+      },
+      {
+        "ticker": "BWA",
+        "code": "nav_comparison_missing_or_stale",
+        "nav_date": "2026-09-24"
+      },
+      {
+        "ticker": "NMF",
+        "code": "nav_comparison_missing_or_stale",
+        "nav_date": "2026-09-24"
       }
     ]
   },
   "session_analysis": {
     "headline": "جلسة الاثنين: غير محسوم للمؤشرات داخل التغطية المتاحة",
     "nature": "داخل المقارنات المؤرخة المتاحة: 6 سهمًا صاعدًا، 21 هابطًا، 0 دون تغير، و4 دون مقارنة مكتملة.",
-    "liquidity": "أحجام التداول مأخوذة من لقطة المزود. تدفقات فئات المستثمرين غير متاحة ولا تُستنتج من تغير السعر.",
+    "drivers": [
+      "أعلى تغير محسوب: MFPC (2.31%).",
+      "أدنى تغير محسوب: MCQE (-5.8%).",
+      "تتضمن اللقطة أحجام الأسهم المتاحة؛ قيمة التداول غير متاحة لهذه الجلسة."
+    ],
+    "risk_notes": [
+      "التغير محسوب لـ 27 من 31 سهمًا؛ بقية القيم لا تدخل ترتيب الصعود والهبوط.",
+      "الشموع المتسقة: 29؛ لا تُحسب المستويات الفنية من الشموع المتناقضة.",
+      "أسعار الصناديق تحمل تاريخ التقييم الأصلي، ولا تُحوّل آخر قيمة متاحة إلى سعر جلسة جديدة."
+    ],
+    "liquidity": "تتضمن اللقطة أحجام الأسهم المتاحة؛ قيمة التداول غير متاحة لهذه الجلسة. تدفقات فئات المستثمرين غير متاحة ولا تُستنتج من تغير السعر.",
     "tomorrow": "الموعد المعتاد التالي: 2026-09-29؛ يراجع التقويم الإجازات الموثقة ولا يفترض بثًا لحظيًا."
   },
   "stocks": {
@@ -174,6 +205,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -3.12,
@@ -184,10 +217,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -4.23% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 87.69333,
         "support": 84.98666,
         "resistance": 89.28666,
@@ -209,6 +248,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -0.84,
@@ -219,10 +260,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -0.96% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 112.99,
         "support": 107.38,
         "resistance": 117.97,
@@ -244,6 +291,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.21,
@@ -254,10 +303,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -2.1% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 797.33333,
         "support": 774.66666,
         "resistance": 814.65666,
@@ -279,6 +334,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": 0.86,
@@ -289,10 +346,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق مرتفع",
         "tone": "positive",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +0.52% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 11.57,
         "support": 11.35,
         "resistance": 11.92,
@@ -314,6 +377,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": 2.26,
@@ -324,10 +389,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق مرتفع",
         "tone": "positive",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +1.95% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 134.53333,
         "support": 130.06666,
         "resistance": 140.06666,
@@ -349,6 +420,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": 1.71,
@@ -359,10 +432,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق مرتفع",
         "tone": "positive",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +1.47% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 12.82,
         "support": 12.45,
         "resistance": 13.46,
@@ -384,6 +463,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": 1.56,
@@ -394,10 +475,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق مرتفع",
         "tone": "positive",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +0.6% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 87.65333,
         "support": 85.52666,
         "resistance": 90.28666,
@@ -419,6 +506,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": 2.76,
@@ -429,10 +518,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق مرتفع",
         "tone": "positive",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +2.31% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 45.3,
         "support": 43.74,
         "resistance": 47.6,
@@ -454,6 +549,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -0.86,
@@ -464,10 +561,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -0.55% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 16.21,
         "support": 15.74,
         "resistance": 16.72,
@@ -489,6 +592,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -1.92,
@@ -499,10 +604,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -2% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 25.12667,
         "support": 24.38334,
         "resistance": 25.75334,
@@ -524,6 +635,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.64,
@@ -534,10 +647,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -2.95% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 28.48333,
         "support": 27.66666,
         "resistance": 29.15666,
@@ -559,6 +678,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.83,
@@ -569,10 +690,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": false,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "لا تتوفر شمعة متسقة لحساب Classic Pivot؛ لا يولّد التقرير دعماً أو مقاومة من بيانات ناقصة.",
+        "text": "لا تتوفر شمعة متسقة لحساب Classic Pivot؛ لا يولّد التقرير دعماً أو مقاومة من بيانات ناقصة. التغير -1.6% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": null,
         "support": null,
         "resistance": null,
@@ -594,6 +721,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.1,
@@ -604,10 +733,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -2.1% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 22.09,
         "support": 21.38,
         "resistance": 22.58,
@@ -629,6 +764,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -3.86,
@@ -639,10 +776,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": false,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "لا تتوفر شمعة متسقة لحساب Classic Pivot؛ لا يولّد التقرير دعماً أو مقاومة من بيانات ناقصة.",
+        "text": "لا تتوفر شمعة متسقة لحساب Classic Pivot؛ لا يولّد التقرير دعماً أو مقاومة من بيانات ناقصة. التغير -3.86% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": null,
         "support": null,
         "resistance": null,
@@ -664,6 +807,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.37,
@@ -674,10 +819,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -4.35% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 12.74333,
         "support": 12.28666,
         "resistance": 12.98666,
@@ -699,6 +850,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -0.19,
@@ -709,10 +862,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -0.54% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 128.38,
         "support": 126.76,
         "resistance": 129.66,
@@ -734,6 +893,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.24,
@@ -744,10 +905,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -1.34% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 18.43333,
         "support": 18.06666,
         "resistance": 18.76666,
@@ -769,6 +936,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -4.01,
@@ -779,10 +948,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -3.97% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 21.73667,
         "support": 20.47334,
         "resistance": 23.27334,
@@ -804,6 +979,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.28,
@@ -814,10 +991,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 1,
+        "start": "2026-09-28",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "مقارنة غير مكتملة",
         "tone": "watch",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير غير قابل للحساب دون مرجع سابق متسق. سلسلة الإغلاقات المتصلة: 1 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 345.54333,
         "support": 335.08666,
         "resistance": 351.08666,
@@ -839,6 +1022,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.03,
@@ -849,10 +1034,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -2% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 38.84333,
         "support": 37.88666,
         "resistance": 39.66666,
@@ -874,6 +1065,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -7.35,
@@ -884,10 +1077,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -5.8% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 187.22667,
         "support": 177.45334,
         "resistance": 194.41334,
@@ -909,6 +1108,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -1.88,
@@ -919,10 +1120,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -1.88% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 13.54667,
         "support": 13.11334,
         "resistance": 13.98334,
@@ -944,6 +1151,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.53,
@@ -954,10 +1163,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -2.05% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 62.50667,
         "support": 59.51334,
         "resistance": 65.00334,
@@ -979,6 +1194,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -3.98,
@@ -989,10 +1206,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -4.46% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 11.71333,
         "support": 11.10666,
         "resistance": 12.37666,
@@ -1014,6 +1237,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.03,
@@ -1024,10 +1249,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق مرتفع",
         "tone": "positive",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +1.11% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 5.41333,
         "support": 5.10666,
         "resistance": 5.77666,
@@ -1049,6 +1280,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -1.87,
@@ -1059,10 +1292,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -1.87% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 29.18333,
         "support": 28.35666,
         "resistance": 30.26666,
@@ -1084,6 +1323,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.42,
@@ -1094,10 +1335,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -2.42% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 30.21667,
         "support": 29.23334,
         "resistance": 31.23334,
@@ -1119,6 +1366,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -3.27,
@@ -1129,10 +1378,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -3.27% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 7.38,
         "support": 7.04,
         "resistance": 7.74,
@@ -1154,6 +1409,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -1.21,
@@ -1164,10 +1421,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 1,
+        "start": "2026-09-28",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "مقارنة غير مكتملة",
         "tone": "watch",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير غير قابل للحساب دون مرجع سابق متسق. سلسلة الإغلاقات المتصلة: 1 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 23.88667,
         "support": 23.53334,
         "resistance": 24.07334,
@@ -1189,6 +1452,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": 0,
@@ -1199,10 +1464,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 1,
+        "start": "2026-09-28",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "مقارنة غير مكتملة",
         "tone": "watch",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير غير قابل للحساب دون مرجع سابق متسق. سلسلة الإغلاقات المتصلة: 1 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 141.33,
         "support": 140.67,
         "resistance": 141.66,
@@ -1224,6 +1495,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": 0.13,
@@ -1234,10 +1507,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 1,
+        "start": "2026-09-28",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "مقارنة غير مكتملة",
         "tone": "watch",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير غير قابل للحساب دون مرجع سابق متسق. سلسلة الإغلاقات المتصلة: 1 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 14.87333,
         "support": 14.26666,
         "resistance": 15.84666,
@@ -1288,17 +1567,84 @@
       "source": null
     }
   },
-  "funds": [],
+  "funds": [
+    {
+      "code": "CMS",
+      "name": "مصر شريعة إكويتي (CMS)",
+      "price": 22.72,
+      "session_date": "2026-09-24",
+      "reported_change_pct": null,
+      "change_pct": null,
+      "source": "إفصاح رسمي - سي أي كابيتال",
+      "manager": "CI Capital Asset Management",
+      "type": "equity_sharia",
+      "valuation_cycle": "أسبوعي / إقفال الجلسة",
+      "observed_at": "2026-09-27T22:37:53.444252+03:00",
+      "previous_close": null,
+      "previous_session_date": null,
+      "carried_forward": true
+    },
+    {
+      "code": "AZG",
+      "name": "أزيموت جولد (AZG)",
+      "price": 23.81,
+      "session_date": "2026-09-25",
+      "reported_change_pct": null,
+      "change_pct": null,
+      "source": "إفصاح رسمي - أزيموت مصر",
+      "manager": "Azimut Egypt",
+      "type": "gold_bullion",
+      "valuation_cycle": "يومي / إقفال جرام 24",
+      "observed_at": "2026-09-27T22:37:53.444252+03:00",
+      "previous_close": null,
+      "previous_session_date": null,
+      "carried_forward": true
+    },
+    {
+      "code": "BWA",
+      "name": "بلتون وفرة (BWA)",
+      "price": 2.2,
+      "session_date": "2026-09-24",
+      "reported_change_pct": null,
+      "change_pct": null,
+      "source": "إفصاح رسمي - بلتون القابضة",
+      "manager": "Beltone Financial",
+      "type": "equity_growth",
+      "valuation_cycle": "دوري / إقفال معتمد",
+      "observed_at": "2026-09-27T22:37:53.444252+03:00",
+      "previous_close": null,
+      "previous_session_date": null,
+      "carried_forward": true
+    },
+    {
+      "code": "NMF",
+      "name": "نعيم مصر للشريعة (NMF)",
+      "price": 49.62,
+      "session_date": "2026-09-24",
+      "reported_change_pct": null,
+      "change_pct": null,
+      "source": "إفصاح رسمي - النعيم للاستثمارات",
+      "manager": "Naeem Financial Investments",
+      "type": "equity_sharia",
+      "valuation_cycle": "دوري / إقفال معتمد",
+      "observed_at": "2026-09-27T22:37:53.444252+03:00",
+      "previous_close": null,
+      "previous_session_date": null,
+      "carried_forward": true
+    }
+  ],
   "fx_gold": {
     "usd_egp": {
       "close": 52.02,
-      "chgPct": 0.58,
+      "chgPct": null,
+      "reported_change_pct": 0.58,
       "session_date": null,
       "observed_at": "2026-09-28T18:04:01.376637+03:00"
     },
-    "gold_24k": {
+    "gold_24k_local": {
       "close": 4148.03,
-      "chgPct": -3.19,
+      "chgPct": null,
+      "reported_change_pct": -3.19,
       "session_date": null,
       "observed_at": "2026-09-28T18:04:01.376637+03:00"
     }
@@ -1318,6 +1664,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.03,
@@ -1328,10 +1676,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -2% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 38.84333,
         "support": 37.88666,
         "resistance": 39.66666,
@@ -1353,6 +1707,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.83,
@@ -1363,10 +1719,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": false,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "لا تتوفر شمعة متسقة لحساب Classic Pivot؛ لا يولّد التقرير دعماً أو مقاومة من بيانات ناقصة.",
+        "text": "لا تتوفر شمعة متسقة لحساب Classic Pivot؛ لا يولّد التقرير دعماً أو مقاومة من بيانات ناقصة. التغير -1.6% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": null,
         "support": null,
         "resistance": null,
@@ -1388,6 +1750,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -3.12,
@@ -1398,10 +1762,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -4.23% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 87.69333,
         "support": 84.98666,
         "resistance": 89.28666,
@@ -1423,6 +1793,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -3.86,
@@ -1433,10 +1805,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": false,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "لا تتوفر شمعة متسقة لحساب Classic Pivot؛ لا يولّد التقرير دعماً أو مقاومة من بيانات ناقصة.",
+        "text": "لا تتوفر شمعة متسقة لحساب Classic Pivot؛ لا يولّد التقرير دعماً أو مقاومة من بيانات ناقصة. التغير -3.86% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": null,
         "support": null,
         "resistance": null,
@@ -1458,6 +1836,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.28,
@@ -1468,10 +1848,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 1,
+        "start": "2026-09-28",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "مقارنة غير مكتملة",
         "tone": "watch",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير غير قابل للحساب دون مرجع سابق متسق. سلسلة الإغلاقات المتصلة: 1 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 345.54333,
         "support": 335.08666,
         "resistance": 351.08666,
@@ -1493,6 +1879,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -2.64,
@@ -1503,10 +1891,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -2.95% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 28.48333,
         "support": 27.66666,
         "resistance": 29.15666,
@@ -1528,6 +1922,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": 2.26,
@@ -1538,10 +1934,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق مرتفع",
         "tone": "positive",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +1.95% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 134.53333,
         "support": 130.06666,
         "resistance": 140.06666,
@@ -1563,6 +1965,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -4.01,
@@ -1573,10 +1977,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -3.97% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 21.73667,
         "support": 20.47334,
         "resistance": 23.27334,
@@ -1605,6 +2015,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": 2.76,
@@ -1615,10 +2027,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق مرتفع",
         "tone": "positive",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +2.31% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 45.3,
         "support": 43.74,
         "resistance": 47.6,
@@ -1640,6 +2058,8 @@
       "sma50": null,
       "sma200": null,
       "value_traded": null,
+      "pe": null,
+      "pb": null,
       "source": "mubasher.info",
       "verification": "archived_provider_snapshot",
       "reported_change_pct": -7.35,
@@ -1650,10 +2070,16 @@
       "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
       "basis_discontinuity": false,
       "ohlc_valid": true,
+      "technical_basis": {
+        "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+        "sessions": 2,
+        "start": "2026-09-27",
+        "end": "2026-09-28"
+      },
       "analysis": {
         "state": "إغلاق منخفض",
         "tone": "negative",
-        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+        "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -5.8% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
         "pivot": 187.22667,
         "support": 177.45334,
         "resistance": 194.41334,
@@ -1676,6 +2102,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": 2.76,
@@ -1686,10 +2114,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق مرتفع",
           "tone": "positive",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +2.31% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 45.3,
           "support": 43.74,
           "resistance": 47.6,
@@ -1711,6 +2145,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": 2.26,
@@ -1721,10 +2157,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق مرتفع",
           "tone": "positive",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +1.95% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 134.53333,
           "support": 130.06666,
           "resistance": 140.06666,
@@ -1746,6 +2188,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": 1.71,
@@ -1756,10 +2200,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق مرتفع",
           "tone": "positive",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +1.47% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 12.82,
           "support": 12.45,
           "resistance": 13.46,
@@ -1781,6 +2231,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": -2.03,
@@ -1791,10 +2243,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق مرتفع",
           "tone": "positive",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +1.11% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 5.41333,
           "support": 5.10666,
           "resistance": 5.77666,
@@ -1816,6 +2274,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": 1.56,
@@ -1826,10 +2286,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق مرتفع",
           "tone": "positive",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير +0.6% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 87.65333,
           "support": 85.52666,
           "resistance": 90.28666,
@@ -1853,6 +2319,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": -7.35,
@@ -1863,10 +2331,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق منخفض",
           "tone": "negative",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -5.8% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 187.22667,
           "support": 177.45334,
           "resistance": 194.41334,
@@ -1888,6 +2362,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": -3.98,
@@ -1898,10 +2374,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق منخفض",
           "tone": "negative",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -4.46% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 11.71333,
           "support": 11.10666,
           "resistance": 12.37666,
@@ -1923,6 +2405,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": -2.37,
@@ -1933,10 +2417,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق منخفض",
           "tone": "negative",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -4.35% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 12.74333,
           "support": 12.28666,
           "resistance": 12.98666,
@@ -1958,6 +2448,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": -3.12,
@@ -1968,10 +2460,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق منخفض",
           "tone": "negative",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -4.23% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 87.69333,
           "support": 84.98666,
           "resistance": 89.28666,
@@ -1993,6 +2491,8 @@
         "sma50": null,
         "sma200": null,
         "value_traded": null,
+        "pe": null,
+        "pb": null,
         "source": "mubasher.info",
         "verification": "archived_provider_snapshot",
         "reported_change_pct": -4.01,
@@ -2003,10 +2503,16 @@
         "previous_close_source": "8c06791478484257a9c1ba1e247341188f3b7307",
         "basis_discontinuity": false,
         "ohlc_valid": true,
+        "technical_basis": {
+          "method": "Wilder RSI(14); arithmetic SMA from consecutive dated reviewed closes",
+          "sessions": 2,
+          "start": "2026-09-27",
+          "end": "2026-09-28"
+        },
         "analysis": {
           "state": "إغلاق منخفض",
           "tone": "negative",
-          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي.",
+          "text": "Classic Pivot من أعلى وأدنى وإغلاق الجلسة؛ مستويات مرجعية للجلسة التالية، والمسافة محسوبة من سعر الإغلاق الحالي. التغير -3.97% مقارنة بإغلاق 2026-09-27. سلسلة الإغلاقات المتصلة: 2 جلسة؛ RSI يحتاج 15 إغلاقًا، والمتوسطات تحتاج 20 / 50 / 200.",
           "pivot": 21.73667,
           "support": 20.47334,
           "resistance": 23.27334,
@@ -2016,18 +2522,24 @@
       }
     ],
     "average_index_change": null,
-    "index_bias": "غير محسوم"
+    "index_bias": "غير محسوم",
+    "known_turnover": 0,
+    "turnover_assets": 0
   },
   "coverage": {
     "stocks": 31,
     "indices": 4,
-    "funds": 0,
+    "funds": 4,
     "valid_ohlc": 29,
     "comparisons": 27,
     "source_complete": true
   },
   "sources": [
-    "mubasher.info"
+    "mubasher.info",
+    "إفصاح رسمي - سي أي كابيتال",
+    "إفصاح رسمي - أزيموت مصر",
+    "إفصاح رسمي - بلتون القابضة",
+    "إفصاح رسمي - النعيم للاستثمارات"
   ],
   "disclaimer": "تحليل معلوماتي تاريخي، مع حدود مصادره، وليس توصية شراء أو بيع."
 }

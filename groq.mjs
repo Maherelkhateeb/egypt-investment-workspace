@@ -61,13 +61,13 @@ export async function generateGroq({market,news,apiKey=process.env.GROQ_API_KEY,
   const request=fetchImpl||fetcher,retained=validatePrevious(previous,now,MODEL);let context;
   try{context=buildPublicContext({market,news},now);}catch{return failedResult(retained,null,now,'invalid_public_input',null,MODEL);}
   if(typeof apiKey!=='string'||!apiKey.trim())return failedResult(retained,context,now,'missing_key',null,MODEL);
-  if(retained?.analysis&&retained.input_hash===context.input_hash)return{...retained,attempted_at:new Date(now).toISOString(),reuse_reason:'unchanged_public_evidence'};
+  if(retained?.analysis&&retained.input_hash===context.input_hash)return{...retained,status:now-Date.parse(retained.generated_at)>=MIN_INTERVAL_MS?'stale':retained.status,attempted_at:new Date(now).toISOString(),reuse_reason:'unchanged_public_evidence'};
   const lastAttempt=retained?.last_request_at||retained?.generated_at;
   if(lastAttempt&&now-Date.parse(lastAttempt)<MIN_INTERVAL_MS)return{...retained,status:retained.analysis?'stale':retained.status,attempted_at:new Date(now).toISOString(),reuse_reason:'six_hour_interval',error_code:retained.analysis?'new_evidence_waiting_interval':retained.error_code};
   if(!context.sources.length)return failedResult(retained,context,now,'no_valid_public_news',null,MODEL);
   const requestedAt=new Date(now).toISOString();
   try{
-    const response=await request(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${apiKey.trim()}`},body:JSON.stringify(makeGroqRequest(context)),signal:AbortSignal.timeout(45000),redirect:'error'});
+    const response=await request(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${apiKey.trim()}`},body:JSON.stringify(makeGroqRequest(context)),signal:AbortSignal.timeout(120000),redirect:'error'});
     if(!response.ok)return failedResult(retained,context,now,await classifyFailedResponse(response),requestedAt,MODEL);
     const analysis=extractGroqAnalysis(await readPayload(response),context.sources);
     return{...emptyResult('ready',now,null,MODEL),generated_at:requestedAt,last_request_at:requestedAt,input_hash:context.input_hash,market_session_date:context.market_session_date,news_fetched_at:context.news_fetched_at,sources:context.sources,market_facts:context.market_facts,analysis};

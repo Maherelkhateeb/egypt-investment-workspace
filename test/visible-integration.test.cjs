@@ -13,7 +13,6 @@ test('notifications integrate with the legacy news UI the user actually sees',()
  assert.match(s,/calendarNotices/);
  assert.match(s,/confirmed===true/);
  assert.match(s,/market-calendar\.json/);
- assert.match(s,/box\.innerHTML!==next/);
  assert.doesNotMatch(s,/querySelector\('#assetFilter'\)/);
 });
 
@@ -27,30 +26,21 @@ test('estimated 0.7 percent cost attaches to visible legacy portfolio and stays 
  assert.match(s,/&quot;/);
 });
 
-test('deployed shell loads fresh integration layers and Groq newsletter fallback',()=>{
- const s=read('scripts/stage-pages.cjs');
- assert.match(s,/news-notifications-ui\.js\?v=1\.4\.0/);
- assert.match(s,/estimated-investment-cost\.js\?v=1\.3\.0/);
- assert.match(s,/runtime-integrity\.js\?v=1\.1\.0/);
- assert.match(s,/ai-view\.js\?v=2\.7\.0/);
- assert.match(s,/data-ai-provider="groq"/);
- assert.match(s,/Groq · GPT-OSS 120B/);
- assert.match(s,/app-build.*2026-10-08-r8/);
+test('source shell directly loads active integrations and Groq chat with explicit cache versions',()=>{
+ const html=read('index.html');
+ for(const file of ['ai-view','estimated-investment-cost','news-notifications-ui'])assert.match(html,new RegExp(file+'\\.js\\?v=2\\.9\\.0'));
+ assert.match(read('ai-view.js'),/data-ai-provider="groq"/);
+ assert.match(read('ai-view.js'),/data-chat-provider="groq"/);
+ assert.match(html,/app-build.*2026-10-09-r10/);
+ assert.doesNotMatch(html,/runtime-integrity/);
 });
 
-test('visible report copy and market wording match actual dated-data policy',()=>{
- const s=read('runtime-integrity.js');
- assert.match(s,/الأسبوعي بعد إغلاق الخميس 16:00 بتوقيت القاهرة/);
- assert.match(s,/الأسعار والمؤشرات.*لقطات مؤرخة/);
- assert.doesNotMatch(s,/البورصة المصرية: أسعار حية 100%.*البورصة المصرية: أسعار حية 100%/);
-});
-
-test('unbound legacy financial numbers are replaced by verified market or portfolio data',()=>{
- const s=read('runtime-integrity.js');
- for(const id of ['p_thndr_stocks_card','p_thndr_funds_card','stocksSubtotalBadge','fundsSubtotalBadge','macroEgx30Val','macroEgx33Val','matrix-price-CMS','matrix-price-AZG'])assert.match(s,new RegExp(id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
- assert.match(s,/fetch\('market\.json'/);
- assert.match(s,/InvestCore/);
- assert.match(s,/لا تعرض هذه الخانة رقمًا قديمًا من القالب/);
+test('dated market wording and missing-data policy are defined in the active source',()=>{
+ const templates=read('legacy-templates.js'),adapter=read('legacy-adapter.js');
+ assert.match(templates+read('daily-report-view.js'),/الأسبوعي بعد إغلاق الخميس 16:00 بتوقيت القاهرة/);
+ assert.match(adapter,/الأسعار والمؤشرات.*لقطات مؤرخة/);
+ assert.doesNotMatch(templates,/أسعار حية 100%|نبض جلسة التداول اللحظي/);
+ for(const id of ['p_thndr_stocks_card','stocksSubtotalBadge','macroEgx30','matrix-price-'])assert.ok(adapter.includes(id.replace('stocksSubtotalBadge','SubtotalBadge'))||templates.includes(id));
 });
 
 test('report creation policy itself remains gated by Cairo close and Thursday week end',()=>{

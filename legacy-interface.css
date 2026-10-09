@@ -427,51 +427,8 @@
         #fundsHoldingsTableContainer::-webkit-scrollbar-thumb:hover {
             background: #10b981;
         }
-
-        /* Master Security Lock & PIN Keypad Styles */
-        .pin-dot.active {
-            background-color: #10b981 !important;
-            border-color: #10b981 !important;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.6) !important;
-            transform: scale(1.15);
-        }
-        @keyframes pinShake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-        .pin-shake {
-            animation: pinShake 0.4s ease-in-out;
-        }
-        .app-locked-blur {
-            filter: blur(16px) !important;
-            pointer-events: none !important;
-            user-select: none !important;
-        }
     
 
 
             .tab-btn.text-emerald-400 { color:#34d399 !important; }
             .tab-btn.text-emerald-400 span:first-child { filter: drop-shadow(0 0 6px rgba(52,211,153,0.5)); }
-        
-        /* Master Security Lock & PIN Keypad Styles */
-        .pin-dot.active {
-            background-color: #10b981 !important;
-            border-color: #10b981 !important;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.6) !important;
-            transform: scale(1.15);
-        }
-        @keyframes pinShake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-        .pin-shake {
-            animation: pinShake 0.4s ease-in-out;
-        }
-        .app-locked-blur {
-            filter: blur(16px) !important;
-            pointer-events: none !important;
-            user-select: none !important;
-        }
-    

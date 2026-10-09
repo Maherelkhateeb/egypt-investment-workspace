@@ -117,7 +117,7 @@ export async function generateOpenAI({ market, news, apiKey = process.env.OPENAI
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey.trim()}` },
       body: JSON.stringify(makeOpenAIRequest(context)),
-      signal: AbortSignal.timeout(45000),
+      signal: AbortSignal.timeout(120000),
       redirect: 'error'
     });
     if (!response.ok) return failedResult(retained, context, now, await classifyFailedResponse(response), requestedAt, MODEL);

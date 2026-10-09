@@ -18,7 +18,6 @@ function total(items){const complete=items.every(h=>h.value!=null);return {value
 function ratio(profit,cost){return profit==null||cost<=0?null:profit/cost*100;}
 function workspace(content){return '<div class="workspace-ui">'+content+'</div>';}
 function section(title,body){return '<section class="glass-card rounded-2xl p-3.5 space-y-3"><h3 class="text-xs font-bold text-white">'+e(title)+'</h3>'+body+'</section>';}
-function note(text){return '<div class="legacy-data-note">'+e(text)+'</div>';}
 function exportMenu(root,name){const drop=by(root,'exportDropdown_'+name);if(!drop)return;const buttons=drop.querySelectorAll('button');buttons.forEach((b,i)=>{b.removeAttribute('data-legacy-click');b.dataset.action=['excel','print',name==='dailyreport'?'report-json':'backup'][i]||'backup';});}
 function portfolioOriginal(){
  const root=fragment('portfolio'),p=C.portfolio(state,market),groups=grouped(p);for(const id of ['viewModeCardsBtn','viewModeCompactBtn']){const b=by(root,id);b?.classList.remove('text-[10px]','px-2.5');b?.classList.add('text-xs','px-3');}
@@ -82,6 +81,7 @@ function radarOriginal(){
  const list=radarStocks();html(root,'stocksContainer',list.map(([t,q])=>quoteCard(t,q)).join('')||'<p class="text-xs text-slate-400 py-6">لا تتوفر بيانات تطابق التصفية المحددة.</p>');const fundRows=Object.entries(market.assets).filter(([t,q])=>q.type!=='stock'&&window.InterfaceTools.matchesFund(t,q,ui.fundsFilter));html(root,'fundsCardsContainer',fundRows.map(([t,q])=>quoteCard(t,q)).join('')||'<p class="text-xs text-slate-400 py-6">لا تتوفر بيانات موثقة لهذه التصفية.</p>');for(const code of ['AZG','THNDR_GOLD','CMS','BWA','NMF'])put(root,'matrix-price-'+code,n(market.assets[code]?.close,4));by(root,'searchInput').value=ui.search;
  const funds=filter==='fund'||filter==='gold';by(root,'equitiesAnalyticsView')?.classList.toggle('hidden',funds);by(root,'fundsAnalyticsView')?.classList.toggle('hidden',!funds);by(root,'marketSubViewPulse')?.classList.toggle('hidden',ui.marketTab!=='pulse');by(root,'marketSubViewFair')?.classList.toggle('hidden',ui.marketTab!=='fair');
  for(const id of ['whaleFlowFeed','cashlessPairTradeFeed'])html(root,id,'<p class="text-[10px] text-slate-400">لا توجد بيانات موثقة لهذه القراءة في المصدر الحالي.</p>');
+ root.insertAdjacentHTML('afterbegin','<div data-dated-market-notice class="glass-card rounded-2xl p-2.5 border border-sky-900/50 text-xs text-sky-200">تنبيه البيانات: الأسعار والمؤشرات في هذه النسخة لقطات مؤرخة حسب جلسة المصدر وليست بثًا لحظيًا. لا يُعرض رقم مفقود على أنه صفر أو سعر مباشر.</div>');
  return root.outerHTML;
 }
 function newsCard(item){return window.LegacyMarketCards.news(item);}
@@ -125,9 +125,8 @@ function toolsOriginal(){
  const auditBox=by(root,'auditReportSummary');if(auditBox)auditBox.innerHTML='<div id="auditResult" class="workspace-ui"></div>';
  return root.outerHTML;
 }
-const baseViews={portfolio:portfolioView,performance:performanceView,radar:radarView,news:newsView,research:researchView,tools:toolsView};
+const baseViews={research:researchView};
 portfolioView=portfolioOriginal;performanceView=performanceOriginal;radarView=radarOriginal;newsView=newsOriginal;researchView=researchOriginal;toolsView=toolsOriginal;
-addProviderPanels=function(){};
 function originalTicker(){
  const track=$('marketTicker');if(!track)return;const box='bg-slate-900/90 border border-slate-800 rounded-lg px-2.5 py-1 flex items-center gap-1.5 whitespace-nowrap shrink-0';
  const session='<div dir="rtl" class="'+box+' text-slate-300"><span class="w-2 h-2 rounded-full bg-slate-400"></span><span class="font-bold">'+(marketLoading&&!hasMarketPrices()?'جار تحميل المصدر':'أسعار جلسة '+e(market.session_date))+'</span><span class="font-mono text-[10px] text-slate-400">مرجع مؤرخ</span></div>';
@@ -155,7 +154,7 @@ function execute(call,element){
  if(['refreshData','ultraFastSync','syncFundsNavLive','quickThndrPreset','syncAllLiveSections','syncLiveFundsEngine'].includes(name))return refreshMarket();
  if(name==='loadThndrVerifiedPresetAndApply')return refreshMarket();
  if(['openTransactionModal','openAddHoldingModal'].includes(name)){openEntry();if(a[0]){$('entryForm').elements.ticker.value=a[0];const q=market.assets[a[0]];if(q)$('entryForm').elements.assetType.value=q.type;}if(['buy','sell'].includes(a[1]))$('entryForm').elements.type.value=a[1];return;}
- if(['openStockChart','openStockChartModal','openPivotModal','openStockValuation','showNewsTechnicalAnalysis','openStockFromNews'].includes(name))return showEditor('research',a[0]);
+ if(['openStockChart','openStockChartModal','showNewsTechnicalAnalysis','openStockFromNews'].includes(name))return showEditor('research',a[0]);
  if(['editHoldingDirect','editHolding'].includes(name)){const t=[...state.transactions].reverse().find(x=>x.ticker===a[0]&&['opening','buy','sell'].includes(x.type));return openEntry(t);}
  if(name==='toggleStockBuyPrice'){const symbols=a[0]==='THNDR_GOLD'?C.ledger(state).positions.filter(h=>h.assetType==='gold').map(h=>h.ticker):[a[0]];for(const symbol of symbols)for(const id of ['buyPriceCard_'+symbol,'buyPrice_'+symbol])$(id)?.classList.toggle('hidden');return;}
  if(name==='setPortfolioViewMode'){ui.holdingsMode=a[0]==='compact'?'list':'cards';try{localStorage.setItem('egx_independent_holdings_view',ui.holdingsMode);}catch{}return render();}
@@ -168,18 +167,13 @@ function execute(call,element){
  if(name==='setFilter'){ui.radarFilter=a[0];return render();}if(name==='setFundsFilter'){ui.fundsFilter=a[0];return render();}if(name==='sortRadar'){ui.radarSort=a[0];return render();}if(name==='toggleRadarSortDir'){ui.sortDir=-ui.sortDir;return render();}
  if(name==='setRecActionFilter'){ui.recAction=a[0];return render();}if(name==='setRecTypeFilter'){ui.recType=a[0];return render();}
  if(name==='switchToolsSubTab'){ui.toolsTab=a[0];return render();}
- if(name==='runComprehensiveSystemAudit'){const box=$('auditReportContainer');box?.classList.remove('hidden');return audit();}
- if(name==='runGoalsMonteCarloSimulation'){try{const r=C.goal($('goal_target').value,$('goal_current').value,$('goal_monthly').value,$('goal_rate').value,120);$('goal_output').innerHTML=workspace('<h3>'+n(r.value)+' ج.م</h3><p>محاكاة حتمية لمدة 120 شهراً وفق افتراضاتك؛ لا تمثل احتمالاً أو عائداً مضموناً.</p><p>'+(r.reached?'بلغ الهدف وفق الافتراضات':'المتبقي '+n(r.gap)+' ج.م')+'</p>');}catch(err){toast(err.message,true);}return;}
  if(['backupPortfolioData','openPortfolioBackupModal','exportPortfolioJsonBackup'].includes(name))return backup();
- if(['exportUniversalExcel','exportMultiSheetExcel','exportUserActivityLog'].includes(name))return exportCSV();
  if(name==='exportUniversalPdf')return window.print();
  if(name==='fillZakatFromPortfolio'){const p=C.portfolio(state,market);$('zakat_val').value=p.cashKnown?p.totalWealth:p.value;return;}
- if(['calculateZakat','calculateInheritanceDistribution','runDcaCalculation','runSurplusAllocation','calculateThndrFeesAndTaxes'].includes(name)){const id={calculateZakat:'zakat_output',calculateInheritanceDistribution:'inh_output',runDcaCalculation:'calc_dca_output',runSurplusAllocation:'advisor_output',calculateThndrFeesAndTaxes:'fee_tax_output'}[name];const output=$(id);if(output){output.classList.remove('hidden');output.innerHTML='<p class="text-xs text-slate-400">هذا الحساب غير متاح في محرك المشروع الجديد. تتوفر الحسابات المدعومة في أدواته وسجل عملياته.</p>';return;}}
  if(name==='toggleFearGreedBreakdown')return $('fearGreedBreakdownBox')?.classList.toggle('hidden');
  if(name==='toggleAllBuyPrices'){document.querySelectorAll('[id^="buyPriceCard_"],[id^="buyPrice_"]').forEach(box=>box.classList.toggle('hidden'));return;}
  if(name.toLowerCase().includes('gemini')||name.toLowerCase().includes('ai')||name==='openFloatingAiCopilot')return $('aiAdvisorButton')?.click();
  if(name==='lockApplicationNow'){const curtain=document.createElement('div');curtain.className='legacy-privacy-curtain';curtain.innerHTML='<span style="font-size:40px">🔒</span><h2>شاشة المحفظة مخفية</h2><p>حجب بصري مؤقت؛ ليس قفلاً بكلمة مرور.</p><button>إظهار التطبيق</button>';curtain.querySelector('button').onclick=()=>curtain.remove();document.body.append(curtain);return;}
- if(name==='openThndrFeePolicyModal')return showEditor('performance');
  if(name){console.error('إجراء واجهة غير مسجل: '+name);return toast('تعذر تنفيذ الإجراء: '+name,true);}
 }
 document.addEventListener('click',event=>{const el=event.target.closest('[data-legacy-click],[data-legacy-symbol]');if(!el)return;if(el.dataset.legacySymbol){event.preventDefault();showEditor('research',el.dataset.legacySymbol);return;}execute(el.dataset.legacyClick,el);});

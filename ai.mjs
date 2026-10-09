@@ -1,7 +1,7 @@
 // Server/scheduled code only. This module must never be loaded by the browser.
 import { createHash } from 'node:crypto';
 
-export const MODEL = 'gemini-3.8-flash';
+export const MODEL = /^gemini-[a-z0-9.-]+$/.test(process.env.GEMINI_MODEL||'') ? process.env.GEMINI_MODEL : 'gemini-3.8-flash';
 export const MIN_INTERVAL_MS = 6 * 60 * 60 * 1000;
 export const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 const SOURCE_HOSTS = {
@@ -10,8 +10,8 @@ const SOURCE_HOSTS = {
   amwal: { publisher: 'أموال الغد', hosts: ['amwalalghad.com', 'www.amwalalghad.com'] }
 };
 const MARKET_HOSTS = new Set(['uk.marketscreener.com', 'sa.marketscreener.com', 'sa.investing.com', 'in.investing.com', 'www.investing.com', 'ar.tradingeconomics.com', 'beta.egx.com.eg', 'www.egx.com.eg']);
-const FORBIDDEN_KEYS = /^(?:portfolio|holdings|transactions|openingCash|valuations|research|histories|snapshots|qty|qty_owned|quantity|buy|sell|avg_unit_cost|avg_cost|fees|password|credentials|secret|api_key|apikey|gemini_api_key|openai_api_key|email|access_token|authorization)$/i;
-const SECRET_TEXT = /AIza[A-Za-z0-9_-]{20,}|sk-[A-Za-z0-9_-]{16,}|Bearer\s+[A-Za-z0-9._-]{16,}/;
+const FORBIDDEN_KEYS = /^(?:portfolio|holdings|transactions|openingCash|valuations|research|histories|snapshots|qty|qty_owned|quantity|buy|sell|avg_unit_cost|avg_cost|fees|password|credentials|secret|api_key|apikey|gemini_api_key|groq_api_key|openai_api_key|email|access_token|authorization)$/i;
+const SECRET_TEXT = /AIza[A-Za-z0-9_-]{20,}|gsk_[A-Za-z0-9_-]{16,}|sk-[A-Za-z0-9_-]{16,}|Bearer\s+[A-Za-z0-9._-]{16,}/;
 const OUTCOME_LABELS = ['متفائل', 'أساسي', 'متشائم'];
 const isObject = value => value && typeof value === 'object' && !Array.isArray(value);
 const safeText = (value, max = 600) => typeof value === 'string' && value.trim().length > 0 && value.length <= max && !SECRET_TEXT.test(value) && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(value);
@@ -187,7 +187,7 @@ export async function generateAnalysis({ market, news, apiKey, previous = null, 
   if (!context.sources.length) return failedResult(retained, context, now, 'no_valid_public_news');
   const requestedAt = new Date(now).toISOString();
   try {
-    const response = await fetchImpl(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey }, body: JSON.stringify(makeRequest(context)), signal: AbortSignal.timeout(45000) });
+    const response = await fetchImpl(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey }, body: JSON.stringify(makeRequest(context)), signal: AbortSignal.timeout(120000) });
     if (!response.ok) {
       let reason = `http_${[400, 401, 403, 429, 500, 503].includes(response.status) ? response.status : 'error'}`;
       if (response.status === 400) {

@@ -3,10 +3,10 @@
 const C=window.InvestCore,e=C.esc,n=(v,d=2)=>v==null||!Number.isFinite(v)?'غير متاح':v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}),pc=v=>v==null?'غير متاح':(v>0?'+':'')+n(v)+'%',change=q=>q.previous_close!=null&&q.previous_session_date?C.change(q.close,q.previous_close).pct:null;
 function validUrl(url){try{const u=new URL(url);return u.protocol==='https:'?e(u.href):'';}catch{return '';}}
 function stockCard(symbol,q){
- const s={ticker:e(symbol),name:e(q.name),close:q.close,chg:change(q),rsi:q.rsi??null,volume:q.volume??null,sector:e(q.sector||'جلسة '+q.session_date),rec:'متابعة'},curPrice=s.close,vd=null,margin=null,dayHigh=q.high??null,dayLow=q.low??null;
+ const s={ticker:e(symbol),name:e(q.name),close:q.close,chg:change(q),rsi:q.rsi??null,volume:q.volume??null,sector:e(q.sector||'جلسة '+q.session_date),rec:'متابعة'},vd=null,margin=null,dayHigh=q.high??null,dayLow=q.low??null;
  const rangePct=dayHigh!=null&&dayLow!=null&&dayHigh>dayLow&&s.close!=null?Math.round(Math.max(0,Math.min(100,(s.close-dayLow)/(dayHigh-dayLow)*100))):null;
  const history=state.histories[symbol],technical=history?C.indicators(history.candles):null,piv=technical?.pivot??null;
- const isPos=s.chg!=null&&s.chg>0,isNeg=s.chg!=null&&s.chg<0,chgColor=isPos?'text-emerald-400':isNeg?'text-rose-400':'text-slate-300',chgBg=isPos?'bg-emerald-950/70 border-emerald-800':isNeg?'bg-rose-950/70 border-rose-800':'bg-slate-900 border-slate-700',sign=isPos?'+':'';
+ const isPos=s.chg!=null&&s.chg>0,isNeg=s.chg!=null&&s.chg<0,chgColor=isPos?'text-emerald-400':isNeg?'text-rose-400':'text-slate-300',chgBg=isPos?'bg-emerald-950/70 border-emerald-800':isNeg?'bg-rose-950/70 border-rose-800':'bg-slate-900 border-slate-700';
  const arabicRec='<span class="text-[10px] font-bold text-amber-400">متابعة</span>',arabicPe='',arabicRsi=s.rsi==null?'':'<span class="text-[10px] font-mono text-slate-400">RSI: '+n(s.rsi,1)+'</span>',tagBadges=['<span class="text-[9px] font-mono px-1.5 py-0.2 rounded border bg-slate-900 text-slate-300 border-slate-700">↗️ ارتكاز '+n(piv?.pp)+'</span>'];
  return `<div class="glass-card rounded-2xl p-3 space-y-2 hover:border-slate-600 transition" data-ticker="${s.ticker}">
                     <div class="flex items-center justify-between">
@@ -92,7 +92,7 @@ function stockCard(symbol,q){
                  </div>`;
 }
 function fundCard(symbol,q){
- const s={ticker:e(symbol),name:e(q.name),close:q.close,chg:change(q),type:q.type},isGold=q.type==='gold'||symbol==='AZG',isUsd=false,isPos=s.chg!=null&&s.chg>=0,manager=e('مرجع '+q.session_date),assetDesc=e(q.name)+'؛ سعر مؤرخ من المشروع الجديد.',ytdReturn='غير متاح',liquidityInfo='تحتاج مصدرًا',sign=isPos?'+':'';
+ const s={ticker:e(symbol),name:e(q.name),close:q.close,chg:change(q),type:q.type},isGold=q.type==='gold'||symbol==='AZG',isUsd=false,isPos=s.chg!=null&&s.chg>=0,manager=e('مرجع '+q.session_date),assetDesc=e(q.name)+'؛ سعر مؤرخ من المشروع الجديد.',ytdReturn='غير متاح',liquidityInfo='تحتاج مصدرًا';
  return `
                     <div class="glass-card rounded-2xl p-3.5 space-y-2.5 border ${isUsd ? 'border-emerald-800/60 bg-gradient-to-br from-slate-900 via-slate-950 to-emerald-950/25' : (isGold ? 'border-amber-900/60 bg-gradient-to-br from-slate-900 via-slate-950 to-amber-950/20' : 'border-indigo-900/60 bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950/20')} hover:border-slate-600 transition">
                         <div class="flex items-center justify-between">
@@ -190,7 +190,7 @@ function newsCard(item){
                 </div>`;
 }
 function researchCard(symbol,q){
- const research=state.research[symbol]||{},r={ticker:e(symbol),name:e(q.name),sector:e(q.sector||'سوق المال'),isOwned:C.portfolio(state,market).positions.some(h=>h.ticker===symbol),cur:q.close,rsi:q.rsi??null,fair:null,safety:null,target1:null,stopLoss:null,actionLabel:'بحث ومتابعة',badgeClass:'bg-amber-950 text-amber-300 border-amber-700/80'},isBuy=false,isDca=false,isSell=false,borderCol='border-amber-600/50 bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/20';
+ const research=state.research[symbol]||{},r={ticker:e(symbol),name:e(q.name),sector:e(q.sector||'سوق المال'),isOwned:C.portfolio(state,market).positions.some(h=>h.ticker===symbol),cur:q.close,rsi:q.rsi??null,fair:null,safety:null,target1:null,stopLoss:null,actionLabel:'بحث ومتابعة',badgeClass:'bg-amber-950 text-amber-300 border-amber-700/80'},isBuy=false,isDca=false,borderCol='border-amber-600/50 bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/20';
  return `
                 <div class="glass-card rounded-2xl p-4 border ${borderCol} space-y-3 shadow-md transition hover:scale-[1.002]">
 

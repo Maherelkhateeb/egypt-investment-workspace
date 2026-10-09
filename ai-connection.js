@@ -3,8 +3,8 @@
 class InvestmentAIConnection{
  constructor(serviceUrl,onReady,onStatus){
   const url=new URL(serviceUrl);if(url.protocol!=='https:')throw Error('رابط خدمة غير صالح');
-  this.url=url.origin;this.direct=window.location?.origin===this.url;this.providers={};this.health=null;this.onReady=onReady;this.onStatus=onStatus;this.frame=null;this.popup=null;
-  this.peers=new Map();this.pending=new Map();this.waiters=new Set();
+  this.url=url.origin;this.direct=window.location?.origin===this.url;this.providers={};this.health=null;this.onReady=onReady;this.onStatus=onStatus;this.frame=null;
+  this.pending=new Map();
   window.addEventListener('message',event=>this.receive(event));
  }
  start(){
@@ -14,13 +14,7 @@ class InvestmentAIConnection{
   frame.src=this.url+'/bridge';frame.setAttribute('sandbox','allow-scripts allow-same-origin');
   document.body.append(frame);this.frame=frame;
  }
- peer(provider){
-  for(const [source,providers]of this.peers){
-   if(source===this.popup&&this.popup.closed){this.peers.delete(source);continue;}
-   if(providers[provider]?.configured===true)return source;
-  }
-  return null;
- }
+ peer(provider){return this.providers[provider]?.configured===true?this.frame?.contentWindow||null:null;}
  configured(provider){return this.direct?this.providers[provider]?.configured===true:Boolean(this.peer(provider));}
  async checkHealth(){
   if(this.health)return this.health;
@@ -31,14 +25,6 @@ class InvestmentAIConnection{
   this.start();if(this.configured(provider))return true;
   this.onStatus('افتح نسخة التطبيق المتصلة من الرابط داخل المستشار. يعمل AI فيها داخل التطبيق بالمفتاح المحفوظ.');
   return false;
- }
- waitForReady(provider){
-  const source=this.peer(provider);if(source)return Promise.resolve(source);
-  return new Promise((resolve,reject)=>{
-   const waiting={provider,resolve,reject,timer:null};
-   waiting.timer=setTimeout(()=>{this.waiters.delete(waiting);reject(Error('لم تُستعد جلسة الخدمة الخاصة. افتح المساعد وتحقق من تسجيل الدخول؛ مفتاح Groq محفوظ على الخادم.'));},45000);
-   this.waiters.add(waiting);
-  });
  }
  async request(payload){
   const provider=payload.provider||'groq';
@@ -56,7 +42,7 @@ class InvestmentAIConnection{
    return mode==='newsletter'?{provider:'Groq',report:result}:result;
   }
   if(!this.configured(provider)&&!this.connect(provider))throw Error('استخدم نسخة التطبيق المتصلة من الرابط داخل المستشار؛ لا تحتاج إلى إدخال مفتاح.');
-  const source=await this.waitForReady(provider),id=crypto.randomUUID();
+  const source=this.peer(provider),id=crypto.randomUUID();
   return new Promise((resolve,reject)=>{
    const timer=setTimeout(()=>{this.pending.delete(id);reject(Error('لم تصل إجابة مكتملة من الخدمة. يمكنك إعادة المحاولة دون إعادة إدخال المفتاح.'));},payload.mode==='newsletter'?135000:65000);
    this.pending.set(id,{source,mode:payload.mode,resolve,reject,timer});
@@ -64,12 +50,11 @@ class InvestmentAIConnection{
   });
  }
  receive(event){
-  if(event.origin!==this.url||!event.source||event.source!==this.popup&&event.source!==this.frame?.contentWindow)return;
+  if(event.origin!==this.url||!event.source||event.source!==this.frame?.contentWindow)return;
   const data=event.data;if(!data||typeof data!=='object')return;
   if(data.type==='investment-ai-ready'){
    const providers=data.providers;if(!providers||typeof providers!=='object'||Array.isArray(providers))return;
-   this.peers.set(event.source,providers);this.onReady(providers);
-   for(const waiting of this.waiters){const source=this.peer(waiting.provider);if(source){clearTimeout(waiting.timer);this.waiters.delete(waiting);waiting.resolve(source);}}
+   this.providers=providers;this.onReady(providers);
    return;
   }
   if(data.type!=='investment-ai-response')return;

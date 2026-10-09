@@ -24,7 +24,7 @@ function renderTop(r,daily){const {rpt}=dto(r),dailyLabel=e(daily?.label||'لا 
                         </div>
                         <button data-legacy-click="askGeminiDailyReportSummary()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md transition active:scale-95">
                             <span>🤖</span>
-                            <span>استشارة وتحليل الجلسة بـ Gemini AI</span>
+                            <span>تحليل التقرير المحدد بـ Groq</span>
                         </button>
                     </div>
                     <div class="p-4 space-y-3">

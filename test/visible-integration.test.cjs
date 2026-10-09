@@ -28,10 +28,10 @@ test('estimated 0.7 percent cost attaches to visible legacy portfolio and stays 
 
 test('source shell directly loads active integrations and Groq chat with explicit cache versions',()=>{
  const html=read('index.html');
- for(const file of ['ai-view','estimated-investment-cost','news-notifications-ui'])assert.match(html,new RegExp(file+'\\.js\\?v=2\\.9\\.0'));
+ for(const file of ['ai-connection','ai-view','estimated-investment-cost','news-notifications-ui'])assert.match(html,new RegExp(file+'\\.js\\?v=3\\.0\\.0'));
  assert.match(read('ai-view.js'),/data-ai-provider="groq"/);
  assert.match(read('ai-view.js'),/data-chat-provider="groq"/);
- assert.match(html,/app-build.*2026-10-09-r10/);
+ assert.match(html,/app-build.*2026-10-09-r11/);
  assert.doesNotMatch(html,/runtime-integrity/);
 });
 

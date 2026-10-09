@@ -82,7 +82,7 @@ export function buildPublicContext({ market, news }, now = Date.now()) {
   return { ...evidence, input_hash };
 }
 
-export function outputSchema(sourceIds, sourceTitles = []) {
+export function outputSchema(sourceIds) {
   const citations = { type: 'array', minItems: 1, maxItems: 4, items: { type: 'string', enum: sourceIds } };
   const item = properties => ({ type: 'object', additionalProperties: false, properties: { ...properties, source_ids: citations }, required: [...Object.keys(properties), 'source_ids'] });
   return { type: 'object', additionalProperties: false, properties: {
@@ -114,7 +114,7 @@ export function makeRequest(context) {
   return {
     systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
     contents: [{ role: 'user', parts: [{ text: JSON.stringify({ market_session_date: context.market_session_date, sources: context.sources, limitations: context.limitations }) }] }],
-    generationConfig: { maxOutputTokens: 1800, thinkingConfig: { thinkingLevel: 'LOW' }, responseFormat: { text: { mimeType: 'APPLICATION_JSON', schema: outputSchema(context.sources.map(source => source.id), context.sources.map(source => source.title)) } } }
+    generationConfig: { maxOutputTokens: 1800, thinkingConfig: { thinkingLevel: 'LOW' }, responseFormat: { text: { mimeType: 'APPLICATION_JSON', schema: outputSchema(context.sources.map(source => source.id)) } } }
   };
 }
 function sameKeys(value, allowed) { return isObject(value) && Object.keys(value).length === allowed.length && Object.keys(value).every(key => allowed.includes(key)); }
@@ -122,20 +122,24 @@ function qualitativeText(value) {
   return safeText(value, 1100) && !/[0-9\u0660-\u0669\u06f0-\u06f9%٪]|https?:|www\.|<[^>]*>|عائد مضمون|ربح مضمون|اشتر[ِى]|قم بالشراء|قم بالبيع/.test(value);
 }
 export function validateAnalysis(value, sources) {
+  const invalid=field=>{throw Object.assign(new Error('invalid_response'),{validationField:field});};
   const sourceIds = new Set(sources.map(source => source.id));
   const sourceById = new Map(sources.map(source=>[source.id, source]));
-  if (!sameKeys(value, ['summary', 'findings', 'scenarios', 'questions', 'limitations']) || !qualitativeText(value.summary)) throw new Error('invalid_response');
+  if (!sameKeys(value, ['summary', 'findings', 'scenarios', 'questions', 'limitations'])) invalid('analysis_fields');
+  if (!qualitativeText(value.summary)) invalid('summary');
   const validCitations = item => Array.isArray(item.source_ids) && item.source_ids.length >= 1 && item.source_ids.length <= 4 && new Set(item.source_ids).size === item.source_ids.length && item.source_ids.every(id => sourceIds.has(id));
   for (const [field, keys, min, max] of [['findings', ['fact', 'possible_implication', 'uncertainty', 'source_ids'], 1, 5], ['scenarios', ['label', 'condition', 'possible_effect', 'source_ids'], 0, 3], ['questions', ['question', 'source_ids'], 1, 5]]) {
-    if (!Array.isArray(value[field]) || value[field].length < min || value[field].length > max) throw new Error('invalid_response');
+    if (!Array.isArray(value[field]) || value[field].length < min || value[field].length > max) invalid(field+'_count');
     for (const item of value[field]) {
-      if (!sameKeys(item, keys) || !validCitations(item) || keys.filter(key => key !== 'source_ids' && key !== 'fact').some(key => !qualitativeText(item[key]))) throw new Error('invalid_response');
-      if (field === 'findings' && (!safeText(item.fact,400) || item.source_ids.some(id=>sourceById.get(id)?.title !== item.fact))) throw new Error('invalid_response');
-      if (field === 'scenarios' && !OUTCOME_LABELS.includes(item.label)) throw new Error('invalid_response');
+      if (!sameKeys(item, keys)) invalid(field+'_fields');
+      if (!validCitations(item)) invalid(field+'_citations');
+      for(const key of keys.filter(key=>key!=='source_ids'&&key!=='fact'))if(!qualitativeText(item[key]))invalid(field+'_'+key);
+      if (field === 'findings' && (!safeText(item.fact,400) || item.source_ids.some(id=>sourceById.get(id)?.title !== item.fact))) invalid('finding_headline');
+      if (field === 'scenarios' && !OUTCOME_LABELS.includes(item.label)) invalid('scenario_label');
     }
   }
-  if (!Array.isArray(value.limitations) || value.limitations.length < 1 || value.limitations.length > 5 || value.limitations.some(text => !qualitativeText(text))) throw new Error('invalid_response');
-  if (new Set(value.scenarios.map(item => item.label)).size !== value.scenarios.length) throw new Error('invalid_response');
+  if (!Array.isArray(value.limitations) || value.limitations.length < 1 || value.limitations.length > 5 || value.limitations.some(text => !qualitativeText(text))) invalid('limitations');
+  if (new Set(value.scenarios.map(item => item.label)).size !== value.scenarios.length) invalid('duplicate_scenarios');
   return value;
 }
 

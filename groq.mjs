@@ -12,9 +12,9 @@ const ERROR_CODES = new Set(['rate_limit_exceeded','invalid_api_key','authentica
 
 function groqOutputSchema(sources){
   const schema=outputSchema(sources.map(source=>source.id));
-  const finding=schema.properties.findings.items.properties;
-  finding.fact={type:'string',enum:[...new Set(sources.map(source=>source.title))]};
-  finding.source_ids={...finding.source_ids,maxItems:1};
+  const finding=schema.properties.findings.items;
+  finding.properties={source_id:{type:'string',enum:sources.map(source=>source.id)},possible_implication:{type:'string',description:'تفسير احتمالي قصير بلا أرقام أو تواريخ أو روابط'},uncertainty:{type:'string',description:'حدود الخبر دون أرقام أو تواريخ'}};
+  finding.required=['source_id','possible_implication','uncertainty'];
   return schema;
 }
 
@@ -24,7 +24,7 @@ export function makeGroqRequest(context){
     store:false,
     reasoning:{effort:'low'},
     max_output_tokens:4000,
-    instructions:SYSTEM_INSTRUCTION,
+    instructions:SYSTEM_INSTRUCTION+'\nفي النتائج اختر source_id فقط؛ يضيف الخادم عنوان المصدر حرفيًا. لا تعيد كتابة العنوان في التفسير أو الملخص، ولا تكرر أرقامه في أي حقل. لا تضع معرفات المصادر داخل النصوص الحرة.',
     input:[{role:'user',content:JSON.stringify({market_session_date:context.market_session_date,sources:context.sources,limitations:context.limitations})}],
     text:{format:{type:'json_schema',name:'public_economic_analysis',strict:true,schema:groqOutputSchema(context.sources)}}
   };
@@ -52,8 +52,13 @@ export function extractGroqAnalysis(payload,sources){
   if(content.some(item=>item?.type==='refusal'))throw Error('blocked_or_incomplete');
   const text=content.filter(item=>item?.type==='output_text'&&typeof item.text==='string').map(item=>item.text).join('');
   if(!text||text.length>50000)throw Error('invalid_response');
-  const analysis=validateAnalysis(JSON.parse(text),sources);
-  if(analysis.findings.some(finding=>finding.source_ids.length!==1))throw Error('invalid_response');
+  const parsed=JSON.parse(text),sourceById=new Map(sources.map(source=>[source.id,source]));
+  if(!Array.isArray(parsed.findings))throw Error('invalid_response');
+  parsed.findings=parsed.findings.map(finding=>{
+    if(!finding||Object.keys(finding).length!==3||!['source_id','possible_implication','uncertainty'].every(key=>Object.hasOwn(finding,key))||!sourceById.has(finding.source_id))throw Error('invalid_response');
+    return {fact:sourceById.get(finding.source_id).title,possible_implication:finding.possible_implication,uncertainty:finding.uncertainty,source_ids:[finding.source_id]};
+  });
+  const analysis=validateAnalysis(parsed,sources);
   return analysis;
 }
 
@@ -71,7 +76,7 @@ export async function generateGroq({market,news,apiKey=process.env.GROQ_API_KEY,
     if(!response.ok)return failedResult(retained,context,now,await classifyFailedResponse(response),requestedAt,MODEL);
     const analysis=extractGroqAnalysis(await readPayload(response),context.sources);
     return{...emptyResult('ready',now,null,MODEL),generated_at:requestedAt,last_request_at:requestedAt,input_hash:context.input_hash,market_session_date:context.market_session_date,news_fetched_at:context.news_fetched_at,sources:context.sources,market_facts:context.market_facts,analysis};
-  }catch(error){const reason=['TimeoutError','AbortError'].includes(error?.name)?'timeout':error?.message==='blocked_or_incomplete'?'blocked_or_incomplete':'invalid_response';return failedResult(retained,context,now,reason,requestedAt,MODEL);}
+  }catch(error){const reason=['TimeoutError','AbortError'].includes(error?.name)?'timeout':error?.message==='blocked_or_incomplete'?'blocked_or_incomplete':'invalid_response';console.info('Groq newsletter rejected',JSON.stringify({reason,field:error?.validationField||'response_contract'}));return failedResult(retained,context,now,reason,requestedAt,MODEL);}
 }
 
 export async function readPreviousGroq(fetcher=fetch,now=Date.now()){return readPrevious(fetcher,now,MODEL,'groq');}

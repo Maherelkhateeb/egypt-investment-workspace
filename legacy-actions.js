@@ -39,7 +39,7 @@ const handlers={
  exportUserActivityLog:()=>download('activity-'+localDate()+'.csv',C.csv([['التاريخ','النوع','النشاط'],...extra.activity.map(x=>[x.date,x.kind,x.text])]),'text/csv;charset=utf-8'),
  exportMultiSheetExcel:exportExcel,exportUniversalExcel:exportExcel,
  runComprehensiveSystemAudit:()=>window.SystemAuditUI?.run(),diagnoseAuditWithGemini:()=>window.SystemAuditUI?.diagnose(),
- askGeminiDailyReportSummary:()=>ai({kind:'report',report:window.ReportArchive?.context()}),
+ askGeminiDailyReportSummary:()=>{const report=window.ReportArchive?.context();if(!report)return toast('انتظر اكتمال تحميل التقرير المختار',true);ai({kind:'report',report});},
  submitMarketAiQuestion:()=>ai({question:$('marketAiCustomInput')?.value||''}),sendUserAiQuestion:()=>ai({question:$('aiChatInput')?.value||''})
 };
 function zakatMarkup(v){return metric('ربع العشر عند تحقق شروط الوجوب',v*.025)+'<p class="text-[11px] text-slate-400">حساب مشروط ببلوغ النصاب والحول الهجري وتحديد الوعاء وخصم الديون، مع مراعاة نوع الشركة وقصد الاقتناء وعدم تكرار زكاة أخرجتها الشركة عنك.</p><a href="https://dar-alifta.org/ar/fatwa/details/22181" target="_blank" rel="noopener" class="text-sky-300 text-xs">مرجع دار الإفتاء</a>';}

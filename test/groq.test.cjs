@@ -1,14 +1,15 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const load=()=>import('../groq.mjs');
+const wireAnalysis=()=>({...analysis,findings:analysis.findings.map(({possible_implication,uncertainty,source_ids})=>({possible_implication,uncertainty,source_id:source_ids[0]}))});
 const source={id:'N1',title:'البورصة تعلن استئناف التداول الأحد',url:'https://www.alborsaanews.com/example',publisher:'جريدة البورصة',published_at:'2026-10-08T10:00:00Z',basis:'headline'};
 const analysis={summary:'قراءة نوعية للمصدر',findings:[{fact:source.title,possible_implication:'قد يدعم وضوح توقيت الجلسة',uncertainty:'لا يثبت اتجاه الأسعار',source_ids:['N1']}],scenarios:[],questions:[{question:'هل ظهرت إفصاحات جديدة',source_ids:['N1']}],limitations:['العنوان وحده لا يكفي للحكم الاستثماري']};
-test('Groq uses GPT-OSS 120B Responses API with strict JSON schema',async()=>{const G=await load();assert.equal(G.MODEL,'openai/gpt-oss-120b');assert.equal(G.ENDPOINT,'https://api.groq.com/openai/v1/responses');const r=G.makeGroqRequest({market_session_date:'2026-10-07',sources:[source],limitations:['بيانات مؤرخة']});assert.equal(r.model,G.MODEL);assert.equal(r.reasoning.effort,'low');assert.equal(r.text.format.type,'json_schema');assert.equal(r.text.format.strict,true);assert.equal(r.text.format.schema.properties.findings.items.properties.fact.enum[0],source.title);});
-test('Groq completed structured response is validated before publication',async()=>{const G=await load();const payload={status:'completed',output:[{type:'message',role:'assistant',status:'completed',content:[{type:'output_text',text:JSON.stringify(analysis)}]}]};assert.deepEqual(G.extractGroqAnalysis(payload,[source]),analysis);assert.throws(()=>G.extractGroqAnalysis({...payload,status:'failed'},[source]));});
+test('Groq uses GPT-OSS 120B Responses API with strict JSON schema',async()=>{const G=await load();assert.equal(G.MODEL,'openai/gpt-oss-120b');assert.equal(G.ENDPOINT,'https://api.groq.com/openai/v1/responses');const r=G.makeGroqRequest({market_session_date:'2026-10-07',sources:[source],limitations:['بيانات مؤرخة']});assert.equal(r.model,G.MODEL);assert.equal(r.reasoning.effort,'low');assert.equal(r.text.format.type,'json_schema');assert.equal(r.text.format.strict,true);assert.equal(r.text.format.schema.properties.findings.items.properties.source_id.enum[0],source.id);assert.equal(r.text.format.schema.properties.findings.items.properties.fact,undefined);});
+test('Groq completed structured response is validated before publication',async()=>{const G=await load();const payload={status:'completed',output:[{type:'message',role:'assistant',status:'completed',content:[{type:'output_text',text:JSON.stringify(wireAnalysis())}]}]};assert.deepEqual(G.extractGroqAnalysis(payload,[source]),analysis);assert.throws(()=>G.extractGroqAnalysis({...payload,status:'failed'},[source]));});
 test('missing Groq secret makes no network request',async()=>{const G=await load();let calls=0;const market={session_date:'2026-10-07',assets:{},indices:{}},news={fetched_at:'2026-10-08T10:00:00Z',items:[]};const out=await G.generateGroq({market,news,apiKey:'',fetchImpl:async()=>{calls++;throw Error('should not call');},now:Date.parse('2026-10-08T12:00:00Z')});assert.equal(calls,0);assert.equal(out.status,'waiting_key');assert.equal(out.model,G.MODEL);});
 
 const now=Date.parse('2026-10-08T12:00:00Z');
 const input=()=>({market:{session_date:'2026-10-07',assets:{},indices:{}},news:{fetched_at:source.published_at,items:[{...source,source_id:'borsa'}]},now,apiKey:'test-only-groq-key'});
-const response=()=>new Response(JSON.stringify({status:'completed',output:[{type:'message',role:'assistant',status:'completed',content:[{type:'output_text',text:JSON.stringify(analysis)}]}]}));
+const response=()=>new Response(JSON.stringify({status:'completed',output:[{type:'message',role:'assistant',status:'completed',content:[{type:'output_text',text:JSON.stringify(wireAnalysis())}]}]}));
 
 test('Groq request succeeds only with validated output and never publishes its credential',async()=>{
  const G=await load();let request;
@@ -37,4 +38,13 @@ test('provider failure retains the last Groq evidence and excludes raw errors',a
  const out=await G.generateGroq({...data,previous,now:now+7*3600000,fetchImpl:async()=>new Response(JSON.stringify({error:{message:'test-only-groq-key'}}),{status:503})});
  assert.equal(out.status,'stale');assert.equal(out.error_code,'http_503');assert.equal(out.generated_at,previous.generated_at);
  assert.deepEqual(out.analysis,analysis);assert.equal(JSON.stringify(out).includes('test-only-groq-key'),false);
+});
+test('Groq headline is bound on the server to its selected source ID, including publisher numbers',async()=>{
+ const G=await load(),sources=[source,{...source,id:'N2',title:'الشركة تعلن نمو الإيرادات بنسبة 12%'}];
+ const wire=wireAnalysis();wire.findings[0].source_id='N2';
+ const payload=()=>({status:'completed',output:[{type:'message',role:'assistant',content:[{type:'output_text',text:JSON.stringify(wire)}]}]});
+ assert.equal(G.extractGroqAnalysis(payload(),sources).findings[0].fact,sources[1].title);
+ wire.findings[0].source_id='N99';assert.throws(()=>G.extractGroqAnalysis(payload(),sources));
+ wire.findings[0].source_id='N2';wire.findings[0].possible_implication='قد يزيد السعر بنسبة 12%';assert.throws(()=>G.extractGroqAnalysis(payload(),sources));
+ wire.findings[0].possible_implication='تفسير احتمالي';wire.findings[0].fact='عنوان مختلف';assert.throws(()=>G.extractGroqAnalysis(payload(),sources));
 });

@@ -1,4 +1,7 @@
 {
   "aiServiceUrl": "https://egypt-investment-ai.maher-elkhateb1.chatgpt.site",
-  "aiServicePublished": true
+  "aiServicePublished": true,
+  "primaryAIProvider": "groq",
+  "automaticAIConnection": true,
+  "newsletterConnection": "private_service"
 }

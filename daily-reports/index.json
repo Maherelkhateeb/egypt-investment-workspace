@@ -255,6 +255,21 @@
       "source_commit": null,
       "generated_at": "2026-10-08T17:47:15.971Z",
       "available_after_cairo": "2026-10-08T16:00:00"
+    },
+    {
+      "id": "2026-10-09",
+      "date": "2026-10-09",
+      "kind": "daily",
+      "label": "التقرير اليومي — الجمعة 2026-10-09",
+      "sessionDay": "الجمعة",
+      "file": "daily-reports/2026-10-09.json",
+      "final": true,
+      "audited": true,
+      "complete": true,
+      "report_type": "non_trading_day",
+      "source_commit": null,
+      "generated_at": "2026-10-09T13:11:01.763Z",
+      "available_after_cairo": "2026-10-09T16:00:00"
     }
   ]
 }

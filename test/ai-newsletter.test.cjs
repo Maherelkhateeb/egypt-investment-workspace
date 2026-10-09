@@ -89,3 +89,29 @@ test('late advisor response from an older report never appears in the newly sele
  assert.doesNotMatch(app.nodes.get('aiChatMessages').innerHTML,/LATE_WRONG_REPORT_REPLY|2026-09-30/);
  assert.match(app.nodes.get('aiConversationInput').value,/2026-10-04.*2026-10-08/);assert.equal(app.nodes.get('aiSend').disabled,false);
 });
+
+test('a new conversation keeps the selected report and filter while clearing messages and portfolio sharing',async()=>{
+ const app=boot({groq:result('groq')},true);await settle();
+ const report={kind:'weekly',date:'2026-10-08',period_start:'2026-10-04',period_end:'2026-10-08',filter:'gold',fx_gold:{gold_21k_local:{close:123}}};
+ app.open({kind:'report',report,question:'OLD_REPORT_QUESTION'});await app.send();
+ app.nodes.get('aiSharePortfolio').checked=true;
+ app.nodes.get('aiClear').onclick();
+ assert.equal(app.nodes.get('aiSharePortfolio').checked,false);
+ assert.equal(app.nodes.get('aiConversationInput').value,'');
+ assert.doesNotMatch(app.nodes.get('aiChatMessages').innerHTML,/OLD_REPORT_QUESTION|إجابة التقرير المختار/);
+ app.nodes.get('aiConversationInput').value='ما الفترة المحددة لهذا التقرير؟';await app.send();
+ const next=app.requests.filter(payload=>payload.mode==='chat').at(-1);
+ assert.deepEqual(next.context,{page:'reports',kind:'report',report});
+ assert.equal(next.messages.length,1);
+ assert.doesNotMatch(JSON.stringify(next),/OLD_REPORT_QUESTION|خبر حالي خارج|portfolio|calendar/);
+});
+
+test('a new audit conversation retains the measured audit and its request mode',async()=>{
+ const app=boot({groq:result('groq')},true);await settle();
+ const audit={generated_at:'2026-10-09T13:00:00Z',findings:[{id:'measured-test',status:'fail',repair:'refresh_market'}]};
+ app.open({kind:'audit',audit});await app.send();app.nodes.get('aiClear').onclick();
+ app.nodes.get('aiConversationInput').value='اشرح المشكلة المقاسة';await app.send();
+ const next=app.requests.filter(payload=>payload.mode==='audit').at(-1);
+ assert.deepEqual(next.context.audit,audit);assert.equal(next.context.kind,'audit');assert.equal(next.messages.length,1);
+ assert.equal(app.requests.filter(payload=>payload.mode==='chat').length,0);
+});

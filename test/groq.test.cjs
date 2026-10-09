@@ -16,8 +16,16 @@ test('Groq request succeeds only with validated output and never publishes its c
  const out=await G.generateGroq({...input(),fetchImpl:async(url,options)=>{request={url,options};return response();}});
  assert.equal(out.status,'ready');assert.deepEqual(out.analysis,analysis);assert.equal(request.url,G.ENDPOINT);
  assert.equal(request.options.headers.Authorization,'Bearer test-only-groq-key');
+ assert.equal(request.options.redirect,'manual');
  assert.equal(JSON.stringify(JSON.parse(request.options.body)).includes('test-only-groq-key'),false);
  assert.equal(JSON.stringify(out).includes('test-only-groq-key'),false);
+});
+test('Groq remains usable on Workers and never follows a provider redirect with its credential',async()=>{
+ const G=await load();
+ const fetchImpl=async(url,options)=>{if(options.redirect==='error')throw new TypeError('Unsupported redirect mode');assert.equal(options.redirect,'manual');return response();};
+ assert.equal((await G.generateGroq({...input(),fetchImpl})).status,'ready');
+ const redirected=await G.generateGroq({...input(),fetchImpl:async()=>new Response('',{status:302,headers:{Location:'https://untrusted.example/collect'}})});
+ assert.equal(redirected.status,'failed');assert.equal(redirected.analysis,null);
 });
 test('Groq credentials in public input are rejected before any request',async()=>{
  const G=await load(),fake='gsk_'+('TEST_ONLY_NOT_A_REAL_KEY_').repeat(2);

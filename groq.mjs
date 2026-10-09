@@ -53,9 +53,9 @@ export function extractGroqAnalysis(payload,sources){
   const text=content.filter(item=>item?.type==='output_text'&&typeof item.text==='string').map(item=>item.text).join('');
   if(!text||text.length>50000)throw Error('invalid_response');
   const parsed=JSON.parse(text),sourceById=new Map(sources.map(source=>[source.id,source]));
-  if(!Array.isArray(parsed.findings))throw Error('invalid_response');
+  if(!Array.isArray(parsed.findings))throw Object.assign(Error('invalid_response'),{validationField:'findings_shape'});
   parsed.findings=parsed.findings.map(finding=>{
-    if(!finding||Object.keys(finding).length!==3||!['source_id','possible_implication','uncertainty'].every(key=>Object.hasOwn(finding,key))||!sourceById.has(finding.source_id))throw Error('invalid_response');
+    if(!finding||Object.keys(finding).length!==3||!['source_id','possible_implication','uncertainty'].every(key=>Object.hasOwn(finding,key))||!sourceById.has(finding.source_id))throw Object.assign(Error('invalid_response'),{validationField:'source_binding'});
     return {fact:sourceById.get(finding.source_id).title,possible_implication:finding.possible_implication,uncertainty:finding.uncertainty,source_ids:[finding.source_id]};
   });
   const analysis=validateAnalysis(parsed,sources);
@@ -71,12 +71,13 @@ export async function generateGroq({market,news,apiKey=process.env.GROQ_API_KEY,
   if(lastAttempt&&now-Date.parse(lastAttempt)<MIN_INTERVAL_MS)return{...retained,status:retained.analysis?'stale':retained.status,attempted_at:new Date(now).toISOString(),reuse_reason:'six_hour_interval',error_code:retained.analysis?'new_evidence_waiting_interval':retained.error_code};
   if(!context.sources.length)return failedResult(retained,context,now,'no_valid_public_news',null,MODEL);
   const requestedAt=new Date(now).toISOString();
+  let phase='provider_request';
   try{
-    const response=await request(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${apiKey.trim()}`},body:JSON.stringify(makeGroqRequest(context)),signal:AbortSignal.timeout(120000),redirect:'error'});
+    const response=await request(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${apiKey.trim()}`},body:JSON.stringify(makeGroqRequest(context)),signal:AbortSignal.timeout(120000),redirect:'manual'});
     if(!response.ok)return failedResult(retained,context,now,await classifyFailedResponse(response),requestedAt,MODEL);
-    const analysis=extractGroqAnalysis(await readPayload(response),context.sources);
+    phase='provider_payload';const payload=await readPayload(response);phase='analysis_contract';const analysis=extractGroqAnalysis(payload,context.sources);
     return{...emptyResult('ready',now,null,MODEL),generated_at:requestedAt,last_request_at:requestedAt,input_hash:context.input_hash,market_session_date:context.market_session_date,news_fetched_at:context.news_fetched_at,sources:context.sources,market_facts:context.market_facts,analysis};
-  }catch(error){const reason=['TimeoutError','AbortError'].includes(error?.name)?'timeout':error?.message==='blocked_or_incomplete'?'blocked_or_incomplete':'invalid_response';console.info('Groq newsletter rejected',JSON.stringify({reason,field:error?.validationField||'response_contract'}));return failedResult(retained,context,now,reason,requestedAt,MODEL);}
+  }catch(error){const reason=['TimeoutError','AbortError'].includes(error?.name)?'timeout':error?.message==='blocked_or_incomplete'?'blocked_or_incomplete':'invalid_response',message=String(error?.message||'');const category=/disallowed redirect|redirect/i.test(message)?'redirect_rejected':/D1_ERROR|SQLITE|sqlite/i.test(message)?'database_error':/fetch|network|connection/i.test(message)?'fetch_error':/JSON|Unexpected token/i.test(message)?'invalid_json':'invalid_contract';console.info('Groq newsletter rejected',JSON.stringify({reason,phase,category,name:error?.name||'Error',field:error?.validationField||'response_contract'}));return failedResult(retained,context,now,reason,requestedAt,MODEL);}
 }
 
 export async function readPreviousGroq(fetcher=fetch,now=Date.now()){return readPrevious(fetcher,now,MODEL,'groq');}

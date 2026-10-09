@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "reviewed_at": "2026-10-09",
+  "method": "Dated numeric rows read from the publishers' public pages and indexed official reports. Values are bound to their stated dates. No missing investor flows or financial ratios are inferred.",
+  "indices": {
+    "EGX30": {
+      "url": "https://www.egx.com.eg/en/indexdata.aspx?nav=1&type=1",
+      "quotes": {
+        "2026-10-01": {
+          "close": 53055.03,
+          "high": 53055.03,
+          "low": 51894.83
+        },
+        "2026-10-04": {
+          "close": 53911.1
+        },
+        "2026-10-05": {
+          "close": 53553.41,
+          "high": 54112.78,
+          "low": 53213.17
+        },
+        "2026-10-06": {
+          "close": 53298.14
+        },
+        "2026-10-07": {
+          "close": 53265.16,
+          "open": 53298.14,
+          "high": 53511.88,
+          "low": 53059.86
+        }
+      }
+    },
+    "EGX33": {
+      "url": "https://www.egx.com.eg/en/indexdata.aspx?nav=22&type=22",
+      "quotes": {
+        "2026-10-01": {
+          "close": 6447.37,
+          "high": 6447.37,
+          "low": 6251.8
+        },
+        "2026-10-04": {
+          "close": 6636.61,
+          "high": 6657.32,
+          "low": 6447.37
+        },
+        "2026-10-05": {
+          "close": 6608.43,
+          "high": 6653.3,
+          "low": 6542.89
+        },
+        "2026-10-06": {
+          "close": 6584.07,
+          "high": 6612.47,
+          "low": 6552.97
+        },
+        "2026-10-07": {
+          "close": 6601.5,
+          "source_url": "https://www.egx.com.eg/get_pdf.aspx?ID=55581&Lang=ARB"
+        }
+      }
+    },
+    "EGX70": {
+      "url": "https://www.egx.com.eg/get_pdf.aspx?ID=1022&Lang=ARB",
+      "quotes": {
+        "2026-10-04": {
+          "close": 19952.98
+        }
+      }
+    },
+    "EGX100": {
+      "url": "https://www.egx.com.eg/en/indexdata.aspx?nav=4&type=5",
+      "quotes": {
+        "2026-10-04": {
+          "close": 26366.99
+        },
+        "2026-10-05": {
+          "close": 26132.88,
+          "high": 26397.15,
+          "low": 25926.45
+        }
+      }
+    }
+  },
+  "fx": {
+    "url": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
+    "type": "CBE official USD buying/selling rates; midpoint calculated by the application",
+    "quotes": {
+      "2026-10-01": {
+        "buy": 52.2571,
+        "sell": 52.3971
+      },
+      "2026-10-05": {
+        "buy": 52.3624,
+        "sell": 52.5006
+      },
+      "2026-10-06": {
+        "buy": 52.2534,
+        "sell": 52.3906
+      },
+      "2026-10-07": {
+        "buy": 52.3204,
+        "sell": 52.46
+      }
+    }
+  },
+  "gold": {
+    "type": "GoldPrice global daily closing benchmark, USD per troy ounce; not an Egyptian retail execution price",
+    "quotes": {
+      "2026-10-04": {
+        "close": 4140.84,
+        "url": "https://goldprice.org/gold-price-today/2026-10-04"
+      },
+      "2026-10-05": {
+        "close": 4141.96,
+        "url": "https://goldprice.org/gold-price-today/2026-10-05"
+      },
+      "2026-10-06": {
+        "close": 4134.15,
+        "url": "https://goldprice.org/gold-price-today/2026-10-06"
+      },
+      "2026-10-07": {
+        "close": 4166.21,
+        "url": "https://goldprice.org/gold-price-today/2026-10-07"
+      }
+    }
+  },
+  "funds": [
+    {
+      "code": "AZG",
+      "session_date": "2026-10-07",
+      "price": 23.46569,
+      "url": "https://www.egx.com.eg/en/GoldCompanyDataPageAll.aspx",
+      "verification": "official_published_nav"
+    }
+  ],
+  "excluded": [
+    {
+      "ticker": "ESRS",
+      "reason": "Final de-listing of Ezz Steel: exclude legacy entries from current listed-stock session comparisons.",
+      "url": "https://www.egx.com.eg/en/NewsDetails.aspx?NewsID=267067",
+      "from": "2026-10-04"
+    }
+  ],
+  "price_basis": {
+    "ORHD": {
+      "split_date": "2026-10-07",
+      "ratio": 3.2288508184,
+      "source_url": "https://www.egx.com.eg/ar/NewsDetails.aspx?NewsID=295043",
+      "provider_unadjusted_through": "2026-09-27",
+      "anchor_before": {
+        "date": "2026-09-27",
+        "actual_close": 39.5
+      },
+      "anchor_after": {
+        "date": "2026-09-28",
+        "actual_close": 38.71
+      },
+      "note": "Yahoo returned unadjusted pre-28 September bars but split-adjusted subsequent bars in the same response. Normalize the earlier adjusted-close segment only if both dated anchors prove this mixed basis; never change an already fully adjusted series."
+    }
+  }
+}

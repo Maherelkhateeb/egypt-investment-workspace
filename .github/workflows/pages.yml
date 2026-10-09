@@ -25,6 +25,8 @@ jobs:
       - run: node scripts/update-market-calendar.mjs
       - run: node scripts/import-legacy-reports.mjs
       - run: node scripts/generate-daily-report.mjs
+      - run: node scripts/update-price-history.mjs
+      - run: node scripts/enrich-reports.mjs
       - run: node scripts/update-market-from-report.mjs
       - run: node scripts/generate-period-reports.mjs
       - name: Persist reviewed market and report archive

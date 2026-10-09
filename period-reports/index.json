@@ -13,7 +13,7 @@
       "complete": false,
       "report_type": "weekly_summary",
       "source_commit": null,
-      "generated_at": "2026-10-09T07:57:16.675Z",
+      "generated_at": "2026-10-09T14:10:47.574Z",
       "available_after_cairo": "2026-09-17T16:00:00"
     },
     {
@@ -28,7 +28,7 @@
       "complete": false,
       "report_type": "weekly_summary",
       "source_commit": null,
-      "generated_at": "2026-10-09T07:57:16.682Z",
+      "generated_at": "2026-10-09T14:10:47.579Z",
       "available_after_cairo": "2026-09-24T16:00:00"
     },
     {
@@ -43,7 +43,7 @@
       "complete": false,
       "report_type": "weekly_summary",
       "source_commit": null,
-      "generated_at": "2026-10-09T07:57:16.683Z",
+      "generated_at": "2026-10-09T14:10:47.581Z",
       "available_after_cairo": "2026-10-01T16:00:00"
     },
     {
@@ -58,7 +58,7 @@
       "complete": true,
       "report_type": "weekly_summary",
       "source_commit": null,
-      "generated_at": "2026-10-09T07:50:12.395Z",
+      "generated_at": "2026-10-09T14:23:39.114Z",
       "available_after_cairo": "2026-10-08T16:00:00"
     },
     {
@@ -73,7 +73,7 @@
       "complete": false,
       "report_type": "monthly_summary",
       "source_commit": null,
-      "generated_at": "2026-10-09T07:57:16.701Z",
+      "generated_at": "2026-10-09T14:10:47.604Z",
       "available_after_cairo": "2026-10-01T00:00:00"
     }
   ]

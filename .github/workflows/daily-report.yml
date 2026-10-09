@@ -44,6 +44,9 @@ jobs:
           node scripts/update-market-calendar.mjs
           node scripts/import-legacy-reports.mjs
           node scripts/generate-daily-report.mjs
+          node scripts/update-price-history.mjs
+          node scripts/enrich-reports.mjs
+          node scripts/update-market-from-report.mjs
           node scripts/generate-period-reports.mjs
 
       - name: Commit daily report archive
@@ -52,7 +55,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add daily-report.json daily-reports/ period-reports/ market-calendar.json report-sources/
+          git add market.json daily-report.json daily-reports/ period-reports/ market-calendar.json report-sources/
           if git diff --cached --quiet; then
             echo "No daily report changes to commit."
             exit 0

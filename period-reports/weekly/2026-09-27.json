@@ -1,6 +1,6 @@
 {
   "schema": 4,
-  "generated_at": "2026-10-09T07:57:16.683Z",
+  "generated_at": "2026-10-09T14:10:47.581Z",
   "id": "2026-09-27",
   "kind": "weekly",
   "date": "2026-10-01",
@@ -16,7 +16,7 @@
   "generated_from": {
     "repository": "Maherelkhateeb/egypt-investment-workspace",
     "file": "daily-reports/index.json",
-    "snapshot_updated_at": "2026-10-09T07:57:16.683Z"
+    "snapshot_updated_at": "2026-10-09T14:10:47.581Z"
   },
   "components": [
     {
@@ -130,7 +130,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 11.85,
       "observed_change_pct": -0.84,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "ETEL": {
       "ticker": "ETEL",
@@ -177,7 +178,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 133,
       "observed_change_pct": 4.29,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "DSCW": {
       "ticker": "DSCW",
@@ -224,7 +226,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 1.73,
       "observed_change_pct": -1.73,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "ORWE": {
       "ticker": "ORWE",
@@ -271,7 +274,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 27.09,
       "observed_change_pct": 2.77,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "TMGH": {
       "ticker": "TMGH",
@@ -318,7 +322,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 90.4,
       "observed_change_pct": -2.99,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "ALCN": {
       "ticker": "ALCN",
@@ -365,7 +370,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 32.05,
       "observed_change_pct": 6.4,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "EFID": {
       "ticker": "EFID",
@@ -412,7 +418,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 29.2,
       "observed_change_pct": null,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "PHDC": {
       "ticker": "PHDC",
@@ -459,7 +466,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 13.1,
       "observed_change_pct": 1.37,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "MCQE": {
       "ticker": "MCQE",
@@ -506,7 +514,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 196,
       "observed_change_pct": -3.17,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "RMDA": {
       "ticker": "RMDA",
@@ -553,7 +562,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 5.41,
       "observed_change_pct": 0.74,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "ATQA": {
       "ticker": "ATQA",
@@ -600,7 +610,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 12.32,
       "observed_change_pct": -7.47,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "EAST": {
       "ticker": "EAST",
@@ -647,7 +658,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 30.52,
       "observed_change_pct": -3.44,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "SKPC": {
       "ticker": "SKPC",
@@ -694,7 +706,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 16.34,
       "observed_change_pct": -0.86,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "DOMT": {
       "ticker": "DOMT",
@@ -741,7 +754,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 24.92,
       "observed_change_pct": 1.28,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "BTFH": {
       "ticker": "BTFH",
@@ -788,7 +802,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 2.72,
       "observed_change_pct": 4.04,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "ABUK": {
       "ticker": "ABUK",
@@ -835,7 +850,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 87.63,
       "observed_change_pct": -0.7,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "EFIH": {
       "ticker": "EFIH",
@@ -882,7 +898,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 22.92,
       "observed_change_pct": 2.09,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "OCDI": {
       "ticker": "OCDI",
@@ -929,7 +946,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 27.72,
       "observed_change_pct": -2.89,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "ISPH": {
       "ticker": "ISPH",
@@ -976,7 +994,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 11.64,
       "observed_change_pct": 0.52,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "COMI": {
       "ticker": "COMI",
@@ -1023,7 +1042,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 128.74,
       "observed_change_pct": -0.82,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "ARAB": {
       "ticker": "ARAB",
@@ -1070,7 +1090,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 0.21,
       "observed_change_pct": 14.29,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "ADIB": {
       "ticker": "ADIB",
@@ -1117,7 +1138,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 51.9,
       "observed_change_pct": -4.01,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "RACC": {
       "ticker": "RACC",
@@ -1164,7 +1186,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 9.02,
       "observed_change_pct": 3.33,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "ASCM": {
       "ticker": "ASCM",
@@ -1211,7 +1234,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 58.94,
       "observed_change_pct": -0.71,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "GBCO": {
       "ticker": "GBCO",
@@ -1258,7 +1282,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 30,
       "observed_change_pct": 3.33,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "ICFC": {
       "ticker": "ICFC",
@@ -1305,7 +1330,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 22.76,
       "observed_change_pct": -3.43,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "FWRY": {
       "ticker": "FWRY",
@@ -1352,7 +1378,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 18.65,
       "observed_change_pct": 1.07,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "MFPC": {
       "ticker": "MFPC",
@@ -1399,7 +1426,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 45,
       "observed_change_pct": 1.4,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "FAIT": {
       "ticker": "FAIT",
@@ -1446,7 +1474,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 44.8,
       "observed_change_pct": 1.14,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "CERA": {
       "ticker": "CERA",
@@ -1493,7 +1522,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 1.22,
       "observed_change_pct": 15.57,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "AMOC": {
       "ticker": "AMOC",
@@ -1540,7 +1570,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 12.9,
       "observed_change_pct": 8.91,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "POUL": {
       "ticker": "POUL",
@@ -1587,7 +1618,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 9.53,
       "observed_change_pct": 7.87,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "MASR": {
       "ticker": "MASR",
@@ -1634,7 +1666,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 7.15,
       "observed_change_pct": 6.99,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "ARCC": {
       "ticker": "ARCC",
@@ -1681,7 +1714,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 63.31,
       "observed_change_pct": 6.62,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "ACGC": {
       "ticker": "ACGC",
@@ -1728,7 +1762,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 13.81,
       "observed_change_pct": 5.14,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "ORHD": {
       "ticker": "ORHD",
@@ -1775,7 +1810,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 39.5,
       "observed_change_pct": -1.52,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "ORAS": {
       "ticker": "ORAS",
@@ -1822,7 +1858,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 809,
       "observed_change_pct": 1.36,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "CCAP": {
       "ticker": "CCAP",
@@ -1869,7 +1906,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 6.8,
       "observed_change_pct": 1.18,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "SWDY": {
       "ticker": "SWDY",
@@ -1916,7 +1954,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 113.45,
       "observed_change_pct": 5.77,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "SAUD": {
       "ticker": "SAUD",
@@ -1963,7 +2002,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 22.34,
       "observed_change_pct": 3.45,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "HELI": {
       "ticker": "HELI",
@@ -2010,7 +2050,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 7.65,
       "observed_change_pct": -2.48,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "JUFO": {
       "ticker": "JUFO",
@@ -2057,7 +2098,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 25.52,
       "observed_change_pct": -1.72,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "CIRA": {
       "ticker": "CIRA",
@@ -2104,7 +2146,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 39.07,
       "observed_change_pct": 0.56,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     "LCSW": {
       "ticker": "LCSW",
@@ -2151,7 +2194,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 31,
       "observed_change_pct": 8.03,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     "EGAL": {
       "ticker": "EGAL",
@@ -2198,7 +2242,8 @@
       "observed_start_date": "2026-09-28",
       "observed_start_price": 340.63,
       "observed_change_pct": 0,
-      "observed_sessions": 1
+      "observed_sessions": 1,
+      "period_basis_verified": false
     },
     "CIEB": {
       "ticker": "CIEB",
@@ -2245,7 +2290,8 @@
       "observed_start_date": "2026-09-28",
       "observed_start_price": 23.72,
       "observed_change_pct": 0,
-      "observed_sessions": 1
+      "observed_sessions": 1,
+      "period_basis_verified": false
     },
     "ESRS": {
       "ticker": "ESRS",
@@ -2292,7 +2338,8 @@
       "observed_start_date": "2026-09-28",
       "observed_start_price": 141,
       "observed_change_pct": 0,
-      "observed_sessions": 1
+      "observed_sessions": 1,
+      "period_basis_verified": false
     },
     "CLHO": {
       "ticker": "CLHO",
@@ -2339,7 +2386,8 @@
       "observed_start_date": "2026-09-28",
       "observed_start_price": 15.24,
       "observed_change_pct": 0,
-      "observed_sessions": 1
+      "observed_sessions": 1,
+      "period_basis_verified": false
     }
   },
   "indices": {
@@ -2395,14 +2443,14 @@
       "price": 21.3976,
       "session_date": "2026-10-01",
       "reported_change_pct": null,
-      "change_pct": null,
+      "change_pct": -5.82,
       "source": "إفصاح رسمي معتمد - CI Capital",
       "manager": "CI Capital Asset Management",
       "type": "equity_sharia",
       "valuation_cycle": "يومي معتمد / إقفال الجلسة",
       "observed_at": "2026-10-01T22:17:42.308548+03:00",
-      "previous_close": null,
-      "previous_session_date": "2026-09-30",
+      "previous_close": 22.72,
+      "previous_session_date": "2026-09-24",
       "observed_sessions": 5
     },
     {
@@ -2418,6 +2466,7 @@
       "valuation_cycle": "يومي / تسعير الصندوق",
       "observed_at": "2026-10-01T22:17:42.308548+03:00",
       "previous_close": null,
+      "previous_session_date": null,
       "observed_sessions": 5
     },
     {
@@ -2426,14 +2475,14 @@
       "price": 2.0733,
       "session_date": "2026-10-01",
       "reported_change_pct": null,
-      "change_pct": null,
+      "change_pct": -5.76,
       "source": "إفصاح رسمي - بلتون المالية",
       "manager": "Beltone Asset Management",
       "type": "equity_sharia",
       "valuation_cycle": "دوري معتمد / بلتون القابضة",
       "observed_at": "2026-10-01T22:17:42.308548+03:00",
-      "previous_close": null,
-      "previous_session_date": "2026-09-30",
+      "previous_close": 2.2,
+      "previous_session_date": "2026-09-24",
       "observed_sessions": 5
     },
     {
@@ -2442,14 +2491,14 @@
       "price": 48.92,
       "session_date": "2026-10-01",
       "reported_change_pct": null,
-      "change_pct": null,
+      "change_pct": -1.41,
       "source": "إفصاح رسمي - النعيم للاستثمارات",
       "manager": "Naeem Financial Investments",
       "type": "equity_sharia",
       "valuation_cycle": "دوري معتمد / إفصاح الصندوق",
       "observed_at": "2026-10-01T22:17:42.308548+03:00",
-      "previous_close": null,
-      "previous_session_date": "2026-09-30",
+      "previous_close": 49.62,
+      "previous_session_date": "2026-09-24",
       "observed_sessions": 5
     }
   ],
@@ -2460,7 +2509,10 @@
       "chgPct": null,
       "reported_change_pct": null,
       "session_date": null,
-      "observed_at": "2026-10-01T22:17:42.308548+03:00"
+      "observed_at": "2026-10-01T22:17:42.308548+03:00",
+      "previous_close": null,
+      "previous_session_date": null,
+      "comparison_kind": "period endpoints"
     },
     "gold_24k_local": {
       "close": 6970,
@@ -2468,7 +2520,10 @@
       "chgPct": null,
       "reported_change_pct": null,
       "session_date": null,
-      "observed_at": "2026-10-01T22:17:42.308548+03:00"
+      "observed_at": "2026-10-01T22:17:42.308548+03:00",
+      "previous_close": null,
+      "previous_session_date": null,
+      "comparison_kind": "period endpoints"
     },
     "clawdz_yield": {
       "annual_rate": 17.31,
@@ -2478,7 +2533,10 @@
       "chgPct": null,
       "reported_change_pct": null,
       "session_date": null,
-      "observed_at": "2026-10-01T22:17:42.308548+03:00"
+      "observed_at": "2026-10-01T22:17:42.308548+03:00",
+      "previous_close": null,
+      "previous_session_date": null,
+      "comparison_kind": "period endpoints"
     },
     "THNDR_GOLD": {
       "name": "سبائك جولد (Thndr)",
@@ -2489,11 +2547,14 @@
       "valuation_cycle": "لحظي / الصاغة والبورصة السلعية",
       "last_nav_date": "2026-09-29",
       "source": "تسعير الذهب الفعلي عيار 24",
-      "chgPct": null,
+      "chgPct": 409900,
       "reported_change_pct": -0.43,
       "session_date": "2026-09-29",
       "observed_at": "2026-10-01T22:17:42.308548+03:00",
-      "unit": "ج / غرام"
+      "unit": "ج / غرام",
+      "previous_close": 1.7,
+      "previous_session_date": "2026-09-26",
+      "comparison_kind": "period endpoints"
     }
   },
   "portfolio_analysis": [
@@ -2542,7 +2603,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 11.85,
       "observed_change_pct": -0.84,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "ETEL",
@@ -2589,7 +2651,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 133,
       "observed_change_pct": 4.29,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "DSCW",
@@ -2636,7 +2699,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 1.73,
       "observed_change_pct": -1.73,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "ORWE",
@@ -2683,7 +2747,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 27.09,
       "observed_change_pct": 2.77,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "TMGH",
@@ -2730,7 +2795,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 90.4,
       "observed_change_pct": -2.99,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "ALCN",
@@ -2777,7 +2843,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 32.05,
       "observed_change_pct": 6.4,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "EFID",
@@ -2824,7 +2891,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 29.2,
       "observed_change_pct": null,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "PHDC",
@@ -2871,7 +2939,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 13.1,
       "observed_change_pct": 1.37,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "MCQE",
@@ -2918,7 +2987,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 196,
       "observed_change_pct": -3.17,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "RMDA",
@@ -2965,7 +3035,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 5.41,
       "observed_change_pct": 0.74,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "ATQA",
@@ -3012,7 +3083,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 12.32,
       "observed_change_pct": -7.47,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "EAST",
@@ -3059,7 +3131,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 30.52,
       "observed_change_pct": -3.44,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "SKPC",
@@ -3106,7 +3179,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 16.34,
       "observed_change_pct": -0.86,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "DOMT",
@@ -3153,7 +3227,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 24.92,
       "observed_change_pct": 1.28,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "BTFH",
@@ -3200,7 +3275,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 2.72,
       "observed_change_pct": 4.04,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "ABUK",
@@ -3247,7 +3323,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 87.63,
       "observed_change_pct": -0.7,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "EFIH",
@@ -3294,7 +3371,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 22.92,
       "observed_change_pct": 2.09,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "OCDI",
@@ -3341,7 +3419,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 27.72,
       "observed_change_pct": -2.89,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "ISPH",
@@ -3388,7 +3467,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 11.64,
       "observed_change_pct": 0.52,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "COMI",
@@ -3435,7 +3515,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 128.74,
       "observed_change_pct": -0.82,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "ARAB",
@@ -3482,7 +3563,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 0.21,
       "observed_change_pct": 14.29,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "ADIB",
@@ -3529,7 +3611,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 51.9,
       "observed_change_pct": -4.01,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "RACC",
@@ -3576,7 +3659,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 9.02,
       "observed_change_pct": 3.33,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "ASCM",
@@ -3623,7 +3707,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 58.94,
       "observed_change_pct": -0.71,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "GBCO",
@@ -3670,7 +3755,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 30,
       "observed_change_pct": 3.33,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "ICFC",
@@ -3717,7 +3803,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 22.76,
       "observed_change_pct": -3.43,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "FWRY",
@@ -3764,7 +3851,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 18.65,
       "observed_change_pct": 1.07,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "MFPC",
@@ -3811,7 +3899,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 45,
       "observed_change_pct": 1.4,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "FAIT",
@@ -3858,7 +3947,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 44.8,
       "observed_change_pct": 1.14,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "CERA",
@@ -3905,7 +3995,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 1.22,
       "observed_change_pct": 15.57,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "AMOC",
@@ -3952,7 +4043,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 12.9,
       "observed_change_pct": 8.91,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "POUL",
@@ -3999,7 +4091,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 9.53,
       "observed_change_pct": 7.87,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "MASR",
@@ -4046,7 +4139,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 7.15,
       "observed_change_pct": 6.99,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "ARCC",
@@ -4093,7 +4187,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 63.31,
       "observed_change_pct": 6.62,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "ACGC",
@@ -4140,7 +4235,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 13.81,
       "observed_change_pct": 5.14,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "ORHD",
@@ -4187,7 +4283,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 39.5,
       "observed_change_pct": -1.52,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "ORAS",
@@ -4234,7 +4331,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 809,
       "observed_change_pct": 1.36,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "CCAP",
@@ -4281,7 +4379,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 6.8,
       "observed_change_pct": 1.18,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "SWDY",
@@ -4328,7 +4427,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 113.45,
       "observed_change_pct": 5.77,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "SAUD",
@@ -4375,7 +4475,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 22.34,
       "observed_change_pct": 3.45,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "HELI",
@@ -4422,7 +4523,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 7.65,
       "observed_change_pct": -2.48,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "JUFO",
@@ -4469,7 +4571,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 25.52,
       "observed_change_pct": -1.72,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "CIRA",
@@ -4516,7 +4619,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 39.07,
       "observed_change_pct": 0.56,
-      "observed_sessions": 4
+      "observed_sessions": 4,
+      "period_basis_verified": false
     },
     {
       "ticker": "LCSW",
@@ -4563,7 +4667,8 @@
       "observed_start_date": "2026-09-27",
       "observed_start_price": 31,
       "observed_change_pct": 8.03,
-      "observed_sessions": 5
+      "observed_sessions": 5,
+      "period_basis_verified": false
     },
     {
       "ticker": "EGAL",
@@ -4610,7 +4715,8 @@
       "observed_start_date": "2026-09-28",
       "observed_start_price": 340.63,
       "observed_change_pct": 0,
-      "observed_sessions": 1
+      "observed_sessions": 1,
+      "period_basis_verified": false
     },
     {
       "ticker": "CIEB",
@@ -4657,7 +4763,8 @@
       "observed_start_date": "2026-09-28",
       "observed_start_price": 23.72,
       "observed_change_pct": 0,
-      "observed_sessions": 1
+      "observed_sessions": 1,
+      "period_basis_verified": false
     },
     {
       "ticker": "ESRS",
@@ -4704,7 +4811,8 @@
       "observed_start_date": "2026-09-28",
       "observed_start_price": 141,
       "observed_change_pct": 0,
-      "observed_sessions": 1
+      "observed_sessions": 1,
+      "period_basis_verified": false
     },
     {
       "ticker": "CLHO",
@@ -4751,7 +4859,8 @@
       "observed_start_date": "2026-09-28",
       "observed_start_price": 15.24,
       "observed_change_pct": 0,
-      "observed_sessions": 1
+      "observed_sessions": 1,
+      "period_basis_verified": false
     }
   ],
   "market_summary": {
@@ -4760,6 +4869,10 @@
     "gainers": 0,
     "losers": 0,
     "flat": 0,
+    "known_volume": 398170527,
+    "volume_assets": 27,
+    "known_turnover": 0,
+    "turnover_assets": 0,
     "top_gainers": [],
     "top_losers": [],
     "index_bias": "غير محسوم",

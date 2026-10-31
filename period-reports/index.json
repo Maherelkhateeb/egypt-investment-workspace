@@ -75,6 +75,21 @@
       "source_commit": null,
       "generated_at": "2026-10-09T14:10:47.604Z",
       "available_after_cairo": "2026-10-01T00:00:00"
+    },
+    {
+      "id": "2026-10",
+      "date": "2026-10-31",
+      "kind": "monthly",
+      "label": "2026-10",
+      "sessionDay": "الشهر",
+      "file": "period-reports/monthly/2026-10.json",
+      "final": true,
+      "audited": true,
+      "complete": false,
+      "report_type": "monthly_summary",
+      "source_commit": null,
+      "generated_at": "2026-10-31T23:53:18.418Z",
+      "available_after_cairo": "2026-11-01T00:00:00"
     }
   ]
 }

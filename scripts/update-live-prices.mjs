@@ -36,7 +36,7 @@ function parseCbe(html){
 async function main(){
  const market=JSON.parse(fs.readFileSync(marketFile,'utf8'));
  const now=new Date(),checkedAt=now.toISOString();
- const cbeResponse=await get(CBE_PAGE+'?quote_refresh='+now.getTime(),'text/html');
+ const cbeResponse=await get(CBE_PAGE,'text/html');
  const fx=parseCbe(await cbeResponse.text());
  const goldResponse=await get(GOLD_API,'application/json');
  const payload=await goldResponse.json(),item=payload?.items?.find(x=>x.curr==='USD')||payload?.items?.[0];

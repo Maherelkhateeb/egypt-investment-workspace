@@ -8,7 +8,7 @@ fs.mkdirSync('_site',{recursive:true});
 const html=fs.readFileSync('index.html','utf8');
 const assets=[...html.matchAll(/(?:src|href)="([^"?#]+)[^"\n]*"/g)]
  .map(match=>match[1]).filter(file=>/^[\w.-]+\.(?:js|css)$/.test(file));
-const files=new Set(['index.html',...assets,'app-config.json','market.json','news.json','ai.json','market-calendar.json','daily-report.json','market-schema-example.json','CHART-LICENSE.md','XLSX-LICENSE.txt']);
+const files=new Set(['index.html',...assets,'app-config.json','market.json','live-prices.json','news.json','ai.json','market-calendar.json','daily-report.json','market-schema-example.json','CHART-LICENSE.md','XLSX-LICENSE.txt']);
 for(const file of files){
  if(!fs.existsSync(file))throw Error('Missing published asset: '+file);
  fs.copyFileSync(file,path.join('_site',file));

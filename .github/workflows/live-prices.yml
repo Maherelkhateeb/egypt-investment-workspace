@@ -1,0 +1,52 @@
+name: Refresh live gold and currency prices
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 * * * *'
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: market-data-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read public quote sources
+        run: node scripts/update-live-prices.mjs
+      - name: Persist changed live snapshot
+        id: snapshot
+        shell: bash
+        run: |
+          git add live-prices.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore(data): refresh live gold and FX references [skip ci]"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/configure-pages@v5
+        if: steps.snapshot.outputs.changed == 'true'
+      - name: Build the static site
+        if: steps.snapshot.outputs.changed == 'true'
+        run: node scripts/stage-pages.cjs
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.snapshot.outputs.changed == 'true'
+        with:
+          path: _site
+      - name: Deploy updated price references
+        if: steps.snapshot.outputs.changed == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4

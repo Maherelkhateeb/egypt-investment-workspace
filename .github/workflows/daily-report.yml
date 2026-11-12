@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: daily-close-report
+  group: market-data-refresh
   cancel-in-progress: false
 
 jobs:

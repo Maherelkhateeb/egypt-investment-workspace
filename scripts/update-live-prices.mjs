@@ -39,7 +39,7 @@ function parseCbeMirror(payload){
  const buy=Number(payload.rates.find(x=>x.base==='USD'&&x.quote==='EGP'&&x.type==='buy')?.value);
  const sell=Number(payload.rates.find(x=>x.base==='USD'&&x.quote==='EGP'&&x.type==='sell')?.value);
  const sessionDate=String(payload.date||'');
- if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(sessionDate)||!positive(buy)||!positive(sell)||sell<buy)throw Error('CBE mirror USD rates are invalid');
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(sessionDate)||!positive(buy)||!positive(sell)||sell<buy)throw Error('CBE mirror USD rates are invalid');
  const parsed=Date.parse(sessionDate+'T00:00:00Z'),today=Date.now();
  if(!Number.isFinite(parsed)||parsed>today+86400000||today-parsed>7*86400000)throw Error('CBE mirror rate date is invalid or stale');
  return {sessionDate,buy,sell};

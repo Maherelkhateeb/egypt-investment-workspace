@@ -3,9 +3,8 @@ name: Generate daily close report
 on:
   workflow_dispatch:
   schedule:
-    # Run at both possible UTC offsets for Cairo; guard step below keeps only 16:00 Cairo.
-    - cron: '0 13 * * *'
-    - cron: '0 14 * * *'
+    # 15:00 UTC is after the EGX close in both Cairo UTC offsets.
+    - cron: '0 15 * * *'
 
 permissions:
   contents: write
@@ -26,20 +25,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Check Cairo 4 PM window
-        id: cairo
-        shell: bash
-        run: |
-          HOUR=$(TZ=Africa/Cairo date +%H)
-          echo "hour=$HOUR" >> "$GITHUB_OUTPUT"
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$HOUR" = "16" ]; then
-            echo "run_report=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run_report=false" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Generate daily report
-        if: steps.cairo.outputs.run_report == 'true'
         run: |
           node scripts/update-market-calendar.mjs
           node scripts/import-legacy-reports.mjs
@@ -47,10 +33,10 @@ jobs:
           node scripts/update-price-history.mjs
           node scripts/enrich-reports.mjs
           node scripts/update-market-from-report.mjs
+          node scripts/update-live-prices.mjs
           node scripts/generate-period-reports.mjs
 
       - name: Commit daily report archive
-        if: steps.cairo.outputs.run_report == 'true'
         shell: bash
         run: |
           git config user.name "github-actions[bot]"

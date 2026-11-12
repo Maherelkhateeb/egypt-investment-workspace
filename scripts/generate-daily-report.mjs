@@ -27,7 +27,7 @@ if(Calendar.status(calendar,today).state==='UNKNOWN'&&hour>=16){
  }catch(err){report.audit.notes.push('لم يعتمد إغلاق جديد: '+err.message);}
 }
 if(Calendar.status(calendar,today).state==='UNKNOWN'&&market.session_date===today)report.audit.notes.push('يوجد ملف سوق لليوم، لكنه لا يحتوي لقطة إغلاق كاملة ذات مراجعة؛ ينتظر التقرير المصدر الموثق.');
-if(report.report_type==='pending_session'){console.log('No verified close file; daily report was not published:',today);process.exit(0);}
+if(report.report_type==='pending_session')throw Error('No verified close file; daily report was not published: '+today);
 fs.writeFileSync(file,JSON.stringify(report,null,2)+'\n');fs.writeFileSync('daily-report.json',JSON.stringify(report,null,2)+'\n');
 const meta=Availability.metadata(report,file);
 const at=index.reports.findIndex(r=>r.date===today);if(at<0)index.reports.push(meta);else index.reports[at]=meta;

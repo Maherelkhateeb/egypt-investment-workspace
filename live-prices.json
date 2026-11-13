@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "status": "fresh",
+  "updated_at": "2026-11-12T08:26:32.000Z",
+  "sources": {
+    "usd_egp": {
+      "name": "Ta3weem — بنك مصر",
+      "url": "https://ta3weem.com/ar/banks/banque-misr-bm",
+      "status": "fresh",
+      "observed_at": "2026-11-12T08:24:00.000Z",
+      "last_successful_at": "2026-11-12T08:24:00.000Z"
+    },
+    "gold_21k_local": {
+      "name": "RealEGP — الذهب عيار 21",
+      "url": "https://realegp.com/gold/21k",
+      "status": "fresh",
+      "observed_at": "2026-11-12T08:25:00.000Z",
+      "last_successful_at": "2026-11-12T08:25:00.000Z"
+    },
+    "xau_usd_ounce": {
+      "name": "Gold-API.com — الذهب العالمي",
+      "url": "https://gold-api.com/",
+      "status": "fresh",
+      "observed_at": "2026-11-12T08:26:32.000Z",
+      "last_successful_at": "2026-11-12T08:26:32.000Z"
+    }
+  },
+  "fx_gold": {
+    "xau_usd_ounce": {
+      "name": "سعر الذهب العالمي الفوري",
+      "close": 3951.6001,
+      "unit": "دولار / أونصة تروي",
+      "source": "https://gold-api.com/",
+      "api_url": "https://api.gold-api.com/price/XAU",
+      "provider": "Gold-API.com",
+      "observed_at": "2026-11-12T08:26:32.000Z",
+      "session_date": "2026-11-12",
+      "status": "fresh",
+      "verification": "live_global_spot_reference"
+    },
+    "gold_21k_local": {
+      "name": "الذهب عيار 21 — متوسط RealEGP",
+      "close": 6085,
+      "buy": 6095,
+      "sell": 6075,
+      "average": 6085,
+      "unit": "ج / غرام",
+      "source": "https://realegp.com/gold/21k",
+      "provider": "RealEGP",
+      "observed_at": "2026-11-12T08:25:00.000Z",
+      "session_date": "2026-11-12",
+      "status": "fresh",
+      "verification": "realegp_local_21k_buy_sell_average",
+      "note": "استخدم المتوسط المرجعي للآلة الحاسبة؛ لا يشمل المصنعية أو الدمغة. تسميات الشراء والبيع محفوظة كما يعرضها المصدر."
+    },
+    "usd_egp": {
+      "name": "الدولار — بنك مصر (متوسط مرجعي)",
+      "close": 53.52,
+      "buy": 53.47,
+      "sell": 53.57,
+      "average": 53.52,
+      "unit": "ج / دولار",
+      "source": "https://ta3weem.com/ar/banks/banque-misr-bm",
+      "provider": "Ta3weem / Banque Misr",
+      "observed_at": "2026-11-12T08:24:00.000Z",
+      "session_date": "2026-11-12",
+      "status": "fresh",
+      "verification": "bank_misr_published_buy_sell_average",
+      "note": "متوسط سعر الشراء والبيع لدى بنك مصر؛ راجع السعرين المنفصلين قبل تنفيذ الصرف."
+    },
+    "gold_24k_local": {
+      "name": "مكافئ عالمي استرشادي لجرام الذهب عيار 24",
+      "close": 6799.54973,
+      "unit": "ج / غرام — مكافئ مرجعي",
+      "source": "https://gold-api.com/",
+      "provider": "حساب مرجعي من Gold-API وTa3weem",
+      "observed_at": "2026-11-12T08:24:00.000Z",
+      "session_date": "2026-11-12",
+      "status": "fresh",
+      "verification": "calculated_global_spot_reference",
+      "calc": "XAU USD/troy ounce × Bank Misr USD/EGP midpoint ÷ 31.1034768 × karat/24",
+      "inputs": {
+        "xau_usd_ounce": 3951.6001,
+        "usd_egp_mid": 53.52,
+        "usd_source": "https://ta3weem.com/ar/banks/banque-misr-bm",
+        "spot_source": "https://api.gold-api.com/price/XAU"
+      },
+      "note": "مكافئ عالمي استرشادي فقط؛ سعر عيار 21 المحلي المباشر مأخوذ من RealEGP، ولا يشمل هذا المكافئ فرق السوق أو المصنعية."
+    }
+  }
+}

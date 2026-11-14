@@ -2578,7 +2578,7 @@
       "buy": 53.3653,
       "sell": 53.5047,
       "session_date": "2026-11-12",
-      "observed_at": "2026-11-14T19:37:45.462Z",
+      "observed_at": "2026-11-14T20:50:45.946Z",
       "unit": "ج / دولار",
       "source": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
       "verification": "cbe_official_data_mirror",
@@ -2593,7 +2593,7 @@
       "name": "مكافئ عالمي استرشادي لجرام الذهب عيار 24",
       "close": 6678.80033,
       "session_date": "2026-11-14",
-      "observed_at": "2026-11-14T19:37:25.000Z",
+      "observed_at": "2026-11-14T20:50:55.000Z",
       "unit": "ج / غرام — مكافئ مرجعي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
@@ -2612,7 +2612,7 @@
       "name": "مكافئ عالمي استرشادي لجرام الذهب عيار 21",
       "close": 5843.95029,
       "session_date": "2026-11-14",
-      "observed_at": "2026-11-14T19:37:25.000Z",
+      "observed_at": "2026-11-14T20:50:55.000Z",
       "unit": "ج / غرام — مكافئ مرجعي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
@@ -2631,7 +2631,7 @@
       "name": "سعر الذهب العالمي الفوري — Gold-API.com",
       "close": 3887.6001,
       "session_date": "2026-11-14",
-      "observed_at": "2026-11-14T19:37:25.000Z",
+      "observed_at": "2026-11-14T20:50:55.000Z",
       "unit": "دولار / أونصة تروي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
@@ -2663,21 +2663,21 @@
     "observed_at": "2026-10-09T07:57:16.561Z",
     "valid_until": "2026-10-09T07:57:16.561Z"
   },
-  "quotes_updated_at": "2026-11-14T19:37:45.462Z",
+  "quotes_updated_at": "2026-11-14T20:50:45.946Z",
   "quote_sources": {
     "fx": {
       "name": "البنك المركزي المصري",
       "url": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
       "session_date": "2026-11-12",
-      "checked_at": "2026-11-14T19:37:45.462Z",
+      "checked_at": "2026-11-14T20:50:45.946Z",
       "delivery": "mirror",
       "mirror_url": "https://raw.githubusercontent.com/AllRates-Today/central-bank-exchange-rates/main/data/cbe/latest.json"
     },
     "gold": {
       "name": "GoldPrice.org",
       "url": "https://gold-api.com/",
-      "observed_at": "2026-11-14T19:37:25.000Z",
-      "checked_at": "2026-11-14T19:37:45.462Z"
+      "observed_at": "2026-11-14T20:50:55.000Z",
+      "checked_at": "2026-11-14T20:50:45.946Z"
     }
   }
 }

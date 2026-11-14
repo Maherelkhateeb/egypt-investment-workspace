@@ -420,6 +420,21 @@
       "source_commit": null,
       "generated_at": "2026-11-13T16:38:35.629Z",
       "available_after_cairo": "2026-11-13T16:00:00"
+    },
+    {
+      "id": "2026-11-14",
+      "date": "2026-11-14",
+      "kind": "daily",
+      "label": "التقرير اليومي — السبت 2026-11-14",
+      "sessionDay": "السبت",
+      "file": "daily-reports/2026-11-14.json",
+      "final": true,
+      "audited": true,
+      "complete": true,
+      "report_type": "non_trading_day",
+      "source_commit": null,
+      "generated_at": "2026-11-14T16:17:24.472Z",
+      "available_after_cairo": "2026-11-14T16:00:00"
     }
   ]
 }

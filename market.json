@@ -2574,11 +2574,11 @@
   "fx_gold": {
     "usd_egp": {
       "name": "الدولار الرسمي — البنك المركزي المصري",
-      "close": 53.79275,
-      "buy": 53.7229,
-      "sell": 53.8626,
-      "session_date": "2026-11-15",
-      "observed_at": "2026-11-16T23:36:11.169Z",
+      "close": 53.6853,
+      "buy": 53.6169,
+      "sell": 53.7537,
+      "session_date": "2026-11-16",
+      "observed_at": "2026-11-17T00:35:57.204Z",
       "unit": "ج / دولار",
       "source": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
       "verification": "cbe_official_data_mirror",
@@ -2591,47 +2591,47 @@
     },
     "gold_24k_local": {
       "name": "مكافئ عالمي استرشادي لجرام الذهب عيار 24",
-      "close": 6669.6764,
+      "close": 6664.17278,
       "session_date": "2026-11-16",
-      "observed_at": "2026-11-16T23:35:57.000Z",
+      "observed_at": "2026-11-17T00:35:57.000Z",
       "unit": "ج / غرام — مكافئ مرجعي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
       "fx_source": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
-      "fx_session_date": "2026-11-15",
+      "fx_session_date": "2026-11-16",
       "verification": "calculated_global_spot_reference",
       "calc": "XAU USD/troy ounce × CBE USD/EGP midpoint ÷ 31.1034768 × karat/24",
       "inputs": {
-        "xau_usd_ounce": 3856.469971,
-        "usd_egp_mid": 53.79275,
-        "fx_date": "2026-11-15"
+        "xau_usd_ounce": 3861,
+        "usd_egp_mid": 53.6853,
+        "fx_date": "2026-11-16"
       },
       "note": "مكافئ عالمي استرشادي، وليس سعر بيع محلياً؛ لا يشمل فرق السوق أو المصنعية."
     },
     "gold_21k_local": {
       "name": "مكافئ عالمي استرشادي لجرام الذهب عيار 21",
-      "close": 5835.96685,
+      "close": 5831.15118,
       "session_date": "2026-11-16",
-      "observed_at": "2026-11-16T23:35:57.000Z",
+      "observed_at": "2026-11-17T00:35:57.000Z",
       "unit": "ج / غرام — مكافئ مرجعي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
       "fx_source": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
-      "fx_session_date": "2026-11-15",
+      "fx_session_date": "2026-11-16",
       "verification": "calculated_global_spot_reference",
       "calc": "XAU USD/troy ounce × CBE USD/EGP midpoint ÷ 31.1034768 × karat/24",
       "inputs": {
-        "xau_usd_ounce": 3856.469971,
-        "usd_egp_mid": 53.79275,
-        "fx_date": "2026-11-15"
+        "xau_usd_ounce": 3861,
+        "usd_egp_mid": 53.6853,
+        "fx_date": "2026-11-16"
       },
       "note": "مكافئ عالمي استرشادي، وليس سعر بيع محلياً؛ لا يشمل فرق السوق أو المصنعية."
     },
     "xau_usd_ounce": {
       "name": "سعر الذهب العالمي الفوري — Gold-API.com",
-      "close": 3856.47,
+      "close": 3861,
       "session_date": "2026-11-16",
-      "observed_at": "2026-11-16T23:35:57.000Z",
+      "observed_at": "2026-11-17T00:35:57.000Z",
       "unit": "دولار / أونصة تروي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
@@ -2663,21 +2663,21 @@
     "observed_at": "2026-10-09T07:57:16.561Z",
     "valid_until": "2026-10-09T07:57:16.561Z"
   },
-  "quotes_updated_at": "2026-11-16T23:36:11.169Z",
+  "quotes_updated_at": "2026-11-17T00:35:57.204Z",
   "quote_sources": {
     "fx": {
       "name": "البنك المركزي المصري",
       "url": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
-      "session_date": "2026-11-15",
-      "checked_at": "2026-11-16T23:36:11.169Z",
+      "session_date": "2026-11-16",
+      "checked_at": "2026-11-17T00:35:57.204Z",
       "delivery": "mirror",
       "mirror_url": "https://raw.githubusercontent.com/AllRates-Today/central-bank-exchange-rates/main/data/cbe/latest.json"
     },
     "gold": {
       "name": "GoldPrice.org",
       "url": "https://gold-api.com/",
-      "observed_at": "2026-11-16T23:35:57.000Z",
-      "checked_at": "2026-11-16T23:36:11.169Z"
+      "observed_at": "2026-11-17T00:35:57.000Z",
+      "checked_at": "2026-11-17T00:35:57.204Z"
     }
   }
 }

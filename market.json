@@ -2578,7 +2578,7 @@
       "buy": 53.6675,
       "sell": 53.8046,
       "session_date": "2026-11-17",
-      "observed_at": "2026-11-18T01:05:33.637Z",
+      "observed_at": "2026-11-18T08:45:39.797Z",
       "unit": "ج / دولار",
       "source": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
       "verification": "cbe_official_data_mirror",
@@ -2591,9 +2591,9 @@
     },
     "gold_24k_local": {
       "name": "مكافئ عالمي استرشادي لجرام الذهب عيار 24",
-      "close": 6595.61319,
-      "session_date": "2026-11-17",
-      "observed_at": "2026-11-18T01:05:29.000Z",
+      "close": 6510.61269,
+      "session_date": "2026-11-18",
+      "observed_at": "2026-11-18T08:45:30.000Z",
       "unit": "ج / غرام — مكافئ مرجعي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
@@ -2602,7 +2602,7 @@
       "verification": "calculated_global_spot_reference",
       "calc": "XAU USD/troy ounce × CBE USD/EGP midpoint ÷ 31.1034768 × karat/24",
       "inputs": {
-        "xau_usd_ounce": 3817.669922,
+        "xau_usd_ounce": 3768.469971,
         "usd_egp_mid": 53.73605,
         "fx_date": "2026-11-17"
       },
@@ -2610,9 +2610,9 @@
     },
     "gold_21k_local": {
       "name": "مكافئ عالمي استرشادي لجرام الذهب عيار 21",
-      "close": 5771.16154,
-      "session_date": "2026-11-17",
-      "observed_at": "2026-11-18T01:05:29.000Z",
+      "close": 5696.7861,
+      "session_date": "2026-11-18",
+      "observed_at": "2026-11-18T08:45:30.000Z",
       "unit": "ج / غرام — مكافئ مرجعي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
@@ -2621,7 +2621,7 @@
       "verification": "calculated_global_spot_reference",
       "calc": "XAU USD/troy ounce × CBE USD/EGP midpoint ÷ 31.1034768 × karat/24",
       "inputs": {
-        "xau_usd_ounce": 3817.669922,
+        "xau_usd_ounce": 3768.469971,
         "usd_egp_mid": 53.73605,
         "fx_date": "2026-11-17"
       },
@@ -2629,9 +2629,9 @@
     },
     "xau_usd_ounce": {
       "name": "سعر الذهب العالمي الفوري — Gold-API.com",
-      "close": 3817.6699,
-      "session_date": "2026-11-17",
-      "observed_at": "2026-11-18T01:05:29.000Z",
+      "close": 3768.47,
+      "session_date": "2026-11-18",
+      "observed_at": "2026-11-18T08:45:30.000Z",
       "unit": "دولار / أونصة تروي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
@@ -2663,21 +2663,21 @@
     "observed_at": "2026-10-09T07:57:16.561Z",
     "valid_until": "2026-10-09T07:57:16.561Z"
   },
-  "quotes_updated_at": "2026-11-18T01:05:33.637Z",
+  "quotes_updated_at": "2026-11-18T08:45:39.797Z",
   "quote_sources": {
     "fx": {
       "name": "البنك المركزي المصري",
       "url": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
       "session_date": "2026-11-17",
-      "checked_at": "2026-11-18T01:05:33.637Z",
+      "checked_at": "2026-11-18T08:45:39.797Z",
       "delivery": "mirror",
       "mirror_url": "https://raw.githubusercontent.com/AllRates-Today/central-bank-exchange-rates/main/data/cbe/latest.json"
     },
     "gold": {
       "name": "GoldPrice.org",
       "url": "https://gold-api.com/",
-      "observed_at": "2026-11-18T01:05:29.000Z",
-      "checked_at": "2026-11-18T01:05:33.637Z"
+      "observed_at": "2026-11-18T08:45:30.000Z",
+      "checked_at": "2026-11-18T08:45:39.797Z"
     }
   }
 }

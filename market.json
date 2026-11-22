@@ -2574,11 +2574,11 @@
   "fx_gold": {
     "usd_egp": {
       "name": "الدولار الرسمي — البنك المركزي المصري",
-      "close": 53.81075,
-      "buy": 53.7418,
-      "sell": 53.8797,
-      "session_date": "2026-11-19",
-      "observed_at": "2026-11-22T09:15:31.965Z",
+      "close": 54.433,
+      "buy": 54.3634,
+      "sell": 54.5026,
+      "session_date": "2026-11-22",
+      "observed_at": "2026-11-22T22:38:45.663Z",
       "unit": "ج / دولار",
       "source": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
       "verification": "cbe_official_data_mirror",
@@ -2591,39 +2591,39 @@
     },
     "gold_24k_local": {
       "name": "مكافئ عالمي استرشادي لجرام الذهب عيار 24",
-      "close": 6122.66743,
+      "close": 6193.46796,
       "session_date": "2026-11-22",
-      "observed_at": "2026-11-22T09:15:09.000Z",
+      "observed_at": "2026-11-22T22:38:40.000Z",
       "unit": "ج / غرام — مكافئ مرجعي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
       "fx_source": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
-      "fx_session_date": "2026-11-19",
+      "fx_session_date": "2026-11-22",
       "verification": "calculated_global_spot_reference",
       "calc": "XAU USD/troy ounce × CBE USD/EGP midpoint ÷ 31.1034768 × karat/24",
       "inputs": {
         "xau_usd_ounce": 3539,
-        "usd_egp_mid": 53.81075,
-        "fx_date": "2026-11-19"
+        "usd_egp_mid": 54.433,
+        "fx_date": "2026-11-22"
       },
       "note": "مكافئ عالمي استرشادي، وليس سعر بيع محلياً؛ لا يشمل فرق السوق أو المصنعية."
     },
     "gold_21k_local": {
       "name": "مكافئ عالمي استرشادي لجرام الذهب عيار 21",
-      "close": 5357.334,
+      "close": 5419.28446,
       "session_date": "2026-11-22",
-      "observed_at": "2026-11-22T09:15:09.000Z",
+      "observed_at": "2026-11-22T22:38:40.000Z",
       "unit": "ج / غرام — مكافئ مرجعي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
       "fx_source": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
-      "fx_session_date": "2026-11-19",
+      "fx_session_date": "2026-11-22",
       "verification": "calculated_global_spot_reference",
       "calc": "XAU USD/troy ounce × CBE USD/EGP midpoint ÷ 31.1034768 × karat/24",
       "inputs": {
         "xau_usd_ounce": 3539,
-        "usd_egp_mid": 53.81075,
-        "fx_date": "2026-11-19"
+        "usd_egp_mid": 54.433,
+        "fx_date": "2026-11-22"
       },
       "note": "مكافئ عالمي استرشادي، وليس سعر بيع محلياً؛ لا يشمل فرق السوق أو المصنعية."
     },
@@ -2631,7 +2631,7 @@
       "name": "سعر الذهب العالمي الفوري — Gold-API.com",
       "close": 3539,
       "session_date": "2026-11-22",
-      "observed_at": "2026-11-22T09:15:09.000Z",
+      "observed_at": "2026-11-22T22:38:40.000Z",
       "unit": "دولار / أونصة تروي",
       "source": "https://gold-api.com/",
       "api_url": "https://api.gold-api.com/price/XAU",
@@ -2663,21 +2663,21 @@
     "observed_at": "2026-10-09T07:57:16.561Z",
     "valid_until": "2026-10-09T07:57:16.561Z"
   },
-  "quotes_updated_at": "2026-11-22T09:15:31.965Z",
+  "quotes_updated_at": "2026-11-22T22:38:45.663Z",
   "quote_sources": {
     "fx": {
       "name": "البنك المركزي المصري",
       "url": "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates",
-      "session_date": "2026-11-19",
-      "checked_at": "2026-11-22T09:15:31.965Z",
+      "session_date": "2026-11-22",
+      "checked_at": "2026-11-22T22:38:45.663Z",
       "delivery": "mirror",
       "mirror_url": "https://raw.githubusercontent.com/AllRates-Today/central-bank-exchange-rates/main/data/cbe/latest.json"
     },
     "gold": {
       "name": "GoldPrice.org",
       "url": "https://gold-api.com/",
-      "observed_at": "2026-11-22T09:15:09.000Z",
-      "checked_at": "2026-11-22T09:15:31.965Z"
+      "observed_at": "2026-11-22T22:38:40.000Z",
+      "checked_at": "2026-11-22T22:38:45.663Z"
     }
   }
 }
